@@ -1,0 +1,14 @@
+# .gitignore for onecar project
+# 忽略所有隐藏目录和其内容
+
+# 忽略所有隐藏目录的内容
+.*/
+
+# 忽略隐藏目录内的所有文件
+.*/*
+
+# 例外：保留Git版本控制目录
+!.git/
+
+# 例外：保留.gitignore文件本身
+!.gitignore
