@@ -15,7 +15,7 @@
  */
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Product, ApiResponse, PaginatedResponse, CaptchaResponse } from '@/types';
+import { Product, ApiResponse, PaginatedResponse, CaptchaResponse, WatermarkConfig, QRCodeConfig } from '@/types';
 
 /**
  * API 基础配置
@@ -353,14 +353,14 @@ export const watermarkApi = {
    * 添加水印
    * 
    * 为单张图片添加水印
-   * @param params 水印参数
-   * @param params.imageUrl 原始图片 URL
-   * @param params.watermarkConfig 水印配置（位置、透明度、大小等）
-   * @returns {Promise<ApiResponse<{watermarkedImageUrl: string}>>} 水印处理结果
+   * @param params - 水印参数
+   * @param params.imageUrl - 原始图片 URL
+   * @param params.watermarkConfig - 水印配置（位置、透明度、大小等）
+   * @returns 水印处理结果，包含处理后的图片URL
    */
   addWatermark: async (params: {
     imageUrl: string;
-    watermarkConfig: any; // WatermarkConfig type
+    watermarkConfig: WatermarkConfig;
   }): Promise<ApiResponse<{ watermarkedImageUrl: string }>> => {
     const response = await api.post('/watermark', params);
     return response.data;
@@ -370,14 +370,14 @@ export const watermarkApi = {
    * 批量添加水印
    * 
    * 为多张图片批量添加相同的水印
-   * @param params 批量水印参数
-   * @param params.imageUrls 原始图片 URL 数组
-   * @param params.watermarkConfig 水印配置（应用于所有图片）
-   * @returns {Promise<ApiResponse<Array<{imageUrl: string, watermarkedImageUrl: string}>>>} 批量水印处理结果
+   * @param params - 批量水印参数
+   * @param params.imageUrls - 原始图片 URL 数组
+   * @param params.watermarkConfig - 水印配置（应用于所有图片）
+   * @returns 批量水印处理结果，包含每张图片的处理结果
    */
   batchWatermark: async (params: {
     imageUrls: string[];
-    watermarkConfig: any; // WatermarkConfig type
+    watermarkConfig: WatermarkConfig;
   }): Promise<ApiResponse<Array<{ imageUrl: string; watermarkedImageUrl: string }>>> => {
     const response = await api.post('/watermark/batch', params);
     return response.data;
@@ -395,14 +395,14 @@ export const qrcodeApi = {
    * 生成二维码
    * 
    * 为指定数据生成二维码图片
-   * @param params 二维码参数
-   * @param params.data 要编码的数据（文本、URL 等）
-   * @param params.config 二维码配置（可选）如大小、颜色、错误纠正级别等
-   * @returns {Promise<ApiResponse<{qrCodeUrl: string}>>} 二维码生成结果
+   * @param params - 二维码参数
+   * @param params.data - 要编码的数据（文本、URL 等）
+   * @param params.config - 二维码配置（可选）如大小、颜色、错误纠正级别等
+   * @returns 二维码生成结果，包含生成的二维码图片URL
    */
   generateQRCode: async (params: {
     data: string;
-    config?: any; // QRCodeConfig type
+    config?: QRCodeConfig;
   }): Promise<ApiResponse<{ qrCodeUrl: string }>> => {
     const response = await api.post('/qrcode', params);
     return response.data;
@@ -412,10 +412,10 @@ export const qrcodeApi = {
    * 批量生成二维码
    * 
    * 为多个数据批量生成二维码
-   * @param items 要生成二维码的数据项数组
-   * @param items[].id 数据项的唯一标识符
-   * @param items[].data 要编码的数据
-   * @returns {Promise<ApiResponse<Array<{id: string, qrCodeUrl: string}>>>} 批量生成结果
+   * @param items - 要生成二维码的数据项数组
+   * @param items[].id - 数据项的唯一标识符
+   * @param items[].data - 要编码的数据
+   * @returns 批量生成结果，包含每个数据项对应的二维码URL
    */
   batchGenerateQRCode: async (
     items: Array<{ id: string; data: string }>
