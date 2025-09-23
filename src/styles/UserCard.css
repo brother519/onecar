@@ -1,0 +1,16 @@
+.user-card {
+  margin-bottom: 20px;
+}
+
+.user-card-not-logged {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  gap: 10px;
+}
+
+.login-button {
+  margin-top: 10px;
+}
