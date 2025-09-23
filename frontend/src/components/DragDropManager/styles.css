@@ -1,0 +1,222 @@
+/* 拖拽排序组件样式 */
+.drag-drop-container {
+  position: relative;
+  width: 100%;
+}
+
+.drag-drop-item {
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  touch-action: manipulation;
+  transition: all var(--transition-fast);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.drag-drop-item:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.drag-drop-item:active {
+  cursor: grabbing;
+}
+
+.drag-drop-item.dragging {
+  opacity: 0.7;
+  transform: rotate(2deg);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-index-dropdown);
+}
+
+.drag-drop-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.drag-drop-disabled .drag-drop-item {
+  cursor: not-allowed;
+}
+
+/* 拖拽手柄样式 */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 100%;
+  color: var(--text-color-secondary);
+  cursor: grab;
+  transition: color var(--transition-fast);
+}
+
+.drag-handle:hover {
+  color: var(--primary-color);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* 拖拽预览层样式 */
+.drag-overlay {
+  transform: rotate(5deg);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--border-radius-md);
+  background: var(--background-color);
+  border: 1px solid var(--primary-color);
+  opacity: 0.9;
+}
+
+/* 放置区域指示器 */
+.drop-indicator {
+  height: 2px;
+  background: var(--primary-color);
+  border-radius: 1px;
+  margin: var(--spacing-xs) 0;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.drop-indicator.active {
+  opacity: 1;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 网格布局拖拽 */
+.drag-drop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+}
+
+.drag-drop-grid .drag-drop-item {
+  margin-bottom: 0;
+}
+
+/* 拖拽排序动画 */
+.drag-drop-item[data-sortable-transition] {
+  transition: transform 200ms ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .drag-drop-item {
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .drag-handle {
+    width: 16px;
+  }
+  
+  .drag-drop-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+}
+
+/* 无障碍访问 */
+.drag-drop-item:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.drag-drop-item[aria-pressed="true"] {
+  box-shadow: var(--shadow-md);
+}
+
+/* 键盘导航指示器 */
+.keyboard-navigation .drag-drop-item:focus {
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* 拖拽状态提示 */
+.drag-status {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: var(--font-size-caption);
+  color: var(--text-color-secondary);
+  z-index: var(--z-index-notification);
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all var(--transition-normal);
+}
+
+.drag-status.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 批量选择模式 */
+.batch-selection .drag-drop-item {
+  cursor: pointer;
+}
+
+.batch-selection .drag-drop-item.selected {
+  border: 2px solid var(--primary-color);
+  background-color: var(--primary-color-light);
+}
+
+.batch-selection .drag-drop-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* 加载状态 */
+.drag-drop-item.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.drag-drop-item.loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--border-color-light);
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* 错误状态 */
+.drag-drop-item.error {
+  border-color: var(--error-color);
+  background-color: var(--error-color-light);
+}
+
+.drag-drop-item.error .drag-handle {
+  color: var(--error-color);
+}
