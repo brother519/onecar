@@ -1,0 +1,29 @@
+.search-result-list {
+  margin-bottom: 20px;
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-panel {
+  margin-bottom: 20px;
+}
+
+.filter-section {
+  margin-bottom: 16px;
+}
+
+.product-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}

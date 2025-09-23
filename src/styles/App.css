@@ -1,0 +1,25 @@
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  background-color: #001529;
+  padding: 0 50px;
+}
+
+.logo {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.app-content {
+  padding: 0 50px;
+  margin-top: 20px;
+}
+
+.app-footer {
+  text-align: center;
+}
