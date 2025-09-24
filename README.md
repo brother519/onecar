@@ -39,11 +39,58 @@
 - **构建工具**: Maven 3.8+
 - **JDK版本**: Java 17+
 
+## 项目结构
+
+```
+onecar/
+├── src/
+│   ├── main/
+│   │   ├── java/com/onecar/photoservice/
+│   │   │   ├── config/          # 配置类
+│   │   │   ├── controller/      # 控制器
+│   │   │   ├── dto/             # 数据传输对象
+│   │   │   ├── entity/          # 实体类
+│   │   │   ├── exception/       # 异常类
+│   │   │   ├── repository/      # 数据访问层
+│   │   │   ├── service/         # 业务逻辑层
+│   │   │   └── util/            # 工具类
+│   │   └── resources/
+│   │       ├── application.yml          # 主配置文件
+│   │       ├── application-dev.yml      # 开发环境配置
+│   │       ├── application-test.yml     # 测试环境配置
+│   │       └── application-prod.yml     # 生产环境配置
+│   └── test/                    # 测试代码
+├── target/                      # Maven构建输出（被.gitignore忽略）
+├── storage/                     # 文件存储目录（被.gitignore忽略）
+├── logs/                        # 日志文件（被.gitignore忽略）
+├── .gitignore                   # Git忽略配置
+├── pom.xml                      # Maven配置文件
+└── README.md                    # 项目说明文档
+```
+
+## 版本控制
+
+### .gitignore配置
+本项目已配置完善的`.gitignore`文件，确保只跟踪必要的源代码文件：
+
+#### 忽略的文件类型
+- **构建产物**: `target/`, `*.jar`, `*.war`等Maven构建生成的文件
+- **IDE配置**: `.idea/`, `*.iml`, `.vscode/`, `.settings/`等IDE生成的配置文件
+- **运行时文件**: `logs/`, `storage/`, `cache/`等应用运行时生成的文件
+- **系统文件**: `.DS_Store`, `Thumbs.db`等操作系统生成的文件
+- **敏感文件**: `.env`, `*.key`等包含敏感信息的配置文件
+
+#### 维护建议
+- 新增构建工具或IDE时，及时更新`.gitignore`规则
+- 定期检查是否有新的临时文件需要忽略
+- 重要规则变更时通知团队成员
+
 ## 快速开始
 
 ### 环境要求
 - JDK 17 或更高版本
 - Maven 3.8+ 或使用内置的Maven Wrapper
+- Git（用于版本控制）
 
 ### 运行应用
 
@@ -66,9 +113,23 @@ cd onecar
 ### 配置说明
 
 系统支持多环境配置：
-- `dev`: 开发环境（默认）
-- `test`: 测试环境  
-- `prod`: 生产环境
+- `dev`: 开发环境（默认）- 使用H2内存数据库
+- `test`: 测试环境 - 用于自动化测试
+- `prod`: 生产环境 - 使用MySQL数据库
+
+#### 文件存储配置
+应用运行时会在项目根目录下创建以下目录（已在.gitignore中忽略）：
+```
+storage/
+├── images/     # 上传的图片文件
+├── temp/       # 临时处理文件
+└── cache/      # 缓存文件
+```
+
+#### 日志配置
+应用日志存储在`logs/`目录下（已在.gitignore中忽略）：
+- `photo-service.log` - 应用主日志文件
+- 支持按大小滚动（50MB）和时间归档（30天）
 
 ## API接口
 
