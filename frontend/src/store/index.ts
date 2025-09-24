@@ -202,7 +202,7 @@ export const useUserStore = create<UserState>()(
             {
               user,
               isAuthenticated: !!user,
-              permissions: user?.permissions.map(p => p.name) || [],
+              permissions: user?.permissions?.map(p => p.name) || [],
             },
             false,
             'setUser'
@@ -214,7 +214,7 @@ export const useUserStore = create<UserState>()(
             {
               user,
               isAuthenticated: true,
-              permissions: user.permissions.map(p => p.name),
+              permissions: user?.permissions?.map(p => p.name) || [],
             },
             false,
             'login'
