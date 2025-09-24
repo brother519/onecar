@@ -197,24 +197,33 @@ export const useUserStore = create<UserState>()(
         isAuthenticated: false,
         permissions: [],
         
-        setUser: (user) =>
+        setUser: (user) => {
+          const userPermissions = user?.permissions ? user.permissions.map(p => p.name) : [];
           set(
             {
               user,
               isAuthenticated: !!user,
-              permissions: user?.permissions.map(p => p.name) || [],
+              permissions: userPermissions,
             },
             false,
             'setUser'
-          ),
+          );
+        },
         
         login: (user, token) => {
+          if (!user) {
+            console.error('Cannot login with null user');
+            return;
+          }
+          
           localStorage.setItem('token', token);
+          const userPermissions = user.permissions ? user.permissions.map(p => p.name) : [];
+          
           set(
             {
               user,
               isAuthenticated: true,
-              permissions: user.permissions.map(p => p.name),
+              permissions: userPermissions,
             },
             false,
             'login'
@@ -234,8 +243,13 @@ export const useUserStore = create<UserState>()(
           );
         },
         
-        updatePermissions: (permissions) =>
-          set({ permissions }, false, 'updatePermissions'),
+        updatePermissions: (permissions) => {
+          if (!Array.isArray(permissions)) {
+            console.error('Permissions must be an array');
+            return;
+          }
+          set({ permissions }, false, 'updatePermissions');
+        },
       }),
       {
         name: 'user-store',
