@@ -1,0 +1,137 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: photo-upload-system
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+      enabled: true
+      file-size-threshold: 2KB
+  jpa:
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:photoservice
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  cache:
+    type: simple
+    cache-names:
+      - fileMetadata
+      - thumbnails
+      - permissions
+  security:
+    user:
+      name: admin
+      password: admin123
+      roles: ADMIN
+
+# 应用自定义配置
+app:
+  file:
+    # 文件存储路径
+    upload-path: ./storage/images
+    temp-path: ./storage/temp
+    cache-path: ./storage/cache
+    # 允许的文件类型
+    allowed-types: jpg,jpeg,png,gif,webp,bmp
+    # 文件大小限制 (bytes)
+    max-file-size: 10485760  # 10MB
+    max-request-size: 104857600  # 100MB
+    # 图片处理配置
+    auto-compress-threshold: 2097152  # 2MB
+    max-image-width: 4096
+    max-image-height: 4096
+    thumbnail-sizes: 150x150,300x300,600x600
+    compression-quality: 0.8
+  security:
+    # JWT配置
+    jwt:
+      secret: mySecretKey123456789012345678901234567890
+      expiration: 86400000  # 24小时
+    # 访问限制
+    max-download-count: 1000
+    access-token-expiry: 3600  # 1小时
+  cache:
+    # 缓存过期时间 (秒)
+    expire-seconds: 86400  # 24小时
+    max-size: 1000
+  storage:
+    # 存储监控配置
+    disk-usage-warning-threshold: 0.8  # 80%
+    disk-usage-critical-threshold: 0.9  # 90%
+    cleanup-interval: 3600  # 1小时
+    temp-file-ttl: 86400  # 24小时
+    deleted-file-retention: 2592000  # 30天
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  tomcat:
+    max-connections: 8192
+    threads:
+      max: 200
+      min-spare: 10
+
+# 日志配置
+logging:
+  level:
+    com.onecar.photoservice: INFO
+    org.springframework.security: DEBUG
+    org.springframework.web.multipart: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  file:
+    name: logs/photo-service.log
+    max-size: 50MB
+    max-history: 30
+
+# API文档配置
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+  info:
+    title: 照片上传下载系统 API
+    description: 高性能、安全可靠的照片上传下载服务
+    version: 1.0.0
+    contact:
+      name: OneCar Team
+      email: support@onecar.com
+
+# 监控配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+  info:
+    env:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true

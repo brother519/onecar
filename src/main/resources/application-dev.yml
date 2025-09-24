@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:photoservice_dev
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    com.onecar.photoservice: DEBUG
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+app:
+  file:
+    upload-path: ./storage/dev/images
+    temp-path: ./storage/dev/temp
+    cache-path: ./storage/dev/cache
+  security:
+    jwt:
+      secret: devSecretKey123456789012345678901234567890
+      expiration: 3600000  # 1小时 (开发环境短时间过期)
+
+server:
+  port: 8080
