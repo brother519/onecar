@@ -1,14 +1,18 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import rateLimit from 'express-rate-limit';
+import fs from 'fs';
+import os from 'os';
 import { config } from './config/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { authMiddleware } from './middleware/auth.js';
+import { requestLogger } from './middleware/logger.js';
 
 // 路由导入
-import productRoutes from './routes/products.js';
-import captchaRoutes from './routes/captcha.js';
+import productRoutes from '../routes/products.js';
+import captchaRoutes from '../routes/captcha.js';
 import uploadRoutes from './routes/upload.js';
 import watermarkRoutes from './routes/watermark.js';
 import qrcodeRoutes from './routes/qrcode.js';
@@ -18,6 +22,14 @@ const app = express();
 // 安全中间件
 app.use(helmet());
 
+// 请求压缩
+app.use(compression());
+
+// 请求日志（仅在开发环境或启用时）
+if (config.enableRequestLogging) {
+  app.use(requestLogger);
+}
+
 // CORS 配置
 app.use(cors({
   origin: config.cors.origins,
@@ -26,13 +38,15 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-// 速率限制
+// 速率限制配置
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 分钟
-  max: 100, // 限制每个 IP 最多 100 个请求
+  windowMs: config.security.rateLimitWindowMs,
+  max: config.security.rateLimitMaxRequests,
   message: {
     error: 'Too many requests from this IP, please try again later.',
   },
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 app.use('/api/', limiter);
 
@@ -60,11 +74,68 @@ app.use('/api/qrcode', qrcodeRoutes);
 
 // 健康检查
 app.get('/api/health', (req, res) => {
-  res.json({
+  const healthCheck = {
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     environment: config.env,
+    version: process.env.npm_package_version || '1.0.0',
+    memory: {
+      used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100,
+      total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024 * 100) / 100,
+      external: Math.round(process.memoryUsage().external / 1024 / 1024 * 100) / 100,
+    },
+    cpu: {
+      loadAverage: process.platform !== 'win32' ? os.loadavg() : 'N/A',
+      cores: os.cpus().length,
+    },
+    system: {
+      platform: process.platform,
+      arch: process.arch,
+      nodeVersion: process.version,
+    }
+  };
+  
+  res.json(healthCheck);
+});
+
+// 详细健康检查
+app.get('/api/health/detailed', (req, res) => {
+  const startTime = process.hrtime.bigint();
+  
+  const detailed = {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    services: {
+      api: {
+        status: 'healthy',
+        responseTime: Number(process.hrtime.bigint() - startTime) / 1000000, // 转换为毫秒
+      },
+      uploads: {
+        status: fs.existsSync(config.upload.destination) ? 'healthy' : 'unhealthy',
+        directory: config.upload.destination,
+      },
+      memory: {
+        status: process.memoryUsage().heapUsed < 512 * 1024 * 1024 ? 'healthy' : 'warning',
+        usage: process.memoryUsage(),
+      },
+    },
+    dependencies: {
+      express: process.env.npm_package_dependencies_express || 'unknown',
+      node: process.version,
+    }
+  };
+  
+  res.json(detailed);
+});
+
+// 数据库连接检查（如果使用数据库）
+app.get('/api/health/db', (req, res) => {
+  // 这里可以添加数据库连接检查逻辑
+  res.json({
+    status: 'ok',
+    database: 'not configured',
+    timestamp: new Date().toISOString(),
   });
 });
 

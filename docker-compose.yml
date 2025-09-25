@@ -1,50 +1,190 @@
 version: '3.8'
 
 services:
+  # 前端服务
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
     ports:
       - "3000:80"
     depends_on:
       - backend
     environment:
       - VITE_API_BASE_URL=http://localhost:3001/api
+      - VITE_APP_TITLE=OneCar 商品管理系统
+      - VITE_ENABLE_DEBUG=false
+    volumes:
+      - frontend_dist:/usr/share/nginx/html
     networks:
       - onecar-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
+  # 后端服务
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - JWT_SECRET=your-production-jwt-secret
-      - CORS_ORIGINS=http://localhost:3000
+      - HOST=0.0.0.0
+      - JWT_SECRET=${JWT_SECRET:-your-production-jwt-secret}
+      - CORS_ORIGINS=http://localhost:3000,http://frontend
+      - UPLOAD_MAX_SIZE=10485760
+      - UPLOAD_DESTINATION=/app/uploads
+      - CAPTCHA_SECRET=${CAPTCHA_SECRET:-your-captcha-secret}
+      - RATE_LIMIT_WINDOW_MS=900000
+      - RATE_LIMIT_MAX_REQUESTS=100
+      - LOG_LEVEL=info
+      - COMPRESSION_ENABLED=true
     volumes:
-      - ./backend/uploads:/app/uploads
+      - uploads_data:/app/uploads
+      - backend_logs:/app/logs
     networks:
       - onecar-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
+  # Nginx 反向代理
   nginx:
     image: nginx:alpine
     ports:
       - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
     depends_on:
       - frontend
       - backend
     networks:
       - onecar-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis 缓存（可选）
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis-password}
+    networks:
+      - onecar-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL 数据库（可选）
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME:-onecar}
+      - POSTGRES_USER=${DB_USERNAME:-onecar_user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-onecar_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - onecar-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DB_USERNAME -d $DB_NAME"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 监控服务（可选）
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - onecar-network
+    restart: unless-stopped
+
+  # Grafana 仪表板（可选）
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    networks:
+      - onecar-network
+    restart: unless-stopped
 
 networks:
   onecar-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
 
 volumes:
-  uploads:
+  # 应用数据卷
+  uploads_data:
+    driver: local
+  frontend_dist:
+    driver: local
+  backend_logs:
+    driver: local
+  
+  # 数据库卷
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  
+  # 监控数据卷
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  
+  # 日志卷
+  nginx_logs:
+    driver: local
