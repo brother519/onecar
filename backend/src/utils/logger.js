@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { config } from '../config/index.js';
+import config from '../config/config_simple.js';
 
 // 日志级别
 const LOG_LEVELS = {
@@ -275,4 +275,4 @@ class Logger {
 
 // 创建全局日志实例
 export const logger = new Logger();
-export default logger;", "original_text": ""}]
+export default logger;

@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { config } from './config/index.js';
+import config from './config/config_simple.js';
 import { errorHandler, notFoundHandler, setupGlobalErrorHandlers } from './middleware/errorHandler.js';
 import { authMiddleware } from './middleware/auth.js';
 import { systemMonitor } from './middleware/monitor.js';
@@ -10,11 +10,8 @@ import { requestLogger, securityLogger } from './middleware/requestLogger.js';
 import { logger } from './utils/logger.js';
 
 // 路由导入
-import productRoutes from './routes/products.js';
-import captchaRoutes from './routes/captcha.js';
-import uploadRoutes from './routes/upload.js';
-import watermarkRoutes from './routes/watermark.js';
-import qrcodeRoutes from './routes/qrcode.js';
+import productRoutes from '../routes/products.js';
+import captchaRoutes from '../routes/captcha.js';
 import healthRoutes from '../routes/health.js';
 
 const app = express();
@@ -37,8 +34,8 @@ app.use(systemMonitor.requestMonitor());
 
 // CORS 配置
 app.use(cors({
-  origin: config.cors.origins,
-  credentials: true,
+  origin: config.get('corsOrigins'),
+  credentials: config.get('corsCredentials'),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -71,9 +68,6 @@ app.use('/uploads', express.static('uploads'));
 // API 路由
 app.use('/api/products', productRoutes);
 app.use('/api/captcha', captchaRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/watermark', watermarkRoutes);
-app.use('/api/qrcode', qrcodeRoutes);
 app.use('/api', healthRoutes);
 
 // 健康检查 - 保留兼容性

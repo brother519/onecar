@@ -1,5 +1,5 @@
 import { logger } from '../utils/logger.js';
-import { config } from '../config/index.js';
+import config from '../config/config_simple.js';
 
 // 自定义错误类
 export class AppError extends Error {
