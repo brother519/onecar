@@ -6,6 +6,7 @@ import { ProductCreatePage } from './pages/ProductCreatePage';
 import { ProductEditPage } from './pages/ProductEditPage';
 import { BatchOperationPage } from './pages/BatchOperationPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import BaiduClonePageView from './pages/BaiduClonePageView';
 import './styles/index.css';
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
           <Route path="/products/create" element={<ProductCreatePage />} />
           <Route path="/products/:id/edit" element={<ProductEditPage />} />
           <Route path="/products/batch" element={<BatchOperationPage />} />
+          
+          {/* 百度克隆功能 */}
+          <Route path="/baidu-clone" element={<BaiduClonePageView />} />
           
           {/* 404 页面 */}
           <Route path="*" element={<NotFoundPage />} />

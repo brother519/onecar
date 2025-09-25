@@ -44,6 +44,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <a href="/products/batch" className="nav-item">
               🔧 批量操作
             </a>
+            <a href="/baidu-clone" className="nav-item">
+              🔄 百度克隆
+            </a>
           </nav>
         </aside>
       )}
