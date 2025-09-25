@@ -54,31 +54,44 @@ public class SecurityConfig {
                 
                 // H2控制台（仅开发环境）
                 .requestMatchers("/h2-console/**")
-                .access((authentication, context) -> 
-                    "dev".equals(activeProfile) || "test".equals(activeProfile) ? 
-                    org.springframework.security.authorization.AuthorizationDecision.granted() :
-                    org.springframework.security.authorization.AuthorizationDecision.denied())
+                .access((authentication, context) -> {
+                    if ("dev".equals(activeProfile) || "test".equals(activeProfile)) {
+                        return new org.springframework.security.authorization.AuthorizationDecision(true);
+                    } else {
+                        return new org.springframework.security.authorization.AuthorizationDecision(false);
+                    }
+                })
                 
                 // API端点配置（根据环境调整）
                 .requestMatchers("/api/**")
-                .access((authentication, context) -> 
-                    "prod".equals(activeProfile) ? 
-                    org.springframework.security.authorization.AuthorizationDecision.denied() :
-                    org.springframework.security.authorization.AuthorizationDecision.granted())
+                .access((authentication, context) -> {
+                    if ("prod".equals(activeProfile)) {
+                        return new org.springframework.security.authorization.AuthorizationDecision(false);
+                    } else {
+                        return new org.springframework.security.authorization.AuthorizationDecision(true);
+                    }
+                })
                 
                 // 其他请求需要认证（生产环境）
                 .anyRequest()
-                .access((authentication, context) -> 
-                    "prod".equals(activeProfile) ? 
-                    org.springframework.security.authorization.AuthorizationDecision.denied() :
-                    org.springframework.security.authorization.AuthorizationDecision.granted())
+                .access((authentication, context) -> {
+                    if ("prod".equals(activeProfile)) {
+                        return new org.springframework.security.authorization.AuthorizationDecision(false);
+                    } else {
+                        return new org.springframework.security.authorization.AuthorizationDecision(true);
+                    }
+                })
             )
             
             // 配置安全头
             .headers(headers -> headers
-                .frameOptions(frameOptions -> 
-                    "dev".equals(activeProfile) || "test".equals(activeProfile) ?
-                    frameOptions.sameOrigin() : frameOptions.deny())
+                .frameOptions(frameOptions -> {
+                    if ("dev".equals(activeProfile) || "test".equals(activeProfile)) {
+                        frameOptions.sameOrigin();
+                    } else {
+                        frameOptions.deny();
+                    }
+                })
                 .contentTypeOptions(contentTypeOptions -> {})
                 .httpStrictTransportSecurity(hstsConfig -> hstsConfig
                     .maxAgeInSeconds(31536000)

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -64,12 +63,12 @@ public class FileDownloadController {
     @GetMapping("/download/{fileId}")
     @Operation(summary = "文件下载", description = "下载指定的文件，支持断点续传")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "下载成功"),
-        @ApiResponse(responseCode = "206", description = "部分内容下载成功（断点续传）"),
-        @ApiResponse(responseCode = "404", description = "文件不存在"),
-        @ApiResponse(responseCode = "403", description = "访问被拒绝"),
-        @ApiResponse(responseCode = "416", description = "请求范围无效"),
-        @ApiResponse(responseCode = "500", description = "服务器内部错误")
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "下载成功"),
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "206", description = "部分内容下载成功（断点续传）"),
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "文件不存在"),
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "访问被拒绝"),
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "416", description = "请求范围无效"),
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "服务器内部错误")
     })
     public ResponseEntity<Resource> downloadFile(
             @Parameter(description = "文件ID", required = true)
@@ -135,10 +134,10 @@ public class FileDownloadController {
     @GetMapping("/thumbnail/{fileId}")
     @Operation(summary = "缩略图下载", description = "下载文件的缩略图")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "下载成功"),
-        @ApiResponse(responseCode = "404", description = "缩略图不存在"),
-        @ApiResponse(responseCode = "403", description = "访问被拒绝"),
-        @ApiResponse(responseCode = "500", description = "服务器内部错误")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "下载成功"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "缩略图不存在"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "访问被拒绝"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "服务器内部错误")
     })
     public ResponseEntity<Resource> downloadThumbnail(
             @Parameter(description = "文件ID", required = true)
@@ -195,11 +194,11 @@ public class FileDownloadController {
     @GetMapping("/{fileId}/info")
     @Operation(summary = "获取文件信息", description = "获取文件的详细信息")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "获取成功", 
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "获取成功", 
                     content = @Content(schema = @Schema(implementation = FileInfo.class))),
-        @ApiResponse(responseCode = "404", description = "文件不存在"),
-        @ApiResponse(responseCode = "403", description = "访问被拒绝"),
-        @ApiResponse(responseCode = "500", description = "服务器内部错误")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "文件不存在"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "访问被拒绝"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "服务器内部错误")
     })
     public ResponseEntity<ApiResponse<FileInfo>> getFileInfo(
             @Parameter(description = "文件ID", required = true)
@@ -228,9 +227,9 @@ public class FileDownloadController {
     @GetMapping("/list")
     @Operation(summary = "分页查询用户文件", description = "分页获取用户上传的文件列表")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "查询成功"),
-        @ApiResponse(responseCode = "400", description = "请求参数错误"),
-        @ApiResponse(responseCode = "500", description = "服务器内部错误")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "查询成功"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "请求参数错误"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "服务器内部错误")
     })
     public ResponseEntity<ApiResponse<Page<FileInfo>>> getUserFiles(
             @Parameter(description = "用户ID", required = true)
@@ -261,9 +260,9 @@ public class FileDownloadController {
     @GetMapping("/search")
     @Operation(summary = "搜索文件", description = "根据关键词搜索文件")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "搜索成功"),
-        @ApiResponse(responseCode = "400", description = "请求参数错误"),
-        @ApiResponse(responseCode = "500", description = "服务器内部错误")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "搜索成功"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "请求参数错误"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "服务器内部错误")
     })
     public ResponseEntity<ApiResponse<Page<FileInfo>>> searchFiles(
             @Parameter(description = "用户ID", required = true)
@@ -296,10 +295,10 @@ public class FileDownloadController {
     @DeleteMapping("/{fileId}")
     @Operation(summary = "删除文件", description = "删除指定的文件（软删除）")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "删除成功"),
-        @ApiResponse(responseCode = "404", description = "文件不存在"),
-        @ApiResponse(responseCode = "403", description = "无删除权限"),
-        @ApiResponse(responseCode = "500", description = "服务器内部错误")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "删除成功"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "文件不存在"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "无删除权限"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "服务器内部错误")
     })
     public ResponseEntity<ApiResponse<Void>> deleteFile(
             @Parameter(description = "文件ID", required = true)
@@ -328,8 +327,8 @@ public class FileDownloadController {
     @GetMapping("/stats")
     @Operation(summary = "获取文件统计信息", description = "获取用户的文件统计信息")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "获取成功"),
-        @ApiResponse(responseCode = "500", description = "服务器内部错误")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "获取成功"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "服务器内部错误")
     })
     public ResponseEntity<ApiResponse<FileService.FileStatsInfo>> getFileStats(
             @Parameter(description = "用户ID", required = true)
