@@ -1,0 +1,484 @@
+{
+  "taskId": "d75f476a-2ba0-44ad-bf05-501a7fe32105",
+  "config": {
+    "format": "react",
+    "fidelity": "high",
+    "componentization": "partial"
+  },
+  "analyzedStructure": {
+    "layout": {
+      "type": "header-body-footer",
+      "regions": [
+        "header",
+        "main",
+        "footer"
+      ],
+      "gridInfo": null,
+      "flexInfo": null
+    },
+    "components": [
+      {
+        "type": "Logo",
+        "elements": [
+          {
+            "tagName": "img",
+            "id": null,
+            "className": "index-logo-src",
+            "textContent": null,
+            "outerHTML": "<img class=\"index-logo-src\" src=\"//www.baidu.com/img/flexible/logo/pc/result.png\" alt=\"到百度首页\" title=\"到百度首页\">",
+            "attributes": {
+              "class": "index-logo-src",
+              "src": "//www.baidu.com/img/flexible/logo/pc/result.png",
+              "alt": "到百度首页",
+              "title": "到百度首页"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": null,
+            "className": "index-logo-srcnew",
+            "textContent": null,
+            "outerHTML": "<img class=\"index-logo-srcnew\" src=\"//www.baidu.com/img/flexible/logo/pc/result@2.png\" alt=\"到百度首页\" title=\"到百度首页\">",
+            "attributes": {
+              "class": "index-logo-srcnew",
+              "src": "//www.baidu.com/img/flexible/logo/pc/result@2.png",
+              "alt": "到百度首页",
+              "title": "到百度首页"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": null,
+            "className": "index-logo-peak",
+            "textContent": null,
+            "outerHTML": "<img class=\"index-logo-peak\" src=\"//www.baidu.com/img/flexible/logo/pc/peak-result.png\" alt=\"到百度首页\" title=\"到百度首页\">",
+            "attributes": {
+              "class": "index-logo-peak",
+              "src": "//www.baidu.com/img/flexible/logo/pc/peak-result.png",
+              "alt": "到百度首页",
+              "title": "到百度首页"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": "s_lg_img",
+            "className": "index-logo-src",
+            "textContent": null,
+            "outerHTML": "<img hidefocus=\"true\" id=\"s_lg_img\" class=\"index-logo-src\" src=\"//www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\" width=\"270\" height=\"129\" onerror=\"this.src='//www.baidu.com/img/flexible/logo/pc/index.png';this.onerror=null;\" usemap=\"#mp\">",
+            "attributes": {
+              "hidefocus": "true",
+              "id": "s_lg_img",
+              "class": "index-logo-src",
+              "src": "//www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+              "width": "270",
+              "height": "129",
+              "onerror": "this.src='//www.baidu.com/img/flexible/logo/pc/index.png';this.onerror=null;",
+              "usemap": "#mp"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": "s_lg_img_new",
+            "className": "index-logo-srcnew",
+            "textContent": null,
+            "outerHTML": "<img hidefocus=\"true\" id=\"s_lg_img_new\" class=\"index-logo-srcnew\" src=\"//www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\" width=\"270\" height=\"129\" onerror=\"this.src='//www.baidu.com/img/flexible/logo/pc/index@2.png';this.onerror=null;\" usemap=\"#mp\">",
+            "attributes": {
+              "hidefocus": "true",
+              "id": "s_lg_img_new",
+              "class": "index-logo-srcnew",
+              "src": "//www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+              "width": "270",
+              "height": "129",
+              "onerror": "this.src='//www.baidu.com/img/flexible/logo/pc/index@2.png';this.onerror=null;",
+              "usemap": "#mp"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": "s_lg_img_aging",
+            "className": "index-logo-aging-tools",
+            "textContent": null,
+            "outerHTML": "<img hidefocus=\"true\" id=\"s_lg_img_aging\" class=\"index-logo-aging-tools\" src=\"//www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png\" width=\"270\" height=\"129\" onerror=\"this.src='//www.baidu.com/img/flexible/logo/pc/index@2.png';this.onerror=null;\" usemap=\"#mp\">",
+            "attributes": {
+              "hidefocus": "true",
+              "id": "s_lg_img_aging",
+              "class": "index-logo-aging-tools",
+              "src": "//www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png",
+              "width": "270",
+              "height": "129",
+              "onerror": "this.src='//www.baidu.com/img/flexible/logo/pc/index@2.png';this.onerror=null;",
+              "usemap": "#mp"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": null,
+            "className": "index-logo-src",
+            "textContent": null,
+            "outerHTML": "<img class=\"index-logo-src\" src=\"//www.baidu.com/img/flexible/logo/pc/result.png\" alt=\"到百度首页\" title=\"到百度首页\">",
+            "attributes": {
+              "class": "index-logo-src",
+              "src": "//www.baidu.com/img/flexible/logo/pc/result.png",
+              "alt": "到百度首页",
+              "title": "到百度首页"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": null,
+            "className": "index-logo-srcnew",
+            "textContent": null,
+            "outerHTML": "<img class=\"index-logo-srcnew\" src=\"//www.baidu.com/img/flexible/logo/pc/result@2.png\" alt=\"到百度首页\" title=\"到百度首页\">",
+            "attributes": {
+              "class": "index-logo-srcnew",
+              "src": "//www.baidu.com/img/flexible/logo/pc/result@2.png",
+              "alt": "到百度首页",
+              "title": "到百度首页"
+            }
+          },
+          {
+            "tagName": "img",
+            "id": null,
+            "className": "index-logo-peak",
+            "textContent": null,
+            "outerHTML": "<img class=\"index-logo-peak\" src=\"//www.baidu.com/img/flexible/logo/pc/peak-result.png\" alt=\"到百度首页\" title=\"到百度首页\">",
+            "attributes": {
+              "class": "index-logo-peak",
+              "src": "//www.baidu.com/img/flexible/logo/pc/peak-result.png",
+              "alt": "到百度首页",
+              "title": "到百度首页"
+            }
+          }
+        ],
+        "priority": "high"
+      },
+      {
+        "type": "Button",
+        "elements": [
+          {
+            "tagName": "button",
+            "id": "chat-submit-button",
+            "className": null,
+            "textContent": "百度一下",
+            "outerHTML": "<button id=\"chat-submit-button\"> 百度一下 </button>",
+            "attributes": {
+              "id": "chat-submit-button"
+            }
+          },
+          {
+            "tagName": "input",
+            "id": "su",
+            "className": "bg s_btn",
+            "textContent": null,
+            "outerHTML": "<input type=\"submit\" id=\"su\" value=\"百度一下\" class=\"bg s_btn\">",
+            "attributes": {
+              "type": "submit",
+              "id": "su",
+              "value": "百度一下",
+              "class": "bg s_btn"
+            }
+          }
+        ],
+        "priority": "medium"
+      }
+    ],
+    "styles": {
+      "colorScheme": {
+        "primary": "#1890ff",
+        "secondary": "#52c41a",
+        "background": "#ffffff",
+        "text": "#333333",
+        "border": "#d9d9d9",
+        "extracted": [
+          "#fff",
+          "#ccc",
+          "#ededed",
+          "#000",
+          "#f0f0f0",
+          "#7A77C8",
+          "#666",
+          "#e6e6e6",
+          "#7B7B7B",
+          "#00c",
+          "#f1f1f1",
+          "#2b99ff",
+          "#f8f8f8",
+          "#f5f5f5",
+          "#929292",
+          "#d1d1d1",
+          "#333",
+          "#38f",
+          "#d8d8d8",
+          "#aaa",
+          "#4E6EF2",
+          "#dbdce0",
+          "rgba(51,91,255,.08)",
+          "#626675",
+          "#335BFF",
+          "#9195A3",
+          "#F5F6F9",
+          "#f5f5f6",
+          "#222",
+          "rgba(51,51,51,.6)",
+          "#EE0333",
+          "#1E1F24",
+          "#315EFB",
+          "#F5F5F6",
+          "#F1F3FD",
+          "#4569ff",
+          "#4e6ef2",
+          "rgba(0,0,0,.05)",
+          "#F60",
+          "#858585",
+          "rgba(133,133,133,.5)",
+          "#36F",
+          "rgba(51,102,255,.4)",
+          "#F33",
+          "rgba(255,51,51,.4)",
+          "rgba(78,110,242,.06)",
+          "rgba(0,0,0,.06)",
+          "#e8f7ff",
+          "#edf0ff",
+          "#315efb",
+          "rgba(0,0,0,.1)",
+          "#1D4FFF",
+          "#FFF",
+          "rgba(0,0,0,.3)",
+          "#660000",
+          "#9b9b9b",
+          "#cccccc",
+          "#ebebeb",
+          "#77c",
+          "#7a77c8",
+          "#7b7b7b",
+          "#fafafa",
+          "#8eb9f5",
+          "#f54545",
+          "#ff8547",
+          "#ffac38",
+          "#9195a3",
+          "#fe2d46",
+          "#f60",
+          "#faa90e",
+          "#fa4901",
+          "#0ebe90",
+          "#77a9f9",
+          "#f63051",
+          "#ff7900",
+          "#3951b3",
+          "#c4c7ce",
+          "#335bff",
+          "#2949cc",
+          "#d7d9e0",
+          "#4e71f2",
+          "rgba(0,0,0,0)",
+          "rgba(0,0,0,.04)",
+          "#1cb7fd",
+          "#ffc20d",
+          "#f73131",
+          "#39b362",
+          "#cbd2ff",
+          "#c9e7cd",
+          "#f0c8bd",
+          "#fcedb1",
+          "#f8d2b0",
+          "#fc3274",
+          "#f6c4d7",
+          "#dbdbdb",
+          "#cc2929",
+          "rgba(255,255,255,.8)",
+          "#ff455b",
+          "#fc3200",
+          "#de1544",
+          "#4dadfe",
+          "#8399f5",
+          "rgba(0,0,0,.15)",
+          "#a8acad",
+          "#ffd862",
+          "#fff762",
+          "#ea80ff",
+          "#31313b",
+          "#6f7273",
+          "#f14d2d",
+          "#6783f4",
+          "#a5abac",
+          "#f74a4a",
+          "#ff2d8b",
+          "#6e4bfa",
+          "#e7e7e7",
+          "#f9f9f9",
+          "#e4e4e4",
+          "#f2f2f2",
+          "#d9d9d9",
+          "#cecece",
+          "#b8b8b8",
+          "#afafaf",
+          "#fbfbfb",
+          "#f33",
+          "#a7aab5",
+          "#6e4BFA",
+          "#4662d9",
+          "#2027b4",
+          "#f5f7fe",
+          "#dadde2",
+          "#1d4fff",
+          "#e4e4e5",
+          "rgba(255,255,255,.9)",
+          "rgba(255,255,255,.65)",
+          "#b7b9c1",
+          "rgba(51,51,51,.2)",
+          "#888",
+          "#000000",
+          "rgba(0,0,0,.2)",
+          "#fffFFF",
+          "#bbb",
+          "rgba(0,0,0,.03)",
+          "#f1f3fd",
+          "rgba(229,240,255,.7)",
+          "rgba(237,238,255,.7)",
+          "rgba(102,212,255,.4)",
+          "rgba(255,117,223,.3)",
+          "rgba(43,206,255,.8)",
+          "rgba(208,97,255,.8)",
+          "#1e1f24",
+          "#50525c",
+          "#4367b4",
+          "rgba(255,255,255,.85)",
+          "#c0c2c8",
+          "rgba(98,102,117,.8)",
+          "#f3f6ff",
+          "rgba(31,31,37,.85)",
+          "#1f1f25",
+          "rgba(20,30,66,.85)",
+          "#141e42",
+          "#edf6ff",
+          "#f0f3ff",
+          "#f5f0ff",
+          "rgba(62,75,255,.1)",
+          "rgba(0,13,255,.1)",
+          "rgba(51,119,255,.05)",
+          "rgba(229,231,255,.06)",
+          "rgba(212,222,255,.3)",
+          "#ff1E00",
+          "#ff1e00",
+          "#ffd3d3",
+          "#fe6676",
+          "#e7e9ee",
+          "#c3c6d3",
+          "#dfe1ea",
+          "rgba(219, 220, 224, 0.85)",
+          "#333333",
+          "rgba(78, 110, 242, 0.09)",
+          "rgba(78, 110, 242, 0.12)",
+          "#f5f6f9",
+          "#ff274b",
+          "#f2f7ff",
+          "#f2f0ff",
+          "#eff2fe",
+          "rgba(78, 110, 242, 0.06)",
+          "rgba(77, 128, 255, 0.2)",
+          "rgba(77, 128, 255, 0.1)",
+          "#3377fe",
+          "#4c6fff",
+          "#8370ff",
+          "#ba59ff",
+          "rgba(77, 128, 255, 0.05)",
+          "rgba(78, 110, 242, 0.1)",
+          "#2867fa",
+          "#873cff",
+          "#2440B3",
+          "rgba(78, 110, 242, 0.4)",
+          "#286aff",
+          "#7274f9",
+          "#9f66ff",
+          "rgba(0, 0, 0, 0.09)",
+          "rgba(255, 255, 255, 0.75)",
+          "#848691",
+          "rgba(0, 0, 0, 0.5)",
+          "rgba(51, 51, 51, 0.6)",
+          "#ee0333",
+          "rgba(133, 133, 133, 0.5)",
+          "#3366ff",
+          "rgba(51, 102, 255, 0.4)",
+          "#ff3333",
+          "rgba(255, 51, 51, 0.4)",
+          "rgba(0, 0, 0, 0.06)",
+          "#ffffff",
+          "rgba(255, 255, 255, 0)",
+          "rgba(255, 255, 255, 0.7)",
+          "rgba(0, 0, 0, 0.1)",
+          "#F5F6FA",
+          "#DCDDE0",
+          "rgba(30, 31, 36, 0.2)"
+        ]
+      },
+      "typography": {
+        "fontFamily": "Arial, sans-serif",
+        "fontSize": {
+          "base": "14px",
+          "large": "18px",
+          "small": "12px"
+        },
+        "fontWeight": {
+          "normal": "400",
+          "bold": "600"
+        },
+        "lineHeight": "1.5"
+      },
+      "spacing": {
+        "padding": {
+          "xs": "4px",
+          "sm": "8px",
+          "md": "16px",
+          "lg": "24px"
+        },
+        "margin": {
+          "xs": "4px",
+          "sm": "8px",
+          "md": "16px",
+          "lg": "24px"
+        }
+      },
+      "layout": {
+        "containerWidth": "1200px",
+        "breakpoints": {
+          "mobile": "768px",
+          "tablet": "1024px",
+          "desktop": "1200px"
+        }
+      }
+    },
+    "content": {
+      "text": "",
+      "images": [],
+      "links": []
+    },
+    "interactions": {
+      "buttons": [],
+      "forms": [],
+      "links": []
+    }
+  },
+  "componentTree": {
+    "root": {
+      "type": "Page",
+      "name": "BaiduHomePage",
+      "children": []
+    }
+  },
+  "generatedCode": {
+    "format": "react",
+    "components": [
+      {
+        "name": "BaiduHomePage",
+        "type": "Page",
+        "code": "import React from 'react';\nimport './BaiduHomePage.css';\n\ninterface BaiduHomePageProps {\n  className?: string;\n}\n\nconst BaiduHomePage: React.FC<BaiduHomePageProps> = ({ className }) => {\n  return (\n    <div className={`baidu-home-page ${className || ''}`}>\n      \n    </div>\n  );\n};\n\nexport default BaiduHomePage;",
+        "styles": "",
+        "children": []
+      }
+    ],
+    "styles": "",
+    "index": ""
+  },
+  "generatedAt": "2025-09-25T11:50:59.829Z"
+}

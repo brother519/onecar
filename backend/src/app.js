@@ -12,6 +12,8 @@ import captchaRoutes from './routes/captcha.js';
 import uploadRoutes from './routes/upload.js';
 import watermarkRoutes from './routes/watermark.js';
 import qrcodeRoutes from './routes/qrcode.js';
+import fetchRoutes from './routes/fetch.js';
+import cloneRoutes from './routes/clone.js';
 
 const app = express();
 
@@ -57,6 +59,8 @@ app.use('/api/captcha', captchaRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/watermark', watermarkRoutes);
 app.use('/api/qrcode', qrcodeRoutes);
+app.use('/api/fetch', fetchRoutes);
+app.use('/api/clone', cloneRoutes);
 
 // 健康检查
 app.get('/api/health', (req, res) => {
@@ -80,6 +84,8 @@ app.get('/api', (req, res) => {
       upload: '/api/upload',
       watermark: '/api/watermark',
       qrcode: '/api/qrcode',
+      fetch: '/api/fetch',
+      clone: '/api/clone',
       health: '/api/health',
     },
   });

@@ -1,0 +1,206 @@
+.baidu-clone-page {
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  text-align: center;
+  padding: 20px 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fetch-config-card {
+  height: fit-content;
+}
+
+.fetch-config-card .ant-form-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 任务状态卡片 */
+.ant-card-small .ant-card-head {
+  padding: 0 12px;
+  min-height: 36px;
+}
+
+.ant-card-small .ant-card-head-title {
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.ant-card-small .ant-card-body {
+  padding: 12px;
+}
+
+/* 进度条样式 */
+.ant-progress-line {
+  margin: 8px 0;
+}
+
+/* 任务列表样式 */
+.ant-list-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 0;
+}
+
+.ant-list-item:last-child {
+  border-bottom: none;
+}
+
+.ant-list-item-meta-title {
+  margin-bottom: 4px;
+}
+
+.ant-list-item-meta-description {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+/* 配置表单样式 */
+.ant-form-vertical .ant-form-item-label {
+  padding-bottom: 4px;
+}
+
+.ant-form-vertical .ant-form-item-label > label {
+  font-weight: 500;
+  color: #262626;
+}
+
+/* 代码编辑器容器 */
+.code-editor-container {
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* 标签颜色自定义 */
+.ant-tag {
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 0 6px;
+}
+
+/* 按钮组样式 */
+.ant-space-item .ant-btn-link {
+  padding: 4px 8px;
+  height: auto;
+  font-size: 12px;
+}
+
+/* 选择器样式 */
+.ant-select {
+  width: 100%;
+}
+
+.ant-select-selection-item {
+  font-size: 14px;
+}
+
+/* 提示信息样式 */
+.ant-alert {
+  border-radius: 6px;
+}
+
+.ant-alert-info {
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+}
+
+/* 模态框样式 */
+.ant-modal-header {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-modal-body {
+  padding: 16px;
+}
+
+/* iframe 预览样式 */
+iframe {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .baidu-clone-page {
+    padding: 16px;
+  }
+  
+  .page-header {
+    padding: 16px;
+  }
+  
+  .ant-col {
+    margin-bottom: 16px;
+  }
+}
+
+/* 卡片阴影效果 */
+.ant-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.ant-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 按钮组对齐 */
+.ant-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 状态标签动画 */
+.ant-tag {
+  transition: all 0.3s ease;
+}
+
+.ant-tag-processing {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* 加载状态 */
+.ant-spin-container {
+  position: relative;
+}
+
+/* 表单项间距调整 */
+.ant-form-vertical .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.ant-form-vertical .ant-form-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 标题样式 */
+.ant-typography h2 {
+  color: #262626;
+  margin-bottom: 8px;
+}
+
+.ant-typography .ant-typography-paragraph {
+  color: #8c8c8c;
+  margin-bottom: 0;
+}
