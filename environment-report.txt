@@ -1,6 +1,6 @@
 OneCar 环境检查报告
 ==================
-生成时间: Thu Sep 25 06:45:14 UTC 2025
+生成时间: Thu Sep 25 06:47:53 UTC 2025
 操作系统: Linux
 Node.js: 未安装
 npm: 未安装
@@ -19,7 +19,7 @@ drwxr-xr-x 4 root root  4096 Sep 25 06:32 backend
 -rw-r--r-- 1 root root  2128 Sep 25 06:29 docker-compose.dev.yml
 -rw-r--r-- 1 root root  2721 Sep 25 06:29 docker-compose.yml
 drwxr-xr-x 2 root root  4096 Sep 25 06:40 docs
--rw-r--r-- 1 root root     0 Sep 25 06:45 environment-report.txt
+-rw-r--r-- 1 root root     0 Sep 25 06:47 environment-report.txt
 drwxr-xr-x 3 root root  4096 Sep 25 06:29 frontend
 -rw-r--r-- 1 root root  6475 Sep 25 06:28 nginx.conf
 drwxr-xr-x 2 root root  4096 Sep 25 06:33 scripts
@@ -31,5 +31,5 @@ drwxr-xr-x 5 root root  4096 Sep 25 06:33 tests
 
 系统资源:
                total        used        free      shared  buff/cache   available
-Mem:           2.0Gi       229Mi       1.6Gi          0B       178Mi       1.8Gi
+Mem:           2.0Gi       316Mi       1.5Gi          0B       179Mi       1.7Gi
 Swap:             0B          0B          0B
