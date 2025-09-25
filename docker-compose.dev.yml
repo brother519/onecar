@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_BASE_URL=http://localhost:3001/api
+      - VITE_ENABLE_DEBUG=true
+      - VITE_ENABLE_DEV_TOOLS=true
+    networks:
+      - onecar-dev-network
+    depends_on:
+      - backend-dev
+    restart: unless-stopped
+
+  backend-dev:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+      - "9229:9229"  # Node.js 调试端口
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./backend/uploads:/app/uploads
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - HOST=0.0.0.0
+      - JWT_SECRET=development-jwt-secret-not-for-production
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5173
+      - LOG_LEVEL=debug
+      - ENABLE_DEBUG_ROUTES=true
+      - ENABLE_API_DOCS=true
+    networks:
+      - onecar-dev-network
+    restart: unless-stopped
+
+  # 开发环境可选服务
+  postgres-dev:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=onecar_dev
+      - POSTGRES_USER=onecar_dev
+      - POSTGRES_PASSWORD=dev_password
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - onecar-dev-network
+    restart: unless-stopped
+
+  redis-dev:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - onecar-dev-network
+    restart: unless-stopped
+
+  # 邮件测试服务
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - onecar-dev-network
+    restart: unless-stopped
+
+networks:
+  onecar-dev-network:
+    driver: bridge
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local

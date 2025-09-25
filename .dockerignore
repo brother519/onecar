@@ -1,0 +1,73 @@
+# 通用忽略文件
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 环境文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 日志文件
+logs
+*.log
+
+# 运行时数据
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage 目录
+lib-cov
+coverage
+.nyc_output
+
+# 缓存文件
+.npm
+.eslintcache
+
+# 可选的 npm 缓存目录
+.npm
+
+# 可选的 REPL 历史
+.node_repl_history
+
+# 输出目录
+dist
+build
+
+# IDE 文件
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS 生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git 文件
+.git
+.gitignore
+
+# Docker 文件
+.dockerignore
+Dockerfile
+Dockerfile.*
+docker-compose*.yml
+
+# 备份文件
+backups
+
+# 临时文件
+tmp
+temp
