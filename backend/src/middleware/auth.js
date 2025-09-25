@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { config } from '../config/index.js';
+import config from '../config/config_simple.js';
 
 // 认证中间件
 export const authMiddleware = (req, res, next) => {

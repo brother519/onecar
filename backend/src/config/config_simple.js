@@ -14,89 +14,8 @@ class ConfigManager {
     this.config = this.loadConfig();
     this.validateConfig();
   }
-  // 服务配置
-  nodeEnv: string;
-  port: number;
-  host: string;
 
-  // JWT 配置
-  jwtSecret: string;
-  jwtExpiresIn: string;
-  jwtRefreshSecret: string;
-
-  // CORS 配置
-  corsOrigins: string[];
-  corsCredentials: boolean;
-
-  // 文件上传配置
-  uploadMaxSize: number;
-  uploadDestination: string;
-  uploadTempDir: string;
-  uploadAllowedTypes: string[];
-
-  // 验证码配置
-  captchaSecret: string;
-  captchaExpiresIn: number;
-
-  // 速率限制配置
-  rateLimitWindowMs: number;
-  rateLimitMaxRequests: number;
-  rateLimitSkipSuccessfulRequests: boolean;
-
-  // 日志配置
-  logLevel: string;
-  logFile: string;
-  logMaxSize: number;
-  logMaxFiles: number;
-
-  // 健康检查配置
-  healthCheckInterval: number;
-  healthCheckTimeout: number;
-
-  // 数据库配置
-  databaseUrl?: string;
-  dbHost?: string;
-  dbPort?: number;
-  dbName?: string;
-  dbUsername?: string;
-  dbPassword?: string;
-  dbPoolMin?: number;
-  dbPoolMax?: number;
-  dbSsl?: boolean;
-
-  // Redis 配置
-  redisHost?: string;
-  redisPort?: number;
-  redisPassword?: string;
-  redisDb?: number;
-  redisPrefix?: string;
-
-  // 会话配置
-  sessionSecret: string;
-  sessionMaxAge: number;
-  sessionSecure: boolean;
-
-  // 安全配置
-  bcryptSaltRounds: number;
-  csrfSecret: string;
-  helmetEnabled: boolean;
-  trustProxy: boolean;
-
-  // 开发配置
-  enableApiDocs: boolean;
-  enableDebugRoutes: boolean;
-  enableQueryLogging: boolean;
-}
-
-class ConfigManager {
-  private config: AppConfig;
-
-  constructor() {
-    this.config = this.loadConfig();
-    this.validateConfig();
-  }
-
-  private loadConfig(): AppConfig {
+  loadConfig() {
     return {
       // 服务配置
       nodeEnv: process.env.NODE_ENV || 'development',
@@ -173,8 +92,8 @@ class ConfigManager {
     };
   }
 
-  private validateConfig(): void {
-    const errors: string[] = [];
+  validateConfig() {
+    const errors = [];
 
     // 检查必需的配置项
     if (this.config.nodeEnv === 'production') {
@@ -191,23 +110,23 @@ class ConfigManager {
     }
   }
 
-  get<K extends keyof AppConfig>(key: K): AppConfig[K] {
+  get(key) {
     return this.config[key];
   }
 
-  getAll(): AppConfig {
+  getAll() {
     return { ...this.config };
   }
 
-  isDevelopment(): boolean {
+  isDevelopment() {
     return this.config.nodeEnv === 'development';
   }
 
-  isProduction(): boolean {
+  isProduction() {
     return this.config.nodeEnv === 'production';
   }
 
-  isTest(): boolean {
+  isTest() {
     return this.config.nodeEnv === 'test';
   }
 
@@ -243,7 +162,7 @@ class ConfigManager {
   }
 
   // 日志配置信息（不包含敏感信息）
-  logConfig(): void {
+  logConfig() {
     if (this.isDevelopment()) {
       console.log('🔧 服务器配置信息:');
       console.log('- 环境:', this.config.nodeEnv);
@@ -258,7 +177,4 @@ class ConfigManager {
 
 // 创建全局配置实例
 export const config = new ConfigManager();
-
-// 导出配置类型
-export type { AppConfig };
 export default config;
