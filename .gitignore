@@ -1,0 +1,363 @@
+# onecar项目 .gitignore 配置文件
+# 此文件定义了Git版本控制系统应忽略的文件和目录
+# 最后更新时间: 2025-09-29
+
+#########################################
+# 系统文件 - 操作系统生成的缓存和配置文件
+#########################################
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+#########################################
+# 构建工具产物 - Maven和其他构建系统
+#########################################
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+# Gradle
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+gradle-app.setting
+!gradle-wrapper.jar
+/.nb-gradle/
+
+# Ant
+build.xml.bak
+
+# 通用构建目录
+out/
+dist/
+*.war
+*.ear
+*.aar
+
+#########################################
+# IDE和编辑器配置文件
+#########################################
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+.idea_modules/
+atlassian-ide-plugin.xml
+.qoder/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.factorypath
+.externalToolBuilders/
+*.launch
+.cproject
+.autotools
+.buildpath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+.history/
+*.vsix
+
+# Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+sftp-config.json
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+GitHub.sublime-settings
+
+# Vim
+[._]*.s[a-v][a-z]
+!*.svg
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+*~
+tags
+[._]*.un~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+#########################################
+# 运行时文件 - 日志、缓存和临时文件
+#########################################
+
+# 日志文件
+*.log
+*.log.*
+logs/
+log/
+*.out
+*.err
+
+# 缓存目录
+.cache/
+cache/
+*.cache
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# 进程文件
+*.pid
+*.seed
+*.pid.lock
+
+# 运行时目录
+runtime/
+temp/
+
+#########################################
+# 依赖管理和包管理器
+#########################################
+
+# Node.js (如果项目包含前端组件)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+.npm
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven dependency plugin
+dependency-tree.txt
+
+#########################################
+# 敏感信息和配置文件
+#########################################
+
+# 环境变量配置
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+
+# 数据库配置
+application-local.properties
+application-dev.properties
+application-prod.properties
+database.properties
+
+# 密钥和证书
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
+*.truststore
+*.crt
+*.cer
+secret.properties
+secrets/
+
+# API密钥
+api-keys.properties
+*.secret
+
+#########################################
+# 数据库文件
+#########################################
+
+# H2 Database
+*.h2.db
+*.trace.db
+*.lock.db
+
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+
+# Derby
+derby.log
+
+#########################################
+# 测试相关文件
+#########################################
+
+# 测试报告
+test-output/
+test-results/
+coverage/
+.nyc_output/
+*.lcov
+
+# JaCoCo
+jacoco.exec
+jacoco-it.exec
+
+#########################################
+# 文档和报告生成
+#########################################
+
+# JavaDoc
+javadoc/
+doc/
+
+# Site generation
+site/
+
+#########################################
+# 容器和部署相关
+#########################################
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Kubernetes
+*.kubeconfig
+
+#########################################
+# 版本控制系统
+#########################################
+
+# Git
+*.orig
+*.rej
+
+# SVN
+.svn/
+
+#########################################
+# 其他工具和框架
+#########################################
+
+# Spring Boot
+*.jar.original
+spring.log
+
+# Quarkus
+*-runner
+*-runner.jar
+build-uber-jar-*
+
+# Micronaut
+*-all.jar
+
+# JRebel
+rebel.xml
+
+# JProfiler
+*.jprofile
+
+# BlueJ
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# virtual machine crash logs
+hs_err_pid*
+
+#########################################
+# 项目特定忽略规则
+#########################################
+
+# onecar项目特定文件（根据需要添加）
+# 例如：
+# config/local/
+# data/
