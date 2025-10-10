@@ -1,0 +1,218 @@
+/* 全局样式重置和基础样式 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* 任务卡片样式增强 */
+.task-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.task-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.task-card.selected {
+  border-color: #1890ff !important;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.task-card-title-section {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title {
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.task-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.task-card-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.task-card:hover .task-card-actions {
+  opacity: 1;
+}
+
+.task-description {
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.task-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.task-assignee,
+.task-dates {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .task-card-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .task-card-actions {
+    opacity: 1;
+    align-self: flex-end;
+  }
+  
+  .task-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 加载状态优化 */
+.ant-spin-nested-loading > div > .ant-spin {
+  max-height: none;
+}
+
+/* 表单样式优化 */
+.ant-form-item-label > label {
+  font-weight: 500;
+}
+
+/* 模态框样式 */
+.ant-modal-body {
+  padding: 24px;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin: 24px 0;
+}
+
+/* 统计卡片样式 */
+.ant-statistic-title {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.ant-statistic-content {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* 空状态样式 */
+.ant-empty {
+  margin: 60px 0;
+}
+
+/* 浮动按钮样式调整 */
+.ant-float-btn {
+  right: 24px;
+  bottom: 24px;
+}
+
+/* 标签样式优化 */
+.ant-tag {
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 20px;
+  margin: 0;
+}
+
+/* 头像样式 */
+.ant-avatar {
+  flex-shrink: 0;
+}
+
+/* 按钮组样式 */
+.ant-btn-group > .ant-btn:not(:last-child) {
+  border-right: 1px solid #d9d9d9;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 高亮搜索结果 */
+.highlight {
+  background-color: #fff2b8;
+  padding: 0 2px;
+  border-radius: 2px;
+}
