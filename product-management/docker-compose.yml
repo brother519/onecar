@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # 前端应用
+  frontend:
+    build: .
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  # 后端API (示例)
+  backend:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    networks:
+      - app-network
+    command: ["node", "server.js"]
+
+  # Redis缓存 (可选)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    volumes:
+      - redis_data:/data
+
+  # MongoDB数据库 (可选)
+  mongodb:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=product_management
+    networks:
+      - app-network
+    volumes:
+      - mongodb_data:/data/db
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  mongodb_data:

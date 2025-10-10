@@ -1,0 +1,135 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+
+/* 拖拽样式 */
+.dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+  transition: all 0.2s ease;
+}
+
+.drop-indicator {
+  height: 2px;
+  background: #1890ff;
+  margin: 4px 0;
+  border-radius: 1px;
+}
+
+/* 虚拟滚动容器 */
+.virtual-list-container {
+  height: 100%;
+  overflow: auto;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* 水印防护 */
+.watermark-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .ant-table {
+    font-size: 12px;
+  }
+  
+  .ant-btn {
+    font-size: 12px;
+    height: 28px;
+    padding: 0 8px;
+  }
+}
+
+/* 自定义组件样式 */
+.product-list-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-list-header {
+  padding: 16px;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.product-list-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.code-editor-container {
+  height: 400px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.qr-code-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.captcha-image {
+  cursor: pointer;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
