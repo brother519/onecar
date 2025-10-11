@@ -1,13 +1,54 @@
+<!--
+  任务管理系统 - 主入口HTML文件
+  
+  项目名称: OneCar 任务管理系统
+  技术栈: React 18.2 + TypeScript + Vite 5.0 + Ant Design 5.12.8
+  构建工具: Vite - 现代化的前端构建工具，提供快速的开发体验
+  语言: 中文 (zh-CN)
+  
+  文件用途:
+  - 作为单页应用(SPA)的入口HTML文件
+  - 定义页面基础结构和元数据配置
+  - 提供React应用的挂载点容器
+  - 引入应用主入口TypeScript模块
+-->
+
+<!-- HTML5 文档类型声明，确保浏览器使用标准模式渲染 -->
 <!doctype html>
+
+<!-- HTML根元素，lang属性指定页面主要语言为简体中文，有助于搜索引擎和辅助技术理解内容 -->
 <html lang="zh-CN">
+  <!-- HEAD区域：包含页面元数据、资源链接和配置信息 -->
   <head>
+    <!-- 字符编码声明：使用UTF-8编码，支持多语言字符显示，必须放在head标签开头 -->
     <meta charset="UTF-8" />
+    
+    <!-- 网站图标(Favicon)：使用SVG格式的图标文件，支持矢量缩放，在浏览器标签页显示 -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    
+    <!-- 视口设置：配置移动端适配策略
+         - width=device-width: 视口宽度等于设备屏幕宽度
+         - initial-scale=1.0: 初始缩放比例为1:1，确保移动端正常显示
+         此配置对响应式设计至关重要 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- 页面标题：显示在浏览器标签页和搜索结果中，对SEO有重要影响 -->
     <title>任务管理系统</title>
   </head>
+  
+  <!-- BODY区域：包含页面可见内容和应用脚本 -->
   <body>
+    <!-- React应用根容器：
+         - id="root" 为React应用提供挂载点
+         - 所有React组件将渲染到此容器内
+         - 在main.tsx中通过ReactDOM.createRoot(document.getElementById('root'))引用 -->
     <div id="root"></div>
+    
+    <!-- 应用主入口脚本：
+         - type="module": 使用ES6模块化方式加载，支持import/export语法
+         - src="/src/main.tsx": TypeScript入口文件路径
+         - Vite开发服务器会自动处理TypeScript编译和模块热更新(HMR)
+         - 生产环境下会被打包优化为高效的JavaScript bundle -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
