@@ -1,63 +1,63 @@
 /**
- * React 自定义 Hooks 工具集合
+ * React Custom Hooks Collection
  * 
- * 本文件提供了一系列通用的 React Hooks，用于简化常见的开发任务。
+ * This file provides a set of common React Hooks to simplify common development tasks.
  * 
- * 功能分类：
- * - 状态管理：useLocalStorage、useFormValidation
- * - 性能优化：useDebounce、useThrottle、useVirtualList、useInfiniteScroll
- * - 异步处理：useAsync
- * - 浏览器 API 封装：useWindowSize、useMousePosition、useScrollPosition、useOnlineStatus、useClipboard
- * - 计时器：useCountdown
- * - 交互控制：useDrag
+ * Categories:
+ * - State Management: useLocalStorage, useFormValidation
+ * - Performance Optimization: useDebounce, useThrottle, useVirtualList, useInfiniteScroll
+ * - Async Handling: useAsync
+ * - Browser API Wrapper: useWindowSize, useMousePosition, useScrollPosition, useOnlineStatus, useClipboard
+ * - Timer: useCountdown
+ * - Interaction Control: useDrag
  * 
- * 总计：15 个通用 Hooks
- * 依赖：React Hooks API（useState、useEffect、useCallback、useRef）
- * 适用场景：product-management 应用的各类组件和页面
+ * Total: 15 common Hooks
+ * Dependencies: React Hooks API (useState, useEffect, useCallback, useRef)
+ * Use Cases: Various components and pages in the product-management application
  */
 
 /**
- * React Hooks 导入
+ * React Hooks Imports
  * @module react
  * @description
- * - useState: 状态管理基础 Hook
- * - useEffect: 副作用处理 Hook
- * - useCallback: 函数记忆化 Hook
- * - useRef: 引用持久化 Hook
+ * - useState: Basic state management Hook
+ * - useEffect: Side effect handling Hook
+ * - useCallback: Function memoization Hook
+ * - useRef: Reference persistence Hook
  */
 import { useState, useEffect, useCallback, useRef } from 'react'
 
 /**
- * 本地存储 Hook
+ * Local Storage Hook
  * 
- * 封装 localStorage 的响应式读写操作，自动处理 JSON 序列化和反序列化，
- * 提供错误处理和降级方案。
+ * Encapsulates reactive read/write operations for localStorage with automatic JSON serialization/deserialization,
+ * providing error handling and fallback mechanisms.
  * 
- * @param {string} key - localStorage 的存储键名
- * @param {any} initialValue - 当 localStorage 中无数据时的默认初始值
- * @returns {[any, Function]} 返回一个数组元组
- *   - [0]: storedValue - 当前存储的值（响应式状态）
- *   - [1]: setValue - 更新存储值的函数，接受新值或更新函数作为参数
+ * @param {string} key - The storage key name for localStorage
+ * @param {any} initialValue - The default initial value when no data exists in localStorage
+ * @returns {[any, Function]} Returns an array tuple
+ *   - [0]: storedValue - The current stored value (reactive state)
+ *   - [1]: setValue - Function to update the stored value, accepts new value or updater function
  * 
  * @example
  * const [theme, setTheme] = useLocalStorage('app-theme', 'light')
- * setTheme('dark') // 自动同步到 localStorage
+ * setTheme('dark') // Automatically syncs to localStorage
  * 
  * @example
  * const [user, setUser] = useLocalStorage('user-info', null)
- * setUser({ name: '张三', role: 'admin' })
+ * setUser({ name: 'John', role: 'admin' })
  * 
- * 使用场景：
- * - 持久化用户偏好设置（如主题、语言）
- * - 保存表单草稿数据
- * - 缓存已登录用户的 token
- * - 记录用户浏览历史
+ * Use Cases:
+ * - Persist user preferences (theme, language)
+ * - Save form draft data
+ * - Cache logged-in user's token
+ * - Record user browsing history
  * 
- * 注意事项：
- * - localStorage 存储容量限制为 5-10MB
- * - 仅支持同源访问
- * - 数据以字符串形式存储，复杂对象会被 JSON 序列化
- * - 发生错误时会在控制台输出警告信息并返回初始值
+ * Notes:
+ * - localStorage storage capacity is limited to 5-10MB
+ * - Only supports same-origin access
+ * - Data is stored as strings, complex objects are JSON serialized
+ * - Errors output warnings to console and return initial value
  */
 export const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -84,34 +84,34 @@ export const useLocalStorage = (key, initialValue) => {
 }
 
 /**
- * 防抖 Hook
+ * Debounce Hook
  * 
- * 对快速变化的值进行防抖处理，在指定时间延迟后才更新返回值。
- * 适用于需要等待用户输入完成后再执行操作的场景。
+ * Debounces rapidly changing values, updating the return value only after the specified delay.
+ * Suitable for scenarios where you need to wait for user input to complete before executing operations.
  * 
- * @param {any} value - 需要防抖的值，可以是任意类型
- * @param {number} delay - 延迟时间，单位为毫秒（ms）
- * @returns {any} 防抖后的值，在 delay 时间内值不再变化后才会更新
+ * @param {any} value - The value to debounce, can be any type
+ * @param {number} delay - Delay time in milliseconds (ms)
+ * @returns {any} The debounced value, updates only after the value stops changing for the delay period
  * 
  * @example
  * const [searchTerm, setSearchTerm] = useState('')
  * const debouncedSearch = useDebounce(searchTerm, 500)
- * // 用户停止输入 500ms 后才触发搜索
+ * // Triggers search 500ms after user stops typing
  * useEffect(() => {
  *   if (debouncedSearch) {
  *     fetchSearchResults(debouncedSearch)
  *   }
  * }, [debouncedSearch])
  * 
- * 使用场景：
- * - 搜索框实时搜索，减少 API 请求次数
- * - 表单输入验证，等待用户输入完成
- * - 窗口大小调整监听，避免频繁重渲染
- * - 滚动位置计算，减少计算次数
+ * Use Cases:
+ * - Real-time search box, reducing API request frequency
+ * - Form input validation, waiting for user to finish typing
+ * - Window resize monitoring, avoiding frequent re-renders
+ * - Scroll position calculation, reducing computation frequency
  * 
- * 性能优势：
- * - 显著减少不必要的函数调用和网络请求
- * - 降低服务器负载，提升用户体验
+ * Performance Benefits:
+ * - Significantly reduces unnecessary function calls and network requests
+ * - Reduces server load and improves user experience
  */
 export const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value)
@@ -130,32 +130,32 @@ export const useDebounce = (value, delay) => {
 }
 
 /**
- * 节流 Hook
+ * Throttle Hook
  * 
- * 对高频变化的值进行节流限制，确保在指定时间间隔内最多更新一次。
- * 与防抖不同，节流会在时间间隔内保证至少执行一次。
+ * Throttles high-frequency changing values, ensuring updates occur at most once per specified interval.
+ * Unlike debounce, throttle guarantees at least one execution within the time interval.
  * 
- * @param {any} value - 需要节流的值，可以是任意类型
- * @param {number} limit - 时间间隔限制，单位为毫秒（ms）
- * @returns {any} 节流后的值，每隔 limit 毫秒最多更新一次
+ * @param {any} value - The value to throttle, can be any type
+ * @param {number} limit - Time interval limit in milliseconds (ms)
+ * @returns {any} The throttled value, updates at most once per limit milliseconds
  * 
  * @example
  * const [scrollY, setScrollY] = useState(0)
  * const throttledScrollY = useThrottle(scrollY, 200)
- * // 每 200ms 最多更新一次滚动位置
+ * // Updates scroll position at most once every 200ms
  * useEffect(() => {
  *   updateProgressBar(throttledScrollY)
  * }, [throttledScrollY])
  * 
- * 使用场景：
- * - 滚动事件处理，控制回调执行频率
- * - 鼠标移动追踪，限制位置更新频率
- * - 按钮点击防连击，避免重复提交
- * - 窗口大小调整监听，控制重渲染频率
+ * Use Cases:
+ * - Scroll event handling, controlling callback execution frequency
+ * - Mouse movement tracking, limiting position update frequency
+ * - Button click throttling, preventing duplicate submissions
+ * - Window resize monitoring, controlling re-render frequency
  * 
- * 与防抖的区别：
- * - 防抖：等待值稳定后才更新，可能一直不执行
- * - 节流：在时间间隔内保证至少执行一次，定期更新
+ * Difference from Debounce:
+ * - Debounce: Updates only after value stabilizes, may never execute
+ * - Throttle: Guarantees at least one execution within interval, periodic updates
  */
 export const useThrottle = (value, limit) => {
   const [throttledValue, setThrottledValue] = useState(value)
@@ -178,41 +178,41 @@ export const useThrottle = (value, limit) => {
 }
 
 /**
- * 异步操作 Hook
+ * Async Operation Hook
  * 
- * 统一管理异步操作的执行状态、数据和错误信息，
- * 自动追踪 loading、success、error 状态，支持立即执行或手动触发。
+ * Manages async operation execution state, data, and error information uniformly.
+ * Automatically tracks loading, success, and error states, supports immediate or manual execution.
  * 
- * @param {Function} asyncFunction - 需要执行的异步函数，必须返回 Promise
- * @param {boolean} [immediate=true] - 是否在 Hook 初始化时立即执行，默认为 true
- * @returns {Object} 包含以下属性的对象
- *   - execute: {Function} 手动执行异步函数的方法，接受任意参数
- *   - status: {string} 当前状态，可选值 'idle' | 'pending' | 'success' | 'error'
- *   - data: {any} 异步操作成功后返回的数据
- *   - error: {Error} 异步操作失败时的错误对象
- *   - isLoading: {boolean} 是否正在加载中（status === 'pending'）
- *   - isError: {boolean} 是否执行失败（status === 'error'）
- *   - isSuccess: {boolean} 是否执行成功（status === 'success'）
+ * @param {Function} asyncFunction - The async function to execute, must return a Promise
+ * @param {boolean} [immediate=true] - Whether to execute immediately on Hook initialization, defaults to true
+ * @returns {Object} Object containing the following properties
+ *   - execute: {Function} Method to manually execute the async function, accepts any arguments
+ *   - status: {string} Current status, values: 'idle' | 'pending' | 'success' | 'error'
+ *   - data: {any} Data returned after successful async operation
+ *   - error: {Error} Error object when async operation fails
+ *   - isLoading: {boolean} Whether currently loading (status === 'pending')
+ *   - isError: {boolean} Whether execution failed (status === 'error')
+ *   - isSuccess: {boolean} Whether execution succeeded (status === 'success')
  * 
  * @example
- * // 立即执行的异步请求
+ * // Immediately executed async request
  * const { data, isLoading, error } = useAsync(fetchUserData)
  * if (isLoading) return <Loading />
  * if (error) return <Error message={error.message} />
  * return <UserProfile data={data} />
  * 
  * @example
- * // 手动触发的异步操作
+ * // Manually triggered async operation
  * const { execute, isLoading } = useAsync(submitForm, false)
  * const handleSubmit = () => execute(formData)
  * 
- * 使用场景：
- * - API 数据请求，统一处理加载状态
- * - 文件上传下载，追踪进度状态
- * - 异步表单提交，管理提交状态
- * - 数据导入导出，处理长耗时操作
+ * Use Cases:
+ * - API data requests with unified loading state handling
+ * - File upload/download with progress tracking
+ * - Async form submission with state management
+ * - Data import/export for long-running operations
  * 
- * 状态流转：
+ * State Flow:
  * idle → pending → success/error
  */
 export const useAsync = (asyncFunction, immediate = true) => {
@@ -255,14 +255,14 @@ export const useAsync = (asyncFunction, immediate = true) => {
 }
 
 /**
- * 窗口大小 Hook
+ * Window Size Hook
  * 
- * 监听并返回浏览器窗口的实时尺寸，自动响应窗口大小变化。
- * Hook 卸载时自动清理事件监听器，防止内存泄漏。
+ * Monitors and returns the browser window's real-time dimensions, automatically responding to window size changes.
+ * Automatically cleans up event listeners on Hook unmount to prevent memory leaks.
  * 
- * @returns {Object} 包含窗口尺寸的对象
- *   - width: {number|undefined} 窗口宽度，单位为像素（px）
- *   - height: {number|undefined} 窗口高度，单位为像素（px）
+ * @returns {Object} Object containing window dimensions
+ *   - width: {number|undefined} Window width in pixels (px)
+ *   - height: {number|undefined} Window height in pixels (px)
  * 
  * @example
  * const { width, height } = useWindowSize()
@@ -270,19 +270,19 @@ export const useAsync = (asyncFunction, immediate = true) => {
  * return <div>{isMobile ? <MobileLayout /> : <DesktopLayout />}</div>
  * 
  * @example
- * // 响应式图表宽度
+ * // Responsive chart width
  * const { width } = useWindowSize()
  * <Chart width={width * 0.8} height={400} />
  * 
- * 使用场景：
- * - 响应式布局，根据窗口大小切换组件
- * - 图表自适应，动态调整图表尺寸
- * - 移动端适配，判断设备类型
- * - 分屏显示逻辑，优化大屏体验
+ * Use Cases:
+ * - Responsive layouts, switching components based on window size
+ * - Chart adaptation, dynamically adjusting chart dimensions
+ * - Mobile adaptation, detecting device type
+ * - Split screen display logic, optimizing large screen experience
  * 
- * 性能优化：
- * - 自动清理事件监听器，避免内存泄漏
- * - 仅在窗口大小变化时更新，减少不必要的重渲染
+ * Performance Optimization:
+ * - Automatically cleans up event listeners to prevent memory leaks
+ * - Updates only on window size change, reducing unnecessary re-renders
  */
 export const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
@@ -308,37 +308,37 @@ export const useWindowSize = () => {
 }
 
 /**
- * 鼠标位置 Hook
+ * Mouse Position Hook
  * 
- * 实时追踪鼠标在页面中的坐标位置，自动响应鼠标移动事件。
- * Hook 卸载时自动清理事件监听器。
+ * Tracks mouse coordinates in real-time on the page, automatically responding to mouse move events.
+ * Automatically cleans up event listeners on Hook unmount.
  * 
- * @returns {Object} 包含鼠标坐标的对象
- *   - x: {number} 鼠标水平坐标，相对于视口左侧，单位 px
- *   - y: {number} 鼠标垂直坐标，相对于视口顶部，单位 px
+ * @returns {Object} Object containing mouse coordinates
+ *   - x: {number} Mouse horizontal coordinate, relative to viewport left, in px
+ *   - y: {number} Mouse vertical coordinate, relative to viewport top, in px
  * 
  * @example
  * const { x, y } = useMousePosition()
  * return (
  *   <div style={{ position: 'fixed', left: x, top: y }}>
- *     自定义光标
+ *     Custom Cursor
  *   </div>
  * )
  * 
  * @example
- * // 鼠标悬浮提示定位
+ * // Tooltip positioning
  * const { x, y } = useMousePosition()
- * <Tooltip x={x + 10} y={y + 10} content="提示信息" />
+ * <Tooltip x={x + 10} y={y + 10} content="Tooltip info" />
  * 
- * 使用场景：
- * - 自定义光标效果，跟随鼠标的动画
- * - 拖拽交互，计算拖动偏移量
- * - 悬浮提示定位，动态显示 tooltip
- * - 画布绘图应用，记录绘图轨迹
+ * Use Cases:
+ * - Custom cursor effects, animations following the mouse
+ * - Drag interactions, calculating drag offsets
+ * - Tooltip positioning, dynamically displaying tooltips
+ * - Canvas drawing applications, recording drawing paths
  * 
- * 注意事项：
- * - 鼠标移动是高频事件，建议结合 useThrottle 使用
- * - 返回的坐标是相对于视口的 clientX/clientY
+ * Notes:
+ * - Mouse move is a high-frequency event, recommend using with useThrottle
+ * - Returned coordinates are viewport-relative clientX/clientY
  */
 export const useMousePosition = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -359,14 +359,14 @@ export const useMousePosition = () => {
 }
 
 /**
- * 滚动位置 Hook
+ * Scroll Position Hook
  * 
- * 监听并返回页面的滚动位置，自动响应滚动事件。
- * Hook 卸载时自动清理事件监听器。
+ * Monitors and returns page scroll position, automatically responding to scroll events.
+ * Automatically cleans up event listeners on Hook unmount.
  * 
- * @returns {Object} 包含滚动偏移量的对象
- *   - x: {number} 水平滚动偏移量，单位 px
- *   - y: {number} 垂直滚动偏移量，单位 px
+ * @returns {Object} Object containing scroll offsets
+ *   - x: {number} Horizontal scroll offset in px
+ *   - y: {number} Vertical scroll offset in px
  * 
  * @example
  * const { y } = useScrollPosition()
@@ -374,21 +374,21 @@ export const useMousePosition = () => {
  * return showBackToTop && <BackToTopButton />
  * 
  * @example
- * // 滚动进度条
+ * // Scroll progress bar
  * const { y } = useScrollPosition()
  * const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
  * const progress = (y / scrollHeight) * 100
  * <ProgressBar value={progress} />
  * 
- * 使用场景：
- * - “返回顶部”按钮，滚动一定距离后显示
- * - 滚动加载，接近底部时加载更多数据
- * - 阅读进度指示器，显示文章阅读进度
- * - 视差滚动效果，基于滚动位置计算动画
+ * Use Cases:
+ * - "Back to top" button, showing after scrolling a certain distance
+ * - Infinite scroll loading, loading more data near bottom
+ * - Reading progress indicator, showing article reading progress
+ * - Parallax scrolling effects, calculating animations based on scroll position
  * 
- * 性能优化：
- * - 滚动是高频事件，建议结合 useThrottle 使用
- * - 自动清理事件监听器，避免内存泄漏
+ * Performance Optimization:
+ * - Scrolling is a high-frequency event, recommend using with useThrottle
+ * - Automatically cleans up event listeners to prevent memory leaks
  */
 export const useScrollPosition = () => {
   const [scrollPosition, setScrollPosition] = useState({ x: 0, y: 0 })
@@ -411,23 +411,23 @@ export const useScrollPosition = () => {
 }
 
 /**
- * 网络状态 Hook
+ * Online Status Hook
  * 
- * 监听并返回浏览器的网络连接状态，自动响应网络状态变化。
- * Hook 卸载时自动清理事件监听器。
+ * Monitors and returns the browser's network connection status, automatically responding to network status changes.
+ * Automatically cleans up event listeners on Hook unmount.
  * 
- * @returns {boolean} 网络连接状态，true 表示在线，false 表示离线
+ * @returns {boolean} Network connection status, true indicates online, false indicates offline
  * 
  * @example
  * const isOnline = useOnlineStatus()
  * return (
  *   <div>
- *     {!isOnline && <Alert>当前网络已断开，请检查网络连接</Alert>}
+ *     {!isOnline && <Alert>Network disconnected, please check your connection</Alert>}
  *   </div>
  * )
  * 
  * @example
- * // 网络恢复后自动重试
+ * // Auto-retry after network recovery
  * const isOnline = useOnlineStatus()
  * useEffect(() => {
  *   if (isOnline) {
@@ -435,15 +435,15 @@ export const useScrollPosition = () => {
  *   }
  * }, [isOnline])
  * 
- * 使用场景：
- * - 离线提示，向用户显示网络状态
- * - 网络恢复自动重连，重新获取数据
- * - 数据同步，在线时同步本地数据
- * - 功能降级，离线时禁用某些功能
+ * Use Cases:
+ * - Offline notifications, displaying network status to users
+ * - Auto-reconnect on network recovery, re-fetching data
+ * - Data synchronization, syncing local data when online
+ * - Feature degradation, disabling certain features when offline
  * 
- * 注意事项：
- * - 基于 Navigator API，部分老旧浏览器可能不支持
- * - 返回在线不代表一定能访问互联网，可能只是连接到本地网络
+ * Notes:
+ * - Based on Navigator API, may not be supported in older browsers
+ * - Online doesn't guarantee internet access, may just be connected to local network
  */
 export const useOnlineStatus = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
@@ -465,15 +465,15 @@ export const useOnlineStatus = () => {
 }
 
 /**
- * 剪贴板 Hook
+ * Clipboard Hook
  * 
- * 封装浏览器剪贴板 API 的读写操作，提供简单易用的复制功能。
- * 自动检测浏览器兼容性，并提供错误处理。
+ * Encapsulates browser Clipboard API read/write operations, providing easy-to-use copy functionality.
+ * Automatically detects browser compatibility and provides error handling.
  * 
- * @returns {Object} 包含剪贴板状态和操作方法的对象
- *   - value: {string} 当前复制的文本内容
- *   - success: {boolean} 最近一次复制操作是否成功（2秒后自动重置为 false）
- *   - copy: {Function} 复制文本到剪贴板的函数，接受字符串参数，返回 Promise<boolean>
+ * @returns {Object} Object containing clipboard state and operation methods
+ *   - value: {string} Current copied text content
+ *   - success: {boolean} Whether the most recent copy operation succeeded (auto-resets to false after 2s)
+ *   - copy: {Function} Function to copy text to clipboard, accepts string parameter, returns Promise<boolean>
  * 
  * @example
  * const { copy, success } = useClipboard()
@@ -482,25 +482,25 @@ export const useOnlineStatus = () => {
  * }
  * return (
  *   <button onClick={handleCopy}>
- *     {success ? '已复制' : '复制链接'}
+ *     {success ? 'Copied' : 'Copy Link'}
  *   </button>
  * )
  * 
  * @example
- * // 复制代码片段
+ * // Copy code snippet
  * const { copy } = useClipboard()
  * <CodeBlock code={code} onCopy={() => copy(code)} />
  * 
- * 使用场景：
- * - 一键复制链接，分享功能
- * - 代码片段复制，文档站点
- * - 联系方式复制，快速复制手机号/邮箱
- * - 口令/密钥复制，安全信息分享
+ * Use Cases:
+ * - One-click link copying, sharing functionality
+ * - Code snippet copying, documentation sites
+ * - Contact info copying, quickly copy phone/email
+ * - Passphrase/key copying, secure information sharing
  * 
- * 兼容性：
- * - 自动检测 Clipboard API 支持
- * - 不支持时在控制台输出警告信息
- * - 需要 HTTPS 或 localhost 环境
+ * Compatibility:
+ * - Automatically detects Clipboard API support
+ * - Outputs warning to console when not supported
+ * - Requires HTTPS or localhost environment
  */
 export const useClipboard = () => {
   const [value, setValue] = useState('')
@@ -529,47 +529,47 @@ export const useClipboard = () => {
 }
 
 /**
- * 倒计时 Hook
+ * Countdown Hook
  * 
- * 实现倒计时功能，支持开始、停止、重置操作。
- * 自动管理计时器生命周期，防止内存泄漏。
+ * Implements countdown functionality with start, stop, and reset operations.
+ * Automatically manages timer lifecycle to prevent memory leaks.
  * 
- * @param {number} initialCount - 初始倒计时数值，从此值开始倒数
- * @param {number} [interval=1000] - 倒计时间隔，单位为毫秒，默认 1000ms（1秒）
- * @returns {Object} 包含倒计时状态和控制方法的对象
- *   - count: {number} 当前倒计时数值
- *   - isActive: {boolean} 倒计时是否激活中
- *   - start: {Function} 开始倒计时的函数
- *   - stop: {Function} 停止倒计时的函数
- *   - reset: {Function} 重置倒计时的函数，恢复到初始值并停止
+ * @param {number} initialCount - Initial countdown value, counting down from this value
+ * @param {number} [interval=1000] - Countdown interval in milliseconds, defaults to 1000ms (1 second)
+ * @returns {Object} Object containing countdown state and control methods
+ *   - count: {number} Current countdown value
+ *   - isActive: {boolean} Whether the countdown is active
+ *   - start: {Function} Function to start the countdown
+ *   - stop: {Function} Function to stop the countdown
+ *   - reset: {Function} Function to reset the countdown, restores to initial value and stops
  * 
  * @example
- * // 验证码倒计时
+ * // Verification code countdown
  * const { count, isActive, start, reset } = useCountdown(60)
  * return (
  *   <button onClick={start} disabled={isActive}>
- *     {isActive ? `${count}s 后重新发送` : '获取验证码'}
+ *     {isActive ? `Resend in ${count}s` : 'Get Code'}
  *   </button>
  * )
  * 
  * @example
- * // 限时抢购倒计时
+ * // Flash sale countdown
  * const { count } = useCountdown(3600, 1000)
  * const hours = Math.floor(count / 3600)
  * const minutes = Math.floor((count % 3600) / 60)
  * const seconds = count % 60
- * <div>距离活动结束：{hours}:{minutes}:{seconds}</div>
+ * <div>Time remaining: {hours}:{minutes}:{seconds}</div>
  * 
- * 使用场景：
- * - 短信验证码倒计时，60秒后可重新发送
- * - 活动倒计时，显示距离活动开始/结束的时间
- * - 限时抢购，显示剩余时间
- * - 定时任务，自动执行某个操作
+ * Use Cases:
+ * - SMS verification code countdown, resend after 60 seconds
+ * - Event countdown, showing time until event start/end
+ * - Flash sales, displaying remaining time
+ * - Scheduled tasks, auto-executing operations
  * 
- * 注意事项：
- * - 倒计时到 0 时会自动停止
- * - 组件卸载时自动清理计时器，防止内存泄漏
- * - interval 为 1000ms 时表示每秒减 1，可根据需要调整
+ * Notes:
+ * - Automatically stops when countdown reaches 0
+ * - Auto-cleans up timer on component unmount to prevent memory leaks
+ * - interval of 1000ms means decrease by 1 per second, adjust as needed
  */
 export const useCountdown = (initialCount, interval = 1000) => {
   const [count, setCount] = useState(initialCount)
@@ -604,32 +604,32 @@ export const useCountdown = (initialCount, interval = 1000) => {
 }
 
 /**
- * 表单验证 Hook
+ * Form Validation Hook
  * 
- * 统一管理表单状态、验证规则和错误提示，支持字段级别和全表单验证。
- * 提供完整的表单状态管理和验证流程控制。
+ * Manages form state, validation rules, and error messages uniformly, supporting field-level and form-level validation.
+ * Provides complete form state management and validation flow control.
  * 
- * @param {Object} initialValues - 表单字段的初始值对象，键为字段名，值为初始值
- * @param {Object} validationRules - 验证规则对象，键为字段名，值为验证函数数组
- *   - 每个验证函数接受字段值，返回 { valid: boolean, message: string }
- * @returns {Object} 包含表单状态和操作方法的对象
- *   - values: {Object} 当前表单的所有字段值
- *   - errors: {Object} 各字段的验证错误信息，键为字段名，值为错误文本
- *   - touched: {Object} 各字段是否被操作过（失焦），用于控制错误显示时机
- *   - setValue: {Function} 设置字段值的函数，接受 (fieldName, value) 参数
- *   - setTouched: {Function} 标记字段为已操作的函数，接受 fieldName 参数
- *   - validateAll: {Function} 验证所有字段的函数，返回 boolean 表示是否全部通过
- *   - reset: {Function} 重置表单到初始状态的函数
- *   - isValid: {boolean} 当前表单是否有效（所有字段无错误）
+ * @param {Object} initialValues - Initial values object for form fields, keys are field names, values are initial values
+ * @param {Object} validationRules - Validation rules object, keys are field names, values are validation function arrays
+ *   - Each validation function accepts field value, returns { valid: boolean, message: string }
+ * @returns {Object} Object containing form state and operation methods
+ *   - values: {Object} Current values of all form fields
+ *   - errors: {Object} Validation error messages for each field, keys are field names, values are error text
+ *   - touched: {Object} Whether each field has been interacted with (blurred), controls error display timing
+ *   - setValue: {Function} Function to set field value, accepts (fieldName, value) parameters
+ *   - setTouched: {Function} Function to mark field as touched, accepts fieldName parameter
+ *   - validateAll: {Function} Function to validate all fields, returns boolean indicating if all passed
+ *   - reset: {Function} Function to reset form to initial state
+ *   - isValid: {boolean} Whether the current form is valid (all fields have no errors)
  * 
  * @example
  * const validationRules = {
  *   email: [
- *     (value) => ({ valid: !!value, message: '邮箱不能为空' }),
- *     (value) => ({ valid: /^\S+@\S+$/.test(value), message: '邮箱格式不正确' })
+ *     (value) => ({ valid: !!value, message: 'Email is required' }),
+ *     (value) => ({ valid: /^\S+@\S+$/.test(value), message: 'Invalid email format' })
  *   ],
  *   password: [
- *     (value) => ({ valid: value.length >= 6, message: '密码至少 6 位' })
+ *     (value) => ({ valid: value.length >= 6, message: 'Password must be at least 6 characters' })
  *   ]
  * }
  * 
@@ -643,7 +643,7 @@ export const useCountdown = (initialCount, interval = 1000) => {
  * }
  * 
  * @example
- * // 字段失焦验证
+ * // Field blur validation
  * <input
  *   value={values.email}
  *   onChange={(e) => setValue('email', e.target.value)}
@@ -651,16 +651,16 @@ export const useCountdown = (initialCount, interval = 1000) => {
  * />
  * {touched.email && errors.email && <span>{errors.email}</span>}
  * 
- * 使用场景：
- * - 复杂表单验证，统一管理多个字段
- * - 多步骤表单，分步验证和提交
- * - 动态表单字段，灵活添加验证规则
- * - 实时验证反馈，提升用户体验
+ * Use Cases:
+ * - Complex form validation, managing multiple fields uniformly
+ * - Multi-step forms, validating and submitting in steps
+ * - Dynamic form fields, flexibly adding validation rules
+ * - Real-time validation feedback, improving user experience
  * 
- * 验证时机：
- * - 字段失焦时触发单字段验证（setTouched）
- * - 表单提交时触发全表单验证（validateAll）
- * - setValue 时如果字段已 touched 则自动验证
+ * Validation Timing:
+ * - Field blur triggers single field validation (setTouched)
+ * - Form submission triggers all fields validation (validateAll)
+ * - setValue auto-validates if field is already touched
  */
 export const useFormValidation = (initialValues, validationRules) => {
   const [values, setValues] = useState(initialValues)
@@ -734,16 +734,16 @@ export const useFormValidation = (initialValues, validationRules) => {
 }
 
 /**
- * 拖拽 Hook
+ * Drag Hook
  * 
- * 管理拖拽操作的状态，跟踪拖拽中的项目和拖拽状态。
- * 提供简单的 API 来启动和结束拖拽操作。
+ * Manages drag operation state, tracking dragged items and drag status.
+ * Provides simple API to start and end drag operations.
  * 
- * @returns {Object} 包含拖拽状态和控制方法的对象
- *   - isDragging: {boolean} 是否正在拖拽中
- *   - draggedItem: {any} 当前被拖拽的项目数据，未拖拽时为 null
- *   - dragStart: {Function} 开始拖拽的函数，接受要拖拽的项目作为参数
- *   - dragEnd: {Function} 结束拖拽的函数，清空拖拽状态
+ * @returns {Object} Object containing drag state and control methods
+ *   - isDragging: {boolean} Whether currently dragging
+ *   - draggedItem: {any} Current dragged item data, null when not dragging
+ *   - dragStart: {Function} Function to start dragging, accepts the item to drag as parameter
+ *   - dragEnd: {Function} Function to end dragging, clears drag state
  * 
  * @example
  * const { isDragging, draggedItem, dragStart, dragEnd } = useDrag()
@@ -765,7 +765,7 @@ export const useFormValidation = (initialValues, validationRules) => {
  * )
  * 
  * @example
- * // 看板任务拖拽
+ * // Kanban task dragging
  * const { draggedItem, dragStart, dragEnd } = useDrag()
  * const handleDrop = (targetColumn) => {
  *   if (draggedItem) {
@@ -774,16 +774,16 @@ export const useFormValidation = (initialValues, validationRules) => {
  *   dragEnd()
  * }
  * 
- * 使用场景：
- * - 列表项拖拽排序，调整项目顺序
- * - 看板任务移动，在不同列之间拖动
- * - 文件上传拖拽，拖放文件到上传区
- * - 画布元素拖动，拖动图形元素
+ * Use Cases:
+ * - List item drag sorting, adjusting item order
+ * - Kanban task movement, dragging between columns
+ * - File upload drag, dropping files to upload area
+ * - Canvas element dragging, moving graphic elements
  * 
- * 注意事项：
- * - 需要配合 HTML5 Drag and Drop API 使用
- * - draggedItem 可以存储任意类型的数据
- * - 建议结合 onDragOver 和 onDrop 事件处理器使用
+ * Notes:
+ * - Use with HTML5 Drag and Drop API
+ * - draggedItem can store any type of data
+ * - Recommend using with onDragOver and onDrop event handlers
  */
 export const useDrag = () => {
   const [isDragging, setIsDragging] = useState(false)
@@ -808,19 +808,19 @@ export const useDrag = () => {
 }
 
 /**
- * 虚拟列表 Hook
+ * Virtual List Hook
  * 
- * 实现大列表的虚拟滚动渲染，仅渲染可见区域的列表项，大幅提升性能。
- * 自动计算可见项、总高度和偏移量。
+ * Implements virtual scrolling for large lists, rendering only visible items to dramatically improve performance.
+ * Automatically calculates visible items, total height, and offset.
  * 
- * @param {Array} items - 完整的数据列表数组
- * @param {number} containerHeight - 容器可见高度，单位 px
- * @param {number} itemHeight - 单个列表项的高度，单位 px（必须固定高度）
- * @returns {Object} 包含虚拟列表数据和控制方法的对象
- *   - visibleItems: {Array} 当前可见区域内的列表项，每项包含原始数据和 index 属性
- *   - totalHeight: {number} 列表总高度，用于设置容器内部高度，单位 px
- *   - offsetY: {number} 可见项的垂直偏移量，用于定位列表项，单位 px
- *   - onScroll: {Function} 滚动事件处理函数，需要绑定到容器的 onScroll 事件
+ * @param {Array} items - Complete data list array
+ * @param {number} containerHeight - Container visible height in px
+ * @param {number} itemHeight - Individual list item height in px (must be fixed height)
+ * @returns {Object} Object containing virtual list data and control methods
+ *   - visibleItems: {Array} List items in the current visible area, each includes original data and index property
+ *   - totalHeight: {number} Total list height, used to set container inner height in px
+ *   - offsetY: {number} Vertical offset of visible items, used to position list items in px
+ *   - onScroll: {Function} Scroll event handler, must be bound to container's onScroll event
  * 
  * @example
  * const { visibleItems, totalHeight, offsetY, onScroll } = 
@@ -841,24 +841,24 @@ export const useDrag = () => {
  * )
  * 
  * @example
- * // 表格虚拟滚动
+ * // Table virtual scrolling
  * const { visibleItems, totalHeight, offsetY, onScroll } = 
  *   useVirtualList(tableData, 500, 40)
  * 
- * 使用场景：
- * - 长列表渲染，数千条数据的列表
- * - 大型表格分页，优化渲染性能
- * - 聊天记录展示，大量消息历史
- * - 日志查看器，海量日志数据
+ * Use Cases:
+ * - Long list rendering, lists with thousands of data items
+ * - Large table pagination, optimizing render performance
+ * - Chat message history, massive message data
+ * - Log viewer, huge amounts of log data
  * 
- * 性能提升：
- * - 仅渲染可见区域内的元素，通常只有10-20个 DOM 节点
- * - 大幅减少 DOM 节点数量，提升渲染性能
- * - 滚动流畅，无卡顿
+ * Performance Improvement:
+ * - Renders only elements in visible area, typically just 10-20 DOM nodes
+ * - Dramatically reduces DOM node count, improving render performance
+ * - Smooth scrolling, no lag
  * 
- * 注意事项：
- * - 要求每个列表项高度固定，不支持变高项
- * - visibleItems 的 index 属性为在原数组中的索引，建议用作 key
+ * Notes:
+ * - Requires each list item to have fixed height, doesn't support variable height items
+ * - visibleItems index property is the index in original array, recommended for use as key
  */
 export const useVirtualList = (items, containerHeight, itemHeight) => {
   const [scrollTop, setScrollTop] = useState(0)
@@ -890,16 +890,16 @@ export const useVirtualList = (items, containerHeight, itemHeight) => {
 }
 
 /**
- * 无限滚动 Hook
+ * Infinite Scroll Hook
  * 
- * 实现无限滚动加载功能，当用户滚动接近页面底部时自动加载更多数据。
- * 自动管理加载状态，防止重复加载。
+ * Implements infinite scroll loading, automatically loading more data when user scrolls near page bottom.
+ * Automatically manages loading state to prevent duplicate loading.
  * 
- * @param {Function} fetchMore - 加载更多数据的异步函数，返回 Promise
- * @param {boolean} [hasMore=true] - 是否还有更多数据可加载，默认为 true
- * @returns {Object} 包含加载状态和控制方法的对象
- *   - isLoading: {boolean} 是否正在加载中
- *   - loadMore: {Function} 手动触发加载更多的函数
+ * @param {Function} fetchMore - Async function to load more data, returns Promise
+ * @param {boolean} [hasMore=true] - Whether there is more data to load, defaults to true
+ * @returns {Object} Object containing loading state and control methods
+ *   - isLoading: {boolean} Whether currently loading
+ *   - loadMore: {Function} Function to manually trigger loading more
  * 
  * @example
  * const [items, setItems] = useState([])
@@ -917,32 +917,32 @@ export const useVirtualList = (items, containerHeight, itemHeight) => {
  *   <div>
  *     {items.map(item => <ProductCard key={item.id} {...item} />)}
  *     {isLoading && <Loading />}
- *     {!hasMore && <div>没有更多数据了</div>}
+ *     {!hasMore && <div>No more data</div>}
  *   </div>
  * )
  * 
  * @example
- * // 手动加载更多
+ * // Manual load more
  * const { isLoading, loadMore } = useInfiniteScroll(fetchMore, hasMore)
  * <button onClick={loadMore} disabled={isLoading}>
- *   {isLoading ? '加载中...' : '加载更多'}
+ *   {isLoading ? 'Loading...' : 'Load More'}
  * </button>
  * 
- * 使用场景：
- * - 信息流展示，滚动自动加载更多内容
- * - 商品列表，滚动加载下一页商品
- * - 社交动态，无限滚动查看更多动态
- * - 搜索结果页，分页加载搜索结果
+ * Use Cases:
+ * - News feeds, auto-loading more content on scroll
+ * - Product listings, loading next page of products on scroll
+ * - Social feeds, infinite scrolling to view more updates
+ * - Search results page, paginated loading of search results
  * 
- * 触发条件：
- * - 当滚动距离页面底部小于 1000px 时自动触发加载
- * - 正在加载时不会重复触发
- * - hasMore 为 false 时不会触发加载
+ * Trigger Conditions:
+ * - Triggers loading when scroll distance to page bottom is less than 1000px
+ * - Won't trigger duplicate loads while loading
+ * - Won't trigger loading when hasMore is false
  * 
- * 性能优化：
- * - 自动防止重复加载
- * - 组件卸载时自动清理滚动监听器
- * - 建议结合节流优化滚动事件处理
+ * Performance Optimization:
+ * - Auto-prevents duplicate loading
+ * - Auto-cleans up scroll listener on component unmount
+ * - Recommend combining with throttle to optimize scroll event handling
  */
 export const useInfiniteScroll = (fetchMore, hasMore = true) => {
   const [isLoading, setIsLoading] = useState(false)
