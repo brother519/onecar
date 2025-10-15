@@ -8,15 +8,21 @@
  * - 导出 TypeScript 类型定义
  * 
  * 状态树结构：
- * - products: 产品数据管理（商品列表、CRUD操作、分页、筛选、批量操作、拖拽排序、虚拟滚动）
+ * - products: 产品数据管理（产品列表、CRUD操作、分页、筛选、批量操作、拖拽排序、虚拟滚动）
  * - ui: 界面状态管理（弹窗状态、加载状态、通知消息、主题设置、布局配置、水印设置）
  * - user: 用户信息管理（用户身份、权限控制、偏好设置、操作记录、认证状态）
+ * 
+ * @module store
+ * @see {@link ./slices/productSlice.js} 产品状态切片
+ * @see {@link ./slices/uiSlice.js} UI状态切片
+ * @see {@link ./slices/userSlice.js} 用户状态切片
+ * @see {@link https://redux-toolkit.js.org/api/configureStore} Redux Toolkit 官方文档
  */
 
 // Redux Toolkit 核心配置工具，用于创建和配置 Redux store
 import { configureStore } from '@reduxjs/toolkit'
 
-// 产品状态切片 - 管理商品数据、列表操作、分页筛选、批量处理、拖拽排序等功能
+// 产品状态切片 - 管理产品数据、列表操作、分页筛选、批量处理、拖拽排序等功能
 import productReducer from './slices/productSlice'
 
 // UI状态切片 - 管理界面交互状态、弹窗显示、加载状态、通知消息、主题布局等
@@ -32,6 +38,11 @@ import userReducer from './slices/userSlice'
  * - state.products: 产品相关数据和操作状态
  * - state.ui: 用户界面状态和交互控制
  * - state.user: 用户信息和权限管理
+ * 
+ * @constant {Store}
+ * @type {import('@reduxjs/toolkit').Store}
+ * @property {Object} reducer - 状态切片合并配置
+ * @property {Function} middleware - 中间件配置函数
  */
 export const store = configureStore({
   // 状态切片组合配置 - 将各个独立的状态切片合并为完整的状态树
@@ -62,8 +73,17 @@ export const store = configureStore({
  * - 为状态选择器函数提供类型约束
  * - 确保状态访问的类型安全
  * 
+ * @typedef {Object} RootState
+ * @property {Object} products - 产品状态切片
+ * @property {Object} ui - UI状态切片
+ * @property {Object} user - 用户状态切片
+ * 
  * 使用示例：
+ * ```javascript
  * const products = useSelector((state: RootState) => state.products.items)
+ * const isLoading = useSelector((state: RootState) => state.ui.loading.global)
+ * const userInfo = useSelector((state: RootState) => state.user.userInfo)
+ * ```
  */
 export type RootState = ReturnType<typeof store.getState>
 
@@ -75,8 +95,19 @@ export type RootState = ReturnType<typeof store.getState>
  * - 为异步 action 调用提供类型约束
  * - 确保 action 调度的类型安全
  * 
+ * @typedef {Function} AppDispatch
+ * @type {typeof store.dispatch}
+ * 
  * 使用示例：
+ * ```javascript
  * const dispatch = useDispatch<AppDispatch>()
+ * 
+ * // 调度异步 thunk
  * dispatch(fetchProducts({ page: 1, size: 20 }))
+ * 
+ * // 调度同步 action
+ * dispatch(setFilter({ category: 'electronics' }))
+ * dispatch(showModal({ type: 'productEdit', data: product }))
+ * ```
  */
 export type AppDispatch = typeof store.dispatch
