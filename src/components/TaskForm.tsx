@@ -26,7 +26,6 @@ const TaskForm: React.FC<TaskFormProps> = ({
   useEffect(() => {
     if (visible) {
       if (editingTask) {
-        // 编辑模式：填充现有数据
         form.setFieldsValue({
           title: editingTask.title,
           description: editingTask.description || '',
@@ -35,10 +34,9 @@ const TaskForm: React.FC<TaskFormProps> = ({
           dueDate: editingTask.dueDate ? dayjs(editingTask.dueDate) : null,
         });
       } else {
-        // 新建模式：重置表单
         form.resetFields();
         form.setFieldsValue({
-          priority: TaskPriority.MEDIUM, // 默认中优先级
+          priority: TaskPriority.MEDIUM,
           assignees: [],
         });
       }
@@ -66,7 +64,6 @@ const TaskForm: React.FC<TaskFormProps> = ({
     onCancel();
   };
 
-  // 验证规则
   const validationRules = {
     title: [
       { required: true, message: '任务标题不能为空' },

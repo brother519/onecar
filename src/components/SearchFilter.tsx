@@ -37,7 +37,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
 }) => {
   const [expanded, setExpanded] = useState<boolean>(false);
 
-  // 更新筛选条件
   const updateFilter = (key: keyof TaskFilters, value: any) => {
     onFiltersChange({
       ...filters,
@@ -45,7 +44,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     });
   };
 
-  // 清空所有筛选条件
   const clearAllFilters = () => {
     onFiltersChange({
       keyword: '',
@@ -56,7 +54,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     });
   };
 
-  // 检查是否有活动的筛选条件
   const hasActiveFilters = () => {
     return !!(
       filters.keyword ||
@@ -67,7 +64,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     );
   };
 
-  // 获取活动筛选条件的数量
   const getActiveFilterCount = () => {
     let count = 0;
     if (filters.keyword) count++;
@@ -81,7 +77,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   return (
     <Card style={{ marginBottom: 16 }}>
       <Row gutter={[16, 16]}>
-        {/* 主搜索框 */}
         <Col xs={24} sm={12} md={8}>
           <Search
             placeholder="搜索任务标题或描述"
@@ -93,7 +88,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
           />
         </Col>
 
-        {/* 快速筛选按钮 */}
         <Col xs={24} sm={12} md={16}>
           <Space wrap>
             <Button
@@ -130,7 +124,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         </Col>
       </Row>
 
-      {/* 高级筛选区域 */}
       <Collapse 
         activeKey={expanded ? ['filters'] : []} 
         onChange={(keys) => setExpanded(keys.includes('filters'))}
@@ -138,7 +131,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
       >
         <Panel key="filters" header="" showArrow={false}>
           <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-            {/* 状态筛选 */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>任务状态:</label>
@@ -161,7 +153,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </Select>
             </Col>
 
-            {/* 优先级筛选 */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>优先级:</label>
@@ -184,7 +175,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </Select>
             </Col>
 
-            {/* 负责人筛选 */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>负责人:</label>
@@ -210,7 +200,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </Select>
             </Col>
 
-            {/* 日期范围筛选 */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>创建时间:</label>
@@ -238,7 +227,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         </Panel>
       </Collapse>
 
-      {/* 活动筛选条件显示 */}
       {hasActiveFilters() && (
         <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
           <Space wrap>
