@@ -26,7 +26,6 @@ const TaskList: React.FC<TaskListProps> = ({
   onTaskStatusChange,
   onBatchOperation
 }) => {
-  // 状态更改菜单
   const getStatusMenu = (task: Task) => (
     <Menu
       items={Object.values(TaskStatus).map(status => ({
@@ -38,7 +37,6 @@ const TaskList: React.FC<TaskListProps> = ({
     />
   );
 
-  // 操作菜单
   const getActionMenu = (task: Task) => (
     <Menu
       items={[

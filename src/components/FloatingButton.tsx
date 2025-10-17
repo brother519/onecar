@@ -29,7 +29,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   const [batchStatusModalVisible, setBatchStatusModalVisible] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | undefined>();
 
-  // 批量删除确认
   const handleBatchDelete = () => {
     Modal.confirm({
       title: '确认批量删除',
@@ -45,7 +44,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     });
   };
 
-  // 批量状态更新
   const handleBatchStatusUpdate = () => {
     setBatchStatusModalVisible(true);
     setSelectedStatus(undefined);
@@ -64,10 +62,8 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     message.success('任务状态更新成功');
   };
 
-  // 快捷操作菜单
   const getQuickActions = () => {
     if (selectedTaskIds.length > 0) {
-      // 有选中任务时的批量操作
       return [
         {
           icon: <EditOutlined />,
@@ -90,7 +86,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         }
       ];
     } else {
-      // 无选中任务时的常规操作
       return [
         {
           icon: <BulbOutlined />,
@@ -111,7 +106,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         icon={<SettingOutlined />}
         tooltip="操作菜单"
       >
-        {/* 新建任务按钮 - 始终显示 */}
         <FloatButton
           icon={<PlusOutlined />}
           tooltip="新建任务"
@@ -119,7 +113,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
           type="primary"
         />
         
-        {/* 动态快捷操作按钮 */}
         {getQuickActions().map((action, index) => (
           <FloatButton
             key={index}
@@ -132,7 +125,6 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         ))}
       </FloatButton.Group>
 
-      {/* 批量状态更新弹窗 */}
       <Modal
         title="批量更新任务状态"
         open={batchStatusModalVisible}
