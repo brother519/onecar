@@ -1,0 +1,150 @@
+.header-nav {
+  width: 100%;
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-nav-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-item {
+  position: relative;
+  margin-right: 16px;
+}
+
+.nav-link,
+.user-link {
+  display: inline-block;
+  padding: 6px 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 150ms ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover,
+.user-link:hover {
+  color: #4e6ef2;
+}
+
+.nav-more {
+  cursor: pointer;
+}
+
+/* 下拉菜单 */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  padding: 8px 0;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 120px;
+  animation: dropdownFadeIn 200ms ease-out;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f6;
+  color: #4e6ef2;
+}
+
+/* 用户菜单 */
+.user-entry {
+  position: relative;
+  margin-right: 16px;
+}
+
+.user-menu {
+  right: 0;
+  left: auto;
+}
+
+.settings-link {
+  padding: 6px 12px;
+  background: #f5f5f6;
+  border-radius: 6px;
+}
+
+.settings-link:hover {
+  background: #e8e8ea;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .header-nav {
+    padding: 12px 16px;
+  }
+
+  .nav-item {
+    margin-right: 8px;
+  }
+
+  .nav-link,
+  .user-link {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+
+  /* 隐藏部分导航项 */
+  .nav-item:nth-child(n+5) {
+    display: none;
+  }
+
+  .settings-link {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .nav-item:nth-child(n+6) {
+    display: none;
+  }
+}

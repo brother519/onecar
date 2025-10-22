@@ -1,0 +1,111 @@
+.search-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 40px 24px;
+  background: #fff;
+}
+
+.search-area-container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-area-logo {
+  margin-bottom: 32px;
+  animation: logoSlideDown 600ms ease-out;
+}
+
+.search-area-input {
+  width: 100%;
+  margin-bottom: 20px;
+  animation: inputFadeIn 800ms ease-out 200ms backwards;
+}
+
+.search-area-hotwords {
+  width: 100%;
+  animation: hotwordsFadeIn 800ms ease-out 400ms backwards;
+}
+
+/* 动画效果 */
+@keyframes logoSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes inputFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hotwordsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .search-area {
+    min-height: 50vh;
+    padding: 24px 16px;
+  }
+
+  .search-area-logo {
+    margin-bottom: 24px;
+  }
+
+  .search-area-input {
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .search-area {
+    min-height: 55vh;
+    padding: 32px 20px;
+  }
+
+  .search-area-container {
+    max-width: 560px;
+  }
+
+  .search-area-logo {
+    margin-bottom: 28px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .search-area-container {
+    max-width: 680px;
+  }
+
+  .search-area-logo {
+    margin-bottom: 40px;
+  }
+
+  .search-area-input {
+    margin-bottom: 24px;
+  }
+}

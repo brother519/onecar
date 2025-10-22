@@ -1,218 +1,201 @@
-/* 全局样式重置和基础样式 */
+/* 百度首页全局样式 */
+
+/* CSS重置和基础样式 */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, 
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-/* 任务卡片样式增强 */
-.task-card {
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.task-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
-}
-
-.task-card.selected {
-  border-color: #1890ff !important;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-}
-
-.task-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
-
-.task-card-title-section {
-  display: flex;
-  align-items: flex-start;
-  flex: 1;
-  min-width: 0;
-}
-
-.task-title-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.task-title {
-  word-break: break-word;
-  line-height: 1.4;
-}
-
-.task-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.task-card-actions {
-  display: flex;
-  gap: 4px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.task-card:hover .task-card-actions {
-  opacity: 1;
-}
-
-.task-description {
-  word-break: break-word;
+  font-size: 14px;
   line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+  min-height: 100vh;
 }
 
-.task-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.task-assignee,
-.task-dates {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* 响应式布局 */
-@media (max-width: 768px) {
-  .task-card-header {
-    flex-direction: column;
-    gap: 8px;
-  }
+/* 色彩规范 */
+:root {
+  /* 主品牌色 */
+  --color-primary: #4e6ef2;
+  --color-primary-hover: #3b5dd8;
+  --color-primary-active: #2d4bc4;
   
-  .task-card-actions {
-    opacity: 1;
-    align-self: flex-end;
-  }
+  /* 辅助色 */
+  --color-secondary: #38f;
   
-  .task-card-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+  /* 文字颜色 */
+  --color-text-primary: #333;
+  --color-text-secondary: #666;
+  --color-text-tertiary: #999;
+  --color-text-disabled: #ccc;
+  
+  /* 边框颜色 */
+  --color-border: #c4c7ce;
+  --color-border-light: #e3e3e3;
+  
+  /* 背景色 */
+  --color-bg-primary: #fff;
+  --color-bg-secondary: #f5f5f6;
+  --color-bg-tertiary: #e8e8ea;
+  
+  /* 功能色 */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* 阴影 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+  
+  /* 圆角 */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+  
+  /* 间距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  
+  /* 过渡 */
+  --transition-fast: 150ms;
+  --transition-normal: 200ms;
+  --transition-slow: 300ms;
+}
+
+/* 链接样式 */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast) ease;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+a:active {
+  color: var(--color-primary-active);
+}
+
+/* 按钮基础样式 */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all var(--transition-fast) ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 输入框基础样式 */
+input,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+}
+
+/* 列表样式 */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 图片样式 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* 滚动条样式 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
+  background: var(--color-bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
+  background: var(--color-border);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: var(--color-text-tertiary);
 }
 
-/* 加载状态优化 */
-.ant-spin-nested-loading > div > .ant-spin {
-  max-height: none;
+/* 选中文本样式 */
+::selection {
+  background-color: var(--color-primary);
+  color: #fff;
 }
 
-/* 表单样式优化 */
-.ant-form-item-label > label {
-  font-weight: 500;
+/* 焦点样式 */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
-/* 模态框样式 */
-.ant-modal-body {
-  padding: 24px;
-}
-
-/* 分页样式 */
-.ant-pagination {
-  margin: 24px 0;
-}
-
-/* 统计卡片样式 */
-.ant-statistic-title {
-  font-size: 12px;
-  color: #8c8c8c;
-}
-
-.ant-statistic-content {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-/* 空状态样式 */
-.ant-empty {
-  margin: 60px 0;
-}
-
-/* 浮动按钮样式调整 */
-.ant-float-btn {
-  right: 24px;
-  bottom: 24px;
-}
-
-/* 标签样式优化 */
-.ant-tag {
-  border-radius: 4px;
-  font-size: 12px;
-  line-height: 20px;
-  margin: 0;
-}
-
-/* 头像样式 */
-.ant-avatar {
-  flex-shrink: 0;
-}
-
-/* 按钮组样式 */
-.ant-btn-group > .ant-btn:not(:last-child) {
-  border-right: 1px solid #d9d9d9;
-}
-
-/* 动画效果 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/* 响应式字体大小 */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
   }
 }
 
-.task-card {
-  animation: fadeIn 0.3s ease-out;
+@media (min-width: 1440px) {
+  html {
+    font-size: 16px;
+  }
 }
 
-/* 高亮搜索结果 */
-.highlight {
-  background-color: #fff2b8;
-  padding: 0 2px;
-  border-radius: 2px;
+/* 工具类 */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
