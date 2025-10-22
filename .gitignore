@@ -83,7 +83,8 @@ dist/
 *.ipr
 .idea_modules/
 atlassian-ide-plugin.xml
-.qoder/
+.qoder/quests
+.qoder/repowiki
 
 # Eclipse
 .classpath
