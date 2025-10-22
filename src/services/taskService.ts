@@ -1,15 +1,44 @@
+/**
+ * Task Service Module
+ * 
+ * This module provides a mock task management service for development and testing purposes.
+ * It simulates API calls with delays and manages task data in memory.
+ * 
+ * @module taskService
+ */
+
 import { Task, TaskStatus, TaskPriority, TaskFilters, TaskFormData, ApiResponse, TaskListResponse } from '../types/task';
 import dayjs from 'dayjs';
 
-// 模拟用户数据
+/**
+ * Mock assignee names for task assignment
+ * 
+ * In production, this would be replaced with actual user data from the backend.
+ * These names are used to randomly assign tasks to simulated users.
+ * 
+ * @constant {string[]} MOCK_ASSIGNEES - Array of mock user names
+ */
 export const MOCK_ASSIGNEES = [
   '张三', '李四', '王五', '赵六', '钱七', '孙八', '周九', '吴十',
   '郑十一', '王十二', '冯十三', '陈十四', '褚十五', '卫十六'
 ];
 
-// 生成模拟任务数据
+/**
+ * Generates mock task data for development and testing
+ * 
+ * Creates 50 sample tasks with randomized properties including:
+ * - Random status and priority
+ * - Random assignees (1-3 people per task)
+ * - Random creation dates (within last 30 days)
+ * - Random due dates (within next 30 days, or none)
+ * 
+ * @returns {Task[]} Array of 50 generated mock tasks
+ * @private
+ */
 const generateMockTasks = (): Task[] => {
   const tasks: Task[] = [];
+  
+  // Sample task titles that cycle through the 50 tasks
   const titles = [
     '优化用户登录流程',
     '实现任务管理系统',
@@ -33,6 +62,7 @@ const generateMockTasks = (): Task[] => {
     '添加数据备份机制'
   ];
 
+  // Detailed descriptions corresponding to task titles
   const descriptions = [
     '分析当前登录流程的痛点，设计更加友好的用户体验',
     '设计并实现一个完整的任务管理系统，包含增删改查功能',
@@ -52,24 +82,30 @@ const generateMockTasks = (): Task[] => {
     '修复已发现的安全漏洞，加强系统安全性'
   ];
 
+  // Generate 50 tasks with varied properties
   for (let i = 1; i <= 50; i++) {
+    // Cycle through titles and descriptions arrays
     const titleIndex = (i - 1) % titles.length;
     const descIndex = Math.min(titleIndex, descriptions.length - 1);
     
+    // Random creation date within the last 30 days
     const createdAt = dayjs().subtract(Math.floor(Math.random() * 30), 'day');
     const task: Task = {
-      id: `task_${i.toString().padStart(3, '0')}`,
+      id: `task_${i.toString().padStart(3, '0')}`, // Format: task_001, task_002, etc.
       title: titles[titleIndex],
       description: descriptions[descIndex],
-      status: Object.values(TaskStatus)[Math.floor(Math.random() * Object.values(TaskStatus).length)],
-      priority: Object.values(TaskPriority)[Math.floor(Math.random() * Object.values(TaskPriority).length)],
+      status: Object.values(TaskStatus)[Math.floor(Math.random() * Object.values(TaskStatus).length)], // Random status
+      priority: Object.values(TaskPriority)[Math.floor(Math.random() * Object.values(TaskPriority).length)], // Random priority
+      // Randomly assign 1-3 assignees by shuffling and slicing the array
       assignees: MOCK_ASSIGNEES
         .sort(() => 0.5 - Math.random())
         .slice(0, Math.floor(Math.random() * 3) + 1),
+      // 70% chance to have a due date within next 30 days
       dueDate: Math.random() > 0.3 ? dayjs().add(Math.floor(Math.random() * 30), 'day').format('YYYY-MM-DD') : undefined,
       createdAt: createdAt.format('YYYY-MM-DD HH:mm:ss'),
+      // Update date is 0-4 days after creation
       updatedAt: createdAt.add(Math.floor(Math.random() * 5), 'day').format('YYYY-MM-DD HH:mm:ss'),
-      createdBy: MOCK_ASSIGNEES[Math.floor(Math.random() * MOCK_ASSIGNEES.length)]
+      createdBy: MOCK_ASSIGNEES[Math.floor(Math.random() * MOCK_ASSIGNEES.length)] // Random creator
     };
     tasks.push(task);
   }
@@ -77,22 +113,75 @@ const generateMockTasks = (): Task[] => {
   return tasks;
 };
 
-// 模拟数据存储
+/**
+ * In-memory storage for mock tasks
+ * 
+ * This variable holds all task data for the mock service.
+ * In production, this would be replaced with actual API calls to a backend database.
+ * 
+ * @type {Task[]}
+ */
 let mockTasks = generateMockTasks();
 
-// 模拟API延迟
+/**
+ * Simulates network latency for API calls
+ * 
+ * Adds a realistic delay to mock API responses to simulate real-world network conditions.
+ * This helps in testing loading states and async behavior.
+ * 
+ * @param {number} delay - Delay in milliseconds (default: 500ms)
+ * @returns {Promise<void>} Promise that resolves after the specified delay
+ * @private
+ */
 const simulateApiDelay = (delay: number = 500): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, delay));
 };
 
-// 生成唯一ID
+/**
+ * Generates a unique task ID
+ * 
+ * Creates a unique identifier by combining the current timestamp with a random string.
+ * Format: task_{timestamp}_{random9chars}
+ * 
+ * @returns {string} Unique task identifier
+ * @private
+ */
 const generateId = (): string => {
   return `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 };
 
-// 任务API服务
+/**
+ * Task Service API
+ * 
+ * Provides methods for task management operations including CRUD operations,
+ * filtering, pagination, and batch operations.
+ * 
+ * All methods return promises that resolve to ApiResponse objects.
+ */
 export const taskService = {
-  // 获取任务列表
+  /**
+   * Retrieves a paginated and filtered list of tasks
+   * 
+   * Supports the following filters:
+   * - keyword: Search in task title and description
+   * - status: Filter by one or more task statuses
+   * - priority: Filter by one or more priority levels
+   * - assignee: Filter by assigned user
+   * - dateRange: Filter by creation date range
+   * 
+   * @param {Object} params - Query parameters
+   * @param {number} [params.page=1] - Page number (1-based)
+   * @param {number} [params.size=20] - Number of items per page
+   * @param {TaskFilters} [params.filters] - Optional filter criteria
+   * @returns {Promise<ApiResponse<TaskListResponse>>} Paginated task list response
+   * 
+   * @example
+   * const response = await taskService.getTaskList({
+   *   page: 1,
+   *   size: 10,
+   *   filters: { status: ['PENDING'], priority: ['HIGH'] }
+   * });
+   */
   async getTaskList(params: {
     page?: number;
     size?: number;
@@ -103,8 +192,9 @@ export const taskService = {
     const { page = 1, size = 20, filters } = params;
     let filteredTasks = [...mockTasks];
 
-    // 应用筛选条件
+    // Apply filtering criteria if provided
     if (filters) {
+      // Filter by keyword (searches in title and description)
       if (filters.keyword) {
         const keyword = filters.keyword.toLowerCase();
         filteredTasks = filteredTasks.filter(task => 
@@ -113,24 +203,28 @@ export const taskService = {
         );
       }
 
+      // Filter by status (supports multiple statuses)
       if (filters.status && filters.status.length > 0) {
         filteredTasks = filteredTasks.filter(task => 
           filters.status.includes(task.status)
         );
       }
 
+      // Filter by priority (supports multiple priorities)
       if (filters.priority && filters.priority.length > 0) {
         filteredTasks = filteredTasks.filter(task => 
           filters.priority.includes(task.priority)
         );
       }
 
+      // Filter by assignee (tasks assigned to specific user)
       if (filters.assignee) {
         filteredTasks = filteredTasks.filter(task => 
           task.assignees.includes(filters.assignee)
         );
       }
 
+      // Filter by date range (based on creation date)
       if (filters.dateRange) {
         const [startDate, endDate] = filters.dateRange;
         filteredTasks = filteredTasks.filter(task => {
@@ -140,7 +234,7 @@ export const taskService = {
       }
     }
 
-    // 分页
+    // Apply pagination to filtered results
     const total = filteredTasks.length;
     const startIndex = (page - 1) * size;
     const endIndex = startIndex + size;
@@ -158,7 +252,29 @@ export const taskService = {
     };
   },
 
-  // 创建任务
+  /**
+   * Creates a new task
+   * 
+   * The new task is created with PENDING status and added to the beginning
+   * of the task list. The created timestamp is set to the current time.
+   * 
+   * @param {TaskFormData} formData - Task creation data
+   * @param {string} formData.title - Task title
+   * @param {string} formData.description - Task description
+   * @param {TaskPriority} formData.priority - Task priority level
+   * @param {string[]} formData.assignees - Array of assigned user names
+   * @param {string} [formData.dueDate] - Optional due date (YYYY-MM-DD format)
+   * @returns {Promise<ApiResponse<Task>>} Created task response
+   * 
+   * @example
+   * const response = await taskService.createTask({
+   *   title: '新任务',
+   *   description: '任务描述',
+   *   priority: 'HIGH',
+   *   assignees: ['张三', '李四'],
+   *   dueDate: '2025-12-31'
+   * });
+   */
   async createTask(formData: TaskFormData): Promise<ApiResponse<Task>> {
     await simulateApiDelay(300);
 
@@ -167,15 +283,16 @@ export const taskService = {
       id: generateId(),
       title: formData.title,
       description: formData.description,
-      status: TaskStatus.PENDING,
+      status: TaskStatus.PENDING, // New tasks always start as PENDING
       priority: formData.priority,
       assignees: formData.assignees,
       dueDate: formData.dueDate,
       createdAt: now,
       updatedAt: now,
-      createdBy: 'current_user' // 在实际应用中从用户上下文获取
+      createdBy: 'current_user' // TODO: In production, get from user authentication context
     };
 
+    // Add new task to the beginning of the list
     mockTasks.unshift(newTask);
 
     return {
@@ -185,10 +302,29 @@ export const taskService = {
     };
   },
 
-  // 更新任务
+  /**
+   * Updates an existing task
+   * 
+   * Updates task properties while preserving the task ID, status, creation info,
+   * and other metadata. Only the editable fields from formData are updated.
+   * 
+   * @param {string} taskId - ID of the task to update
+   * @param {TaskFormData} formData - Updated task data
+   * @returns {Promise<ApiResponse<Task>>} Updated task response or error if task not found
+   * 
+   * @example
+   * const response = await taskService.updateTask('task_001', {
+   *   title: '更新的任务',
+   *   description: '新的描述',
+   *   priority: 'MEDIUM',
+   *   assignees: ['王五'],
+   *   dueDate: '2025-11-30'
+   * });
+   */
   async updateTask(taskId: string, formData: TaskFormData): Promise<ApiResponse<Task>> {
     await simulateApiDelay(300);
 
+    // Find the task by ID
     const taskIndex = mockTasks.findIndex(task => task.id === taskId);
     if (taskIndex === -1) {
       return {
@@ -198,6 +334,7 @@ export const taskService = {
       };
     }
 
+    // Merge existing task with updated fields
     const updatedTask: Task = {
       ...mockTasks[taskIndex],
       title: formData.title,
@@ -205,7 +342,7 @@ export const taskService = {
       priority: formData.priority,
       assignees: formData.assignees,
       dueDate: formData.dueDate,
-      updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss')
+      updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss') // Update the modification timestamp
     };
 
     mockTasks[taskIndex] = updatedTask;
@@ -217,7 +354,18 @@ export const taskService = {
     };
   },
 
-  // 删除任务
+  /**
+   * Deletes a task by ID
+   * 
+   * Permanently removes the task from the task list.
+   * This operation cannot be undone.
+   * 
+   * @param {string} taskId - ID of the task to delete
+   * @returns {Promise<ApiResponse<void>>} Success response or error if task not found
+   * 
+   * @example
+   * const response = await taskService.deleteTask('task_001');
+   */
   async deleteTask(taskId: string): Promise<ApiResponse<void>> {
     await simulateApiDelay(200);
 
@@ -230,6 +378,7 @@ export const taskService = {
       };
     }
 
+    // Remove the task from the array
     mockTasks.splice(taskIndex, 1);
 
     return {
@@ -239,10 +388,23 @@ export const taskService = {
     };
   },
 
-  // 更新任务状态
+  /**
+   * Updates the status of a specific task
+   * 
+   * This is a convenience method for updating only the task status
+   * without modifying other task properties.
+   * 
+   * @param {string} taskId - ID of the task to update
+   * @param {TaskStatus} status - New status value (PENDING, IN_PROGRESS, COMPLETED, CANCELLED)
+   * @returns {Promise<ApiResponse<Task>>} Updated task response or error if task not found
+   * 
+   * @example
+   * const response = await taskService.updateTaskStatus('task_001', TaskStatus.COMPLETED);
+   */
   async updateTaskStatus(taskId: string, status: TaskStatus): Promise<ApiResponse<Task>> {
     await simulateApiDelay(200);
 
+    // Find the task to update
     const taskIndex = mockTasks.findIndex(task => task.id === taskId);
     if (taskIndex === -1) {
       return {
@@ -252,6 +414,7 @@ export const taskService = {
       };
     }
 
+    // Update only the status and timestamp
     const updatedTask: Task = {
       ...mockTasks[taskIndex],
       status,
@@ -267,10 +430,22 @@ export const taskService = {
     };
   },
 
-  // 批量删除任务
+  /**
+   * Deletes multiple tasks at once
+   * 
+   * Efficiently removes multiple tasks in a single operation.
+   * Tasks that don't exist are silently ignored.
+   * 
+   * @param {string[]} taskIds - Array of task IDs to delete
+   * @returns {Promise<ApiResponse<void>>} Success response with count of deleted tasks
+   * 
+   * @example
+   * const response = await taskService.batchDeleteTasks(['task_001', 'task_002', 'task_003']);
+   */
   async batchDeleteTasks(taskIds: string[]): Promise<ApiResponse<void>> {
     await simulateApiDelay(300);
 
+    // Filter out all tasks whose IDs are in the deletion list
     mockTasks = mockTasks.filter(task => !taskIds.includes(task.id));
 
     return {
@@ -280,13 +455,29 @@ export const taskService = {
     };
   },
 
-  // 批量更新任务状态
+  /**
+   * Updates the status of multiple tasks at once
+   * 
+   * Efficiently updates the status of multiple tasks in a single operation.
+   * Only tasks that exist will be updated; non-existent IDs are ignored.
+   * 
+   * @param {string[]} taskIds - Array of task IDs to update
+   * @param {TaskStatus} status - New status to apply to all specified tasks
+   * @returns {Promise<ApiResponse<Task[]>>} Response containing all updated tasks
+   * 
+   * @example
+   * const response = await taskService.batchUpdateTaskStatus(
+   *   ['task_001', 'task_002'],
+   *   TaskStatus.IN_PROGRESS
+   * );
+   */
   async batchUpdateTaskStatus(taskIds: string[], status: TaskStatus): Promise<ApiResponse<Task[]>> {
     await simulateApiDelay(300);
 
     const updatedTasks: Task[] = [];
     const now = dayjs().format('YYYY-MM-DD HH:mm:ss');
 
+    // Update status for all matching tasks and collect updated tasks
     mockTasks = mockTasks.map(task => {
       if (taskIds.includes(task.id)) {
         const updatedTask = {
