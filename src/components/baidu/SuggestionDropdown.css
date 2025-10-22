@@ -1,0 +1,139 @@
+.suggestion-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  animation: suggestionSlideIn 200ms ease-out;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  border-bottom: 1px solid #f5f5f6;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: #f5f5f6;
+}
+
+.suggestion-item.selected {
+  background-color: #4e6ef2;
+  color: #fff;
+}
+
+.suggestion-item.selected .suggestion-type,
+.suggestion-item.selected .suggestion-volume {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.suggestion-icon {
+  margin-right: 8px;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.suggestion-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestion-highlight {
+  color: #4e6ef2;
+  font-weight: 600;
+}
+
+.suggestion-item.selected .suggestion-highlight {
+  color: #fff;
+  font-weight: 700;
+}
+
+.suggestion-volume {
+  margin-left: 8px;
+  margin-right: 8px;
+  font-size: 12px;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.suggestion-type {
+  margin-left: 8px;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: #999;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.suggestion-item.selected .suggestion-type {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes suggestionSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 滚动条样式 */
+.suggestion-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestion-dropdown::-webkit-scrollbar-track {
+  background: #f5f5f6;
+  border-radius: 10px;
+}
+
+.suggestion-dropdown::-webkit-scrollbar-thumb {
+  background: #c4c7ce;
+  border-radius: 10px;
+}
+
+.suggestion-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .suggestion-dropdown {
+    border-radius: 8px;
+    max-height: 300px;
+  }
+  
+  .suggestion-item {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  .suggestion-type {
+    display: none;
+  }
+}

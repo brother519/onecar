@@ -1,0 +1,144 @@
+.footer-info {
+  width: 100%;
+  padding: 40px 24px 24px;
+  background: #f5f5f6;
+  border-top: 1px solid #e3e3e3;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* 产品导航 */
+.footer-nav {
+  margin-bottom: 24px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 8px 24px;
+}
+
+.footer-link-item {
+  display: inline-block;
+}
+
+.footer-link {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #666;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.footer-link:hover {
+  color: #4e6ef2;
+}
+
+/* 版权信息 */
+.footer-copyright {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.copyright-text {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #999;
+}
+
+.beian-link {
+  margin-left: 8px;
+  color: #999;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.beian-link:hover {
+  color: #4e6ef2;
+}
+
+/* 附加信息 */
+.footer-extra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-extra-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  color: #999;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.footer-extra-link:hover {
+  color: #4e6ef2;
+}
+
+.police-icon {
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+/* 元信息 */
+.footer-meta {
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e3e3e3;
+}
+
+.meta-text {
+  margin: 4px 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #aaa;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .footer-info {
+    padding: 24px 16px 16px;
+  }
+
+  .footer-links {
+    gap: 6px 16px;
+  }
+
+  .footer-link {
+    font-size: 11px;
+  }
+
+  .copyright-text,
+  .footer-extra-link {
+    font-size: 11px;
+  }
+
+  .meta-text {
+    font-size: 10px;
+  }
+
+  .footer-extra {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .footer-info {
+    padding: 32px 20px 20px;
+  }
+}

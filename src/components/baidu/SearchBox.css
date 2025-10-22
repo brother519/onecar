@@ -1,0 +1,120 @@
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #c4c7ce;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 150ms ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-box.focused .search-input-wrapper {
+  border-color: #4e6ef2;
+  box-shadow: 0 4px 12px rgba(78, 110, 242, 0.15);
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #333;
+  background: transparent;
+  font-family: Arial, 'Microsoft YaHei', sans-serif;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+.search-clear-btn {
+  padding: 0;
+  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #e3e3e3;
+  color: #666;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease;
+  flex-shrink: 0;
+}
+
+.search-clear-btn:hover {
+  background: #d0d0d0;
+  color: #333;
+}
+
+.search-btn {
+  padding: 10px 20px;
+  margin: 4px;
+  border: none;
+  background: #4e6ef2;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.search-btn:hover {
+  background: #3b5dd8;
+  box-shadow: 0 2px 8px rgba(78, 110, 242, 0.3);
+}
+
+.search-btn:active {
+  transform: translateY(1px);
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .search-box {
+    width: 90%;
+    max-width: none;
+  }
+
+  .search-input-wrapper {
+    border-radius: 8px;
+  }
+
+  .search-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .search-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .search-box {
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .search-box {
+    max-width: 640px;
+  }
+}

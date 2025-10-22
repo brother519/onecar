@@ -1,0 +1,166 @@
+.hot-words-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto 0;
+}
+
+.hot-words-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.hot-words-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.hot-words-indicator {
+  font-size: 12px;
+  color: #999;
+}
+
+.hot-words-loading {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-size: 14px;
+}
+
+.hot-words-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hot-word-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: #f5f5f6;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 150ms ease;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+  user-select: none;
+}
+
+.hot-word-tag:hover {
+  background: #e8e8ea;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hot-word-tag:active {
+  transform: translateY(0);
+}
+
+.hot-word-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.hot-word-tag.top-rank .hot-word-rank {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+  color: #fff;
+}
+
+.hot-word-tag.mid-rank .hot-word-rank {
+  background: linear-gradient(135deg, #ffa94d 0%, #ffb366 100%);
+  color: #fff;
+}
+
+.hot-word-tag.normal-rank .hot-word-rank {
+  background: #d0d0d0;
+  color: #666;
+}
+
+.hot-word-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+}
+
+.hot-word-trend {
+  margin-left: 4px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* 动画效果 */
+@keyframes hotWordFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hot-word-tag {
+  animation: hotWordFadeIn 300ms ease-in-out;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .hot-words-container {
+    width: 90%;
+    max-width: none;
+  }
+
+  .hot-words-list {
+    gap: 6px;
+  }
+
+  .hot-word-tag {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+
+  .hot-word-text {
+    max-width: 100px;
+  }
+
+  .hot-word-rank {
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hot-words-container {
+    max-width: 500px;
+  }
+
+  .hot-word-text {
+    max-width: 120px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .hot-words-container {
+    max-width: 640px;
+  }
+
+  .hot-word-text {
+    max-width: 180px;
+  }
+}
