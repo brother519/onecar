@@ -1,7 +1,15 @@
+/**
+ * 百度首页状态管理
+ * 使用 Zustand 管理搜索、UI、热词、用户等状态
+ * 分离成多个 Store 便于管理和复用
+ */
 import { create } from 'zustand';
 import { Suggestion, HotWord, SearchHistoryItem, UserInfo } from '../types/baidu';
 
-// 搜索相关状态
+/**
+ * 搜索相关状态接口
+ * 管理搜索关键词、搜索建议、搜索历史
+ */
 interface SearchState {
   searchKeyword: string;
   suggestions: Suggestion[];
@@ -12,7 +20,10 @@ interface SearchState {
   clearSearchHistory: () => void;
 }
 
-// UI交互状态
+/**
+ * UI交互状态接口
+ * 管理搜索建议显示、键盘选择等交互状态
+ */
 interface UIState {
   showSuggestions: boolean;
   selectedIndex: number;
@@ -21,7 +32,10 @@ interface UIState {
   moveSelection: (direction: 'up' | 'down', maxIndex: number) => void;
 }
 
-// 热词状态
+/**
+ * 热词状态接口
+ * 管理热词数据和切换逻辑
+ */
 interface HotWordsState {
   hotWords: HotWord[];
   currentBatch: number;
@@ -30,13 +44,19 @@ interface HotWordsState {
   prevBatch: () => void;
 }
 
-// 用户状态
+/**
+ * 用户状态接口
+ * 管理用户登录信息
+ */
 interface UserState {
   userInfo: UserInfo | null;
   setUserInfo: (info: UserInfo | null) => void;
 }
 
-// 搜索Store
+/**
+ * 搜索Store
+ * 管理搜索关键词、搜索建议和搜索历史
+ */
 export const useSearchStore = create<SearchState>((set) => ({
   searchKeyword: '',
   suggestions: [],
@@ -70,7 +90,10 @@ export const useSearchStore = create<SearchState>((set) => ({
   }
 }));
 
-// UI Store
+/**
+ * UI Store
+ * 管理搜索建议框显示和键盘选择状态
+ */
 export const useUIStore = create<UIState>((set) => ({
   showSuggestions: false,
   selectedIndex: -1,
@@ -92,7 +115,10 @@ export const useUIStore = create<UIState>((set) => ({
   })
 }));
 
-// 热词Store
+/**
+ * 热词Store
+ * 管理热搜词数据和切换逻辑
+ */
 export const useHotWordsStore = create<HotWordsState>((set) => ({
   hotWords: [],
   currentBatch: 0,
@@ -108,14 +134,20 @@ export const useHotWordsStore = create<HotWordsState>((set) => ({
   }))
 }));
 
-// 用户Store
+/**
+ * 用户Store
+ * 管理用户登录信息状态
+ */
 export const useUserStore = create<UserState>((set) => ({
   userInfo: null,
   
   setUserInfo: (info) => set({ userInfo: info })
 }));
 
-// 初始化搜索历史
+/**
+ * 初始化搜索历史
+ * 从 localStorage 加载并恢复之前保存的搜索历史
+ */
 export const initSearchHistory = () => {
   try {
     const stored = localStorage.getItem('baidu_search_history');

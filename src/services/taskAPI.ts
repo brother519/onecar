@@ -1,3 +1,8 @@
+/**
+ * 任务管理 API 服务
+ * 提供任务的 CRUD 操作接口，当前使用 Mock 数据
+ * 可轻松替换为真实的后端 API 调用
+ */
 import { 
   Task, 
   User, 
@@ -20,8 +25,17 @@ const generateId = () => Date.now().toString() + Math.random().toString(36).subs
 // 任务数据存储（模拟）
 let tasks: Task[] = [...mockTasks];
 
+/**
+ * 任务 API 类
+ * 提供任务的增删改查操作
+ */
 export class TaskAPI {
-  // 获取任务列表
+  /**
+   * 获取任务列表
+   * @param {TaskFilters} filters - 筛选条件
+   * @param {PaginationParams} pagination - 分页参数
+   * @returns {Promise<ApiResponse<TaskListResponse>>} 任务列表响应
+   */
   static async getTasks(
     filters?: TaskFilters, 
     pagination?: PaginationParams
@@ -107,7 +121,11 @@ export class TaskAPI {
     };
   }
 
-  // 获取任务详情
+  /**
+   * 获取任务详情
+   * @param {string} id - 任务ID
+   * @returns {Promise<ApiResponse<Task | null>>} 任务详情
+   */
   static async getTask(id: string): Promise<ApiResponse<Task | null>> {
     await delay(200);
     
@@ -120,7 +138,11 @@ export class TaskAPI {
     };
   }
 
-  // 创建任务
+  /**
+   * 创建任务
+   * @param {TaskCreateRequest} data - 任务创建数据
+   * @returns {Promise<ApiResponse<Task>>} 创建的任务
+   */
   static async createTask(data: TaskCreateRequest): Promise<ApiResponse<Task>> {
     await delay(500);
 
@@ -150,7 +172,12 @@ export class TaskAPI {
     };
   }
 
-  // 更新任务
+  /**
+   * 更新任务
+   * @param {string} id - 任务ID
+   * @param {TaskUpdateRequest} data - 更新数据
+   * @returns {Promise<ApiResponse<Task | null>>} 更新后的任务
+   */
   static async updateTask(id: string, data: TaskUpdateRequest): Promise<ApiResponse<Task | null>> {
     await delay(400);
 
@@ -186,7 +213,11 @@ export class TaskAPI {
     };
   }
 
-  // 删除任务
+  /**
+   * 删除任务
+   * @param {string} id - 任务ID
+   * @returns {Promise<ApiResponse<boolean>>} 删除是否成功
+   */
   static async deleteTask(id: string): Promise<ApiResponse<boolean>> {
     await delay(300);
 
@@ -208,7 +239,11 @@ export class TaskAPI {
     };
   }
 
-  // 批量删除任务
+  /**
+   * 批量删除任务
+   * @param {string[]} ids - 任务ID数组
+   * @returns {Promise<ApiResponse<number>>} 删除的任务数量
+   */
   static async batchDeleteTasks(ids: string[]): Promise<ApiResponse<number>> {
     await delay(500);
 
@@ -223,7 +258,10 @@ export class TaskAPI {
     };
   }
 
-  // 获取用户列表
+  /**
+   * 获取用户列表
+   * @returns {Promise<ApiResponse<User[]>>} 用户列表
+   */
   static async getUsers(): Promise<ApiResponse<User[]>> {
     await delay(200);
 

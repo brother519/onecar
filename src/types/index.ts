@@ -1,3 +1,8 @@
+/**
+ * 任务管理系统类型定义
+ * 包含任务、用户、筛选条件等相关类型和接口定义
+ */
+
 // 任务状态枚举
 export enum TaskStatus {
   PENDING = 'pending',

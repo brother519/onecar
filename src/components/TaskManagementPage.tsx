@@ -1,3 +1,8 @@
+/**
+ * 任务管理主页面组件
+ * 提供任务列表展示、筛选、排序、分页等功能
+ * 支持卡片和列表两种视图模式
+ */
 import React, { useEffect, useState } from 'react';
 import {
   Layout,
@@ -33,8 +38,15 @@ import { TaskStatus } from '../types';
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
+/**
+ * 视图模式类型
+ */
 type ViewMode = 'card' | 'list';
 
+/**
+ * 任务管理页面组件
+ * @returns {React.ReactElement}
+ */
 const TaskManagementPage: React.FC = () => {
   const {
     tasks,

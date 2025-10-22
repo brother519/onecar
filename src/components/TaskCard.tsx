@@ -1,3 +1,8 @@
+/**
+ * 任务卡片组件
+ * 展示单个任务的详细信息，支持查看、编辑、删除操作
+ * 支持多选模式，用于批量操作
+ */
 import React from 'react';
 import { Card, Tag, Avatar, Checkbox, Button, Popconfirm, Tooltip } from 'antd';
 import { 
@@ -12,11 +17,19 @@ import { Task, statusConfig, priorityConfig } from '../types';
 import { formatDate, isOverdue } from '../utils';
 import { useTaskStore } from '../store';
 
+/**
+ * 任务卡片组件属性
+ */
 interface TaskCardProps {
-  task: Task;
-  selectable?: boolean;
+  task: Task;           // 任务数据
+  selectable?: boolean; // 是否支持多选
 }
 
+/**
+ * 任务卡片组件
+ * @param {TaskCardProps} props - 组件属性
+ * @returns {React.ReactElement}
+ */
 const TaskCard: React.FC<TaskCardProps> = ({ task, selectable = false }) => {
   const { 
     selectedTaskIds, 
