@@ -1,3 +1,8 @@
+/**
+ * 任务详情模态框组件
+ * 支持三种模式：查看(view)、创建(create)、编辑(edit)
+ * 提供任务详情展示和表单编辑功能
+ */
 import React, { useEffect, useState } from 'react';
 import {
   Modal,
@@ -30,6 +35,10 @@ import dayjs from 'dayjs';
 const { TextArea } = Input;
 const { Option } = Select;
 
+/**
+ * 任务详情模态框组件
+ * @returns {React.ReactElement}
+ */
 const TaskDetailModal: React.FC = () => {
   const {
     modalVisible,

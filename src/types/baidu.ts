@@ -1,3 +1,8 @@
+/**
+ * 百度首页相关类型定义
+ * 包括搜索建议、热词、用户信息、导航项等数据结构
+ */
+
 // 搜索建议类型定义
 export type SuggestionType = 'history' | 'hot' | 'suggest';
 

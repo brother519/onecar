@@ -1,3 +1,8 @@
+/**
+ * 任务筛选区域组件
+ * 提供关键词搜索、状态、负责人、优先级、时间范围等多维度筛选功能
+ * 支持防抖搜索和筛选条件展示
+ */
 import React, { useEffect } from 'react';
 import { 
   Row, 
@@ -18,6 +23,10 @@ import dayjs from 'dayjs';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
+/**
+ * 任务筛选区域组件
+ * @returns {React.ReactElement}
+ */
 const TaskFilterSection: React.FC = () => {
   const { 
     filters, 
