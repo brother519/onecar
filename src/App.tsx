@@ -5,7 +5,6 @@ import TaskManager from './pages/TaskManager';
 import 'dayjs/locale/zh-cn';
 import dayjs from 'dayjs';
 
-// 设置dayjs中文语言
 dayjs.locale('zh-cn');
 
 const App: React.FC = () => {

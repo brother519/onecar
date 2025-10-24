@@ -1,5 +1,38 @@
+/**
+ * Tom cat
+ * 
+ * 任务管理系统 - 主页面组件
+ * 
+ * 核心功能：
+ * - 任务列表展示和分页管理
+ * - 任务的增删改查操作
+ * - 多条件搜索和筛选
+ * - 批量操作（删除、状态更新）
+ * - 表单弹窗管理
+ * - 状态管理和数据同步
+ * 
+ * 组件架构：
+ * - SearchFilter: 搜索筛选组件
+ * - TaskList: 任务列表组件  
+ * - TaskForm: 任务表单弹窗
+ * - FloatingButton: 浮动操作按钮
+ * 
+ * 状态管理策略：
+ * - 使用React Hooks进行本地状态管理
+ * - 包含任务数据、UI状态、筛选条件等15个状态
+ * - 通过回调函数实现组件间通信
+ * 
+ * 性能优化：
+ * - 使用分页加载避免大量数据渲染
+ * - 合理控制重新渲染范围
+ * 
+ * @module TaskManager
+ * @author System
+ * @since 1.0.0
+ */
+
 import React, { useState, useEffect } from 'react';
-import { Layout, Typography, message, Modal, Spin } from 'antd';
+import { Layout, Typography, message, Modal } from 'antd';
 import { 
   Task, 
   TaskFilters, 

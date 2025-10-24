@@ -1,3 +1,28 @@
+/**
+ * Tom cat
+ * 
+ * 任务管理系统 - 浮动操作按钮组件
+ * 
+ * 功能说明：
+ * - 提供快捷操作入口（新建任务、批量操作）
+ * - 根据选中状态动态显示不同操作按钮
+ * - 支持批量删除并提供确认对话框
+ * - 支持批量更新任务状态
+ * - 提供取消选择功能
+ * 
+ * 依赖组件：
+ * - FloatButton: Ant Design浮动按钮组件
+ * - Modal: 用于确认对话框
+ * - Select: 用于选择任务状态
+ * 
+ * 交互特点：
+ * - 悬浮触发（hover）显示操作菜单
+ * - 批量操作前显示确认对话框，防止误操作
+ * - 显示当前选中任务数量
+ * 
+ * @module FloatingButton
+ */
+
 import React, { useState } from 'react';
 import { FloatButton, Modal, Select, Space, message } from 'antd';
 import { 
@@ -11,14 +36,60 @@ import { TaskStatus, STATUS_CONFIG } from '../types/task';
 
 const { Option } = Select;
 
+/**
+ * 浮动操作按钮组件属性接口
+ */
 interface FloatingButtonProps {
+  /** 当前选中的任务ID列表，用于批量操作 */
   selectedTaskIds: string[];
+  
+  /** 
+   * 新建任务回调函数
+   * 点击"新建任务"按钮时触发
+   */
   onNewTask: () => void;
+  
+  /** 
+   * 批量删除回调函数
+   * @param taskIds - 要删除的任务ID数组
+   */
   onBatchDelete: (taskIds: string[]) => void;
+  
+  /** 
+   * 批量状态更新回调函数
+   * @param taskIds - 要更新的任务ID数组
+   * @param status - 目标状态
+   */
   onBatchStatusUpdate: (taskIds: string[], status: TaskStatus) => void;
+  
+  /** 
+   * 清空选择回调函数
+   * 取消所有任务的选中状态
+   */
   onClearSelection: () => void;
 }
 
+/**
+ * 浮动操作按钮组件
+ * 
+ * 主要功能：
+ * - 提供快捷方式新建任务
+ * - 根据选中状态动态显示批量操作按钮
+ * - 支持批量删除和批量状态更新
+ * - 显示当前选中任务数量
+ * 
+ * 状态管理：
+ * - batchStatusModalVisible: 批量状态更新弹窗显示状态
+ * - selectedStatus: 当前选中的目标状态
+ * 
+ * 交互特点：
+ * - 悬浮触发显示操作菜单
+ * - 批量操作前显示确认对话框
+ * - 根据是否有选中任务动态调整菜单项
+ * 
+ * @param {FloatingButtonProps} props - 组件属性
+ * @returns {JSX.Element} 浮动操作按钮组
+ */
 const FloatingButton: React.FC<FloatingButtonProps> = ({
   selectedTaskIds,
   onNewTask,
@@ -26,10 +97,23 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   onBatchStatusUpdate,
   onClearSelection
 }) => {
+  /** 批量状态更新弹窗的显示状态 */
   const [batchStatusModalVisible, setBatchStatusModalVisible] = useState(false);
+  
+  /** 当前选中的目标状态，用于批量更新 */
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | undefined>();
 
-  // 批量删除确认
+  /**
+   * 处理批量删除操作
+   * 
+   * 执行流程：
+   * 1. 显示确认对话框，显示待删除任务数量
+   * 2. 用户确认后调用onBatchDelete回调
+   * 3. 清空选中状态
+   * 4. 显示成功消息
+   * 
+   * @returns {void} 无返回值，通过Modal组件处理用户交互
+   */
   const handleBatchDelete = () => {
     Modal.confirm({
       title: '确认批量删除',
@@ -45,12 +129,32 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     });
   };
 
-  // 批量状态更新
+  /**
+   * 处理批量状态更新操作
+   * 
+   * 执行流程：
+   * 1. 打开状态选择弹窗
+   * 2. 重置已选状态
+   * 
+   * @returns {void} 无返回值
+   */
   const handleBatchStatusUpdate = () => {
     setBatchStatusModalVisible(true);
     setSelectedStatus(undefined);
   };
 
+  /**
+   * 确认批量状态更新
+   * 
+   * 执行流程：
+   * 1. 验证是否已选择目标状态
+   * 2. 调用onBatchStatusUpdate回调更新任务状态
+   * 3. 清空选中状态
+   * 4. 关闭弹窗并重置状态
+   * 5. 显示成功消息
+   * 
+   * @returns {void} 无返回值
+   */
   const confirmBatchStatusUpdate = () => {
     if (!selectedStatus) {
       message.warning('请选择要更新的状态');
@@ -64,7 +168,15 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     message.success('任务状态更新成功');
   };
 
-  // 快捷操作菜单
+  /**
+   * 获取快捷操作按钮配置
+   * 
+   * 根据是否有选中任务动态返回不同的操作按钮：
+   * - 有选中任务：显示批量更新、批量删除、取消选择
+   * - 无选中任务：显示快捷提示按钮
+   * 
+   * @returns {Array} 按钮配置数组，包含图标、提示、回调等信息
+   */
   const getQuickActions = () => {
     if (selectedTaskIds.length > 0) {
       // 有选中任务时的批量操作

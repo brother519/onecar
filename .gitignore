@@ -362,3 +362,47 @@ hs_err_pid*
 # 例如：
 # config/local/
 # data/
+
+#########################################
+# 额外防护规则 - 防止引入不必要文件
+#########################################
+
+# Java 编译文件（针对 React/TypeScript 项目）
+*.class
+
+# 二进制诊断文件
+*.bin
+*.dump
+*.dmp
+
+# 临时脚本文件
+*.bak
+copy_*.sh
+backup_*.sh
+
+# 测试数据文件
+test*.txt
+sample*.txt
+demo*.txt
+
+#########################################
+# 额外防护规则 - 防止引入不必要文件
+#########################################
+
+# Java 编译文件（针对 React/TypeScript 项目）
+*.class
+
+# 二进制诊断文件
+*.bin
+*.dump
+*.dmp
+
+# 临时脚本文件
+*.bak
+copy_*.sh
+backup_*.sh
+
+# 测试数据文件
+test*.txt
+sample*.txt
+demo*.txt
