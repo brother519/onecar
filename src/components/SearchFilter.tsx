@@ -1,3 +1,28 @@
+/**
+ * Tom cat
+ * 
+ * 任务管理系统 - 搜索筛选组件
+ * 
+ * 功能说明：
+ * - 提供关键词搜索功能
+ * - 支持多条件筛选（状态、优先级、负责人、日期范围）
+ * - 高级筛选区域可折叠展开/收起
+ * - 显示当前活动的筛选条件标签
+ * - 支持一键清空所有筛选条件
+ * 
+ * 依赖组件：
+ * - Input.Search: 搜索输入框
+ * - Select: 下拉选择器
+ * - DatePicker.RangePicker: 日期范围选择器
+ * - Collapse: 折叠面板
+ * - Tag: 筛选条件标签
+ * 
+ * 状态管理：
+ * - expanded: 控制高级筛选区域的展开/收起状态
+ * 
+ * @module SearchFilter
+ */
+
 import React, { useState } from 'react';
 import { 
   Input, 
@@ -20,11 +45,29 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { Panel } = Collapse;
 
+/**
+ * 搜索筛选组件属性接口
+ */
 interface SearchFilterProps {
+  /** 当前的筛选条件对象 */
   filters: TaskFilters;
+  
+  /** 
+   * 筛选条件变更回调函数
+   * @param filters - 新的筛选条件对象
+   */
   onFiltersChange: (filters: TaskFilters) => void;
+  
+  /** 可选的负责人列表 */
   availableAssignees: string[];
+  
+  /** 
+   * 搜索按钮点击回调函数
+   * 触发实际的数据加载操作
+   */
   onSearch: () => void;
+  
+  /** 加载状态，控制搜索按钮的loading效果 */
   loading?: boolean;
 }
 
@@ -45,7 +88,13 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     });
   };
 
-  // 清空所有筛选条件
+  /**
+   * 清空所有筛选条件
+   * 
+   * 将所有筛选条件重置为初始值
+   * 
+   * @returns {void} 无返回值
+   */
   const clearAllFilters = () => {
     onFiltersChange({
       keyword: '',
@@ -56,7 +105,13 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     });
   };
 
-  // 检查是否有活动的筛选条件
+  /**
+   * 检查是否有活动的筛选条件
+   * 
+   * 检查任何筛选条件是否非空值
+   * 
+   * @returns {boolean} 有活动筛选条件返回true，否则返回false
+   */
   const hasActiveFilters = () => {
     return !!(
       filters.keyword ||
@@ -67,7 +122,13 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
     );
   };
 
-  // 获取活动筛选条件的数量
+  /**
+   * 获取活动筛选条件的数量
+   * 
+   * 统计非空的筛选条件数量，用于在按钮上显示
+   * 
+   * @returns {number} 活动筛选条件的数量
+   */
   const getActiveFilterCount = () => {
     let count = 0;
     if (filters.keyword) count++;

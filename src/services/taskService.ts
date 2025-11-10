@@ -1,13 +1,11 @@
 import { Task, TaskStatus, TaskPriority, TaskFilters, TaskFormData, ApiResponse, TaskListResponse } from '../types/task';
 import dayjs from 'dayjs';
 
-// 模拟用户数据
 export const MOCK_ASSIGNEES = [
   '张三', '李四', '王五', '赵六', '钱七', '孙八', '周九', '吴十',
   '郑十一', '王十二', '冯十三', '陈十四', '褚十五', '卫十六'
 ];
 
-// 生成模拟任务数据
 const generateMockTasks = (): Task[] => {
   const tasks: Task[] = [];
   const titles = [
@@ -77,22 +75,17 @@ const generateMockTasks = (): Task[] => {
   return tasks;
 };
 
-// 模拟数据存储
 let mockTasks = generateMockTasks();
 
-// 模拟API延迟
 const simulateApiDelay = (delay: number = 500): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, delay));
 };
 
-// 生成唯一ID
 const generateId = (): string => {
   return `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 };
 
-// 任务API服务
 export const taskService = {
-  // 获取任务列表
   async getTaskList(params: {
     page?: number;
     size?: number;
@@ -103,7 +96,6 @@ export const taskService = {
     const { page = 1, size = 20, filters } = params;
     let filteredTasks = [...mockTasks];
 
-    // 应用筛选条件
     if (filters) {
       if (filters.keyword) {
         const keyword = filters.keyword.toLowerCase();
@@ -140,7 +132,6 @@ export const taskService = {
       }
     }
 
-    // 分页
     const total = filteredTasks.length;
     const startIndex = (page - 1) * size;
     const endIndex = startIndex + size;
@@ -158,7 +149,6 @@ export const taskService = {
     };
   },
 
-  // 创建任务
   async createTask(formData: TaskFormData): Promise<ApiResponse<Task>> {
     await simulateApiDelay(300);
 
@@ -173,7 +163,7 @@ export const taskService = {
       dueDate: formData.dueDate,
       createdAt: now,
       updatedAt: now,
-      createdBy: 'current_user' // 在实际应用中从用户上下文获取
+      createdBy: 'current_user'
     };
 
     mockTasks.unshift(newTask);
@@ -185,7 +175,6 @@ export const taskService = {
     };
   },
 
-  // 更新任务
   async updateTask(taskId: string, formData: TaskFormData): Promise<ApiResponse<Task>> {
     await simulateApiDelay(300);
 
@@ -217,7 +206,6 @@ export const taskService = {
     };
   },
 
-  // 删除任务
   async deleteTask(taskId: string): Promise<ApiResponse<void>> {
     await simulateApiDelay(200);
 
@@ -239,7 +227,6 @@ export const taskService = {
     };
   },
 
-  // 更新任务状态
   async updateTaskStatus(taskId: string, status: TaskStatus): Promise<ApiResponse<Task>> {
     await simulateApiDelay(200);
 
@@ -267,7 +254,6 @@ export const taskService = {
     };
   },
 
-  // 批量删除任务
   async batchDeleteTasks(taskIds: string[]): Promise<ApiResponse<void>> {
     await simulateApiDelay(300);
 
@@ -280,7 +266,6 @@ export const taskService = {
     };
   },
 
-  // 批量更新任务状态
   async batchUpdateTaskStatus(taskIds: string[], status: TaskStatus): Promise<ApiResponse<Task[]>> {
     await simulateApiDelay(300);
 
