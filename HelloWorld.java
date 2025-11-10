@@ -1,16 +1,16 @@
 // Tom cat
 
 /**
- * HelloWorld 类
- * 这是一个简单的 Java 程序示例，用于演示基本的控制台输出功能
+ * HelloWorld class
+ * This is a simple Java program example to demonstrate basic console output functionality
  */
 public class HelloWorld {
     /**
-     * 主方法 - 程序入口点
-     * @param args 命令行参数数组
+     * Main method - program entry point
+     * @param args command line arguments array
      */
     public static void main(String[] args) {
-        // 向控制台输出 "Hello World" 消息
+        // Output "Hello World" message to console
         System.out.println("Hello World");
     }
 }
