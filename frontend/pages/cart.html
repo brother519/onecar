@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo" onclick="location.href='../index.html'" style="cursor:pointer">🛒 商城</div>
+            <nav class="nav-menu">
+                <a href="../index.html">首页</a>
+                <a href="cart.html" class="active">购物车</a>
+                <a href="orders.html">我的订单</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin: 30px auto;">
+        <h2>购物车</h2>
+        <div id="cartList" style="margin-top: 20px;"></div>
+        <div class="card" style="margin-top: 20px; display: none;" id="cartSummary">
+            <h3>结算信息</h3>
+            <p>已选商品：<span id="selectedCount">0</span> 件</p>
+            <p>总计：<span id="totalAmount" style="color: #ff4d4f; font-size: 24px; font-weight: bold;">¥0.00</span></p>
+            <button class="btn btn-primary" style="width: 100%;" onclick="checkout()">去结算</button>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script>
+        if (!checkLogin()) {
+            location.href = 'login.html';
+        }
+
+        let cartData = null;
+
+        async function loadCart() {
+            showLoading();
+            try {
+                const result = await cartAPI.get();
+                hideLoading();
+                if (result && result.code === 0) {
+                    cartData = result.data;
+                    renderCart();
+                }
+            } catch (error) {
+                hideLoading();
+                showMessage('加载失败', 'error');
+            }
+        }
+
+        function renderCart() {
+            const cartList = document.getElementById('cartList');
+            const cartSummary = document.getElementById('cartSummary');
+            
+            if (!cartData.items || cartData.items.length === 0) {
+                cartList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🛒</div><p>购物车是空的</p></div>';
+                cartSummary.style.display = 'none';
+                return;
+            }
+
+            cartList.innerHTML = cartData.items.map(item => `
+                <div class="card" style="margin-bottom: 15px; display: flex; align-items: center; gap: 15px;">
+                    <input type="checkbox" ${item.selected ? 'checked' : ''} onchange="toggleSelect('${item.productId}', this.checked)">
+                    <div style="flex: 1;">
+                        <h4>${item.productId}</h4>
+                        <p>单价：${formatPrice(item.price)}</p>
+                    </div>
+                    <div>
+                        <button onclick="updateQuantity('${item.productId}', ${item.quantity - 1})">-</button>
+                        <span style="margin: 0 10px;">${item.quantity}</span>
+                        <button onclick="updateQuantity('${item.productId}', ${item.quantity + 1})">+</button>
+                    </div>
+                    <div style="font-weight: bold;">${formatPrice(item.price * item.quantity)}</div>
+                    <button class="btn btn-danger" onclick="removeItem('${item.productId}')">删除</button>
+                </div>
+            `).join('');
+
+            const selectedCount = cartData.items.filter(i => i.selected).length;
+            document.getElementById('selectedCount').textContent = selectedCount;
+            document.getElementById('totalAmount').textContent = formatPrice(cartData.totalAmount);
+            cartSummary.style.display = selectedCount > 0 ? 'block' : 'none';
+        }
+
+        async function toggleSelect(productId, selected) {
+            try {
+                await cartAPI.updateItem(productId, cartData.items.find(i => i.productId === productId).quantity, selected);
+                loadCart();
+            } catch (error) {
+                showMessage('操作失败', 'error');
+            }
+        }
+
+        async function updateQuantity(productId, newQuantity) {
+            if (newQuantity < 1) return;
+            try {
+                await cartAPI.updateItem(productId, newQuantity);
+                loadCart();
+            } catch (error) {
+                showMessage('更新失败', 'error');
+            }
+        }
+
+        async function removeItem(productId) {
+            if (!confirm('确定要删除此商品吗？')) return;
+            try {
+                await cartAPI.deleteItem(productId);
+                showMessage('已删除', 'success');
+                loadCart();
+            } catch (error) {
+                showMessage('删除失败', 'error');
+            }
+        }
+
+        function checkout() {
+            location.href = 'checkout.html';
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>
