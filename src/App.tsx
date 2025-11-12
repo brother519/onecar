@@ -1,3 +1,13 @@
+/**
+ * 任务管理系统 - 应用根组件
+ *
+ * 功能说明：
+ * - 设置 Ant Design 国际化为中文
+ * - 配置 dayjs 中文本地化
+ * - 渲染根页面组件 TaskManager
+ *
+ * @module App
+ */
 import React from 'react';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
