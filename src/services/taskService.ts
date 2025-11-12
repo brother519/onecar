@@ -1,17 +1,4 @@
-/**
- * 任务管理系统 - 任务服务模块（Mock 实现）
- *
- * 功能说明：
- * - 提供任务的增删改查 API（前端本地模拟）
- * - 支持分页、筛选、批量删除与批量状态更新
- * - 内置模拟网络延时与随机数据生成
- *
- * 注意事项：
- * - 当前实现为前端本地 Mock，不与后端交互
- * - 生产环境请替换为真实 HTTP 请求
- *
- * @module taskService
- */
+
 import { Task, TaskStatus, TaskPriority, TaskFilters, TaskFormData, ApiResponse, TaskListResponse } from '../types/task';
 import dayjs from 'dayjs';
 
