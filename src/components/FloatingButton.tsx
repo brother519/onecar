@@ -1,27 +1,3 @@
-/**
- * Tom cat
- * 
- * 任务管理系统 - 浮动操作按钮组件
- * 
- * 功能说明：
- * - 提供快捷操作入口（新建任务、批量操作）
- * - 根据选中状态动态显示不同操作按钮
- * - 支持批量删除并提供确认对话框
- * - 支持批量更新任务状态
- * - 提供取消选择功能
- * 
- * 依赖组件：
- * - FloatButton: Ant Design浮动按钮组件
- * - Modal: 用于确认对话框
- * - Select: 用于选择任务状态
- * 
- * 交互特点：
- * - 悬浮触发（hover）显示操作菜单
- * - 批量操作前显示确认对话框，防止误操作
- * - 显示当前选中任务数量
- * 
- * @module FloatingButton
- */
 
 import React, { useState } from 'react';
 import { FloatButton, Modal, Select, Space, message } from 'antd';
@@ -36,11 +12,7 @@ import { TaskStatus, STATUS_CONFIG } from '../types/task';
 
 const { Option } = Select;
 
-/**
- * 浮动操作按钮组件属性接口
- */
 interface FloatingButtonProps {
-  /** 当前选中的任务ID列表，用于批量操作 */
   selectedTaskIds: string[];
   
   /** 
