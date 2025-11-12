@@ -1,28 +1,4 @@
-/**
- * Tom cat
- * 
- * 任务管理系统 - 任务表单组件
- * 
- * 功能说明：
- * - 支持新建和编辑任务两种模式
- * - 提供完整的表单验证机制
- * - 支持任务标题、描述、优先级、负责人、截止日期输入
- * - 编辑模式下自动预填充现有数据
- * - 实时字符数统计和限制
- * 
- * 依赖组件：
- * - Modal: 弹窗容器
- * - Form: Ant Design表单组件
- * - Input/TextArea: 输入框
- * - Select: 选择器
- * - DatePicker: 日期选择器
- * 
- * 表单模式：
- * - 新建模式：editingTask为null，表单为空白状态
- * - 编辑模式：editingTask非空，表单预填充任务数据
- * 
- * @module TaskForm
- */
+
 
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, DatePicker, Space, Button } from 'antd';
@@ -32,32 +8,17 @@ import dayjs from 'dayjs';
 const { TextArea } = Input;
 const { Option } = Select;
 
-/**
- * 任务表单组件属性接口
- */
+
 interface TaskFormProps {
-  /** 弹窗显示状态 */
+
   visible: boolean;
-  
-  /** 
-   * 当前编辑的任务对象
-   * null时为新建模式，非空时为编辑模式
-   */
+
   editingTask: Task | null;
-  
-  /** 
-   * 取消按钮回调函数
-   * 关闭弹窗并重置表单
-   */
+
   onCancel: () => void;
-  
-  /** 
-   * 表单提交回调函数
-   * @param formData - 表单数据对象
-   */
+
   onSubmit: (formData: TaskFormData) => void;
-  
-  /** 可选的负责人列表 */
+
   availableAssignees: string[];
 }
 
@@ -73,7 +34,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
   useEffect(() => {
     if (visible) {
       if (editingTask) {
-        /** 编辑模式：填充现有数据 */
+
         form.setFieldsValue({
           title: editingTask.title,
           description: editingTask.description || '',
@@ -82,10 +43,10 @@ const TaskForm: React.FC<TaskFormProps> = ({
           dueDate: editingTask.dueDate ? dayjs(editingTask.dueDate) : null,
         });
       } else {
-        /** 新建模式：重置表单 */
+
         form.resetFields();
         form.setFieldsValue({
-          priority: TaskPriority.MEDIUM, // 默认中优先级
+
           assignees: [],
         });
       }
@@ -104,7 +65,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
       };
       onSubmit(formData);
     } catch (errorInfo) {
-      console.log('表单验证失败:', errorInfo);
+
     }
   };
 
@@ -114,14 +75,14 @@ const TaskForm: React.FC<TaskFormProps> = ({
   };
 
   /**
-   * 表单验证规则配置
+   * Form validation rule configuration
    * 
-   * 包含所有表单字段的验证规则：
-   * - title: 必填，1-100字符
-   * - description: 可选，最多1000字符
-   * - priority: 必填
-   * - assignees: 必填，至少一人
-   * - dueDate: 可选，不能早于今天
+   * Contains validation rules for all form fields:
+   * - title: Required, 1-100 characters
+   * - description: Optional, max 1000 characters
+   * - priority: Required
+   * - assignees: Required, at least one person
+   * - dueDate: Optional, cannot be earlier than today
    */
   const validationRules = {
     title: [
