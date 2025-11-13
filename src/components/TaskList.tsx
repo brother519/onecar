@@ -1,30 +1,30 @@
 /**
  * Tom cat
  * 
- * 任务管理系统 - 任务列表组件
+ * Task Management System - Task List Component
  * 
- * 功能说明：
- * - 以表格形式展示任务列表
- * - 支持多选和批量操作
- * - 提供排序、筛选功能
- * - 支持单个任务的编辑、删除、状态更新
- * - 显示分页控件
- * - 截止日期预警显示(过期/今天/明天颜色标记)
+ * Features:
+ * - Display task list in table format
+ * - Support multi-select and batch operations
+ * - Provide sorting and filtering functions
+ * - Support edit, delete, status update for individual tasks
+ * - Display pagination controls
+ * - Due date warning display (overdue/today/tomorrow color markers)
  * 
- * 依赖组件：
- * - Table: Ant Design表格组件
- * - Tag: 标签组件用于显示状态、优先级、负责人
- * - Dropdown: 下拉菜单组件
- * - Button: 按钮组件
+ * Dependencies:
+ * - Table: Ant Design table component
+ * - Tag: Tag component for displaying status, priority, assignees
+ * - Dropdown: Dropdown menu component
+ * - Button: Button component
  * 
- * 表格列配置：
- * - 任务标题：支持文本省略和Tooltip显示，点击进入编辑
- * - 状态：显示Tag，支持筛选
- * - 优先级：显示Tag，支持筛选和排序
- * - 负责人：显示多个Tag
- * - 截止日期：支持排序，过期显示红色
- * - 创建时间：支持排序
- * - 操作：状态更新、编辑、删除
+ * Table Column Configuration:
+ * - Task Title: Supports text ellipsis and Tooltip display, click to edit
+ * - Status: Display Tag, support filtering
+ * - Priority: Display Tag, support filtering and sorting
+ * - Assignees: Display multiple Tags
+ * - Due Date: Support sorting, overdue displays in red
+ * - Created At: Support sorting
+ * - Actions: Status update, edit, delete
  * 
  * @module TaskList
  */
@@ -37,67 +37,67 @@ import { Task, TaskStatus, TaskPriority, STATUS_CONFIG, PRIORITY_CONFIG } from '
 import dayjs from 'dayjs';
 
 /**
- * 任务列表组件属性接口
+ * Task list component props interface
  */
 interface TaskListProps {
-  /** 任务列表数据数组 */
+  /** Task list data array */
   tasks: Task[];
   
-  /** 全局加载状态，控制表格loading效果 */
+  /** Global loading state, controls table loading effect */
   loading: boolean;
   
-  /** 当前选中的任务ID数组，用于批量操作 */
+  /** Array of currently selected task IDs for batch operations */
   selectedTaskIds: string[];
   
   /** 
-   * 任务选中状态变更回调
-   * @param taskIds - 新的选中任务ID数组
+   * Task selection state change callback
+   * @param taskIds - New array of selected task IDs
    */
   onTaskSelect: (taskIds: string[]) => void;
   
   /** 
-   * 任务编辑回调，打开编辑表单
-   * @param task - 要编辑的任务对象
+   * Task edit callback, opens edit form
+   * @param task - Task object to edit
    */
   onTaskEdit: (task: Task) => void;
   
   /** 
-   * 任务删除回调
-   * @param taskId - 要删除的任务ID
+   * Task delete callback
+   * @param taskId - Task ID to delete
    */
   onTaskDelete: (taskId: string) => void;
   
   /** 
-   * 任务状态更新回调
-   * @param taskId - 要更新的任务ID
-   * @param status - 目标状态
+   * Task status update callback
+   * @param taskId - Task ID to update
+   * @param status - Target status
    */
   onTaskStatusChange: (taskId: string, status: TaskStatus) => void;
   
   /** 
-   * 批量操作回调
-   * @param operation - 操作类型
-   * @param taskIds - 要操作的任务ID数组
+   * Batch operation callback
+   * @param operation - Operation type
+   * @param taskIds - Array of task IDs to operate on
    */
   onBatchOperation: (operation: string, taskIds: string[]) => void;
 }
 
 /**
- * 任务列表组件
+ * Task List Component
  * 
- * 主要功能：
- * - 以表格形式展示任务列表数据
- * - 支持多选和批量操作
- * - 提供排序、筛选功能
- * - 支持单个任务的编辑、删除、状态更新
- * - 显示分页控件
+ * Main Features:
+ * - Display task list data in table format
+ * - Support multi-select and batch operations
+ * - Provide sorting and filtering functions
+ * - Support edit, delete, status update for individual tasks
+ * - Display pagination controls
  * 
- * 特殊显示逻辑：
- * - 截止日期：过期显示红色，今天显示橙色，明天显示金色
- * - 任务标题：支持文本省略和Tooltip显示
+ * Special Display Logic:
+ * - Due Date: Overdue displays in red, today in orange, tomorrow in gold
+ * - Task Title: Supports text ellipsis and Tooltip display
  * 
- * @param {TaskListProps} props - 组件属性
- * @returns {JSX.Element} 任务列表表格组件
+ * @param {TaskListProps} props - Component props
+ * @returns {JSX.Element} Task list table component
  */
 const TaskList: React.FC<TaskListProps> = ({
   tasks,
@@ -110,13 +110,13 @@ const TaskList: React.FC<TaskListProps> = ({
   onBatchOperation
 }) => {
   /**
-   * 获取任务状态更新下拉菜单
+   * Get task status update dropdown menu
    * 
-   * 根据当前任务状态，生成所有可用状态选项
-   * 当前状态的选项为禁用状态
+   * Generates all available status options based on current task status
+   * Current status option is disabled
    * 
-   * @param {Task} task - 任务对象
-   * @returns {JSX.Element} Ant Design的Menu组件
+   * @param {Task} task - Task object
+   * @returns {JSX.Element} Ant Design Menu component
    */
   const getStatusMenu = (task: Task) => (
     <Menu
@@ -130,25 +130,25 @@ const TaskList: React.FC<TaskListProps> = ({
   );
 
   /**
-   * 获取任务操作菜单
+   * Get task action menu
    * 
-   * 生成包含编辑和删除选项的下拉菜单
+   * Generates dropdown menu containing edit and delete options
    * 
-   * @param {Task} task - 任务对象
-   * @returns {JSX.Element} Ant Design的Menu组件
+   * @param {Task} task - Task object
+   * @returns {JSX.Element} Ant Design Menu component
    */
   const getActionMenu = (task: Task) => (
     <Menu
       items={[
         {
           key: 'edit',
-          label: '编辑',
+          label: 'Edit',
           icon: <EditOutlined />,
           onClick: () => onTaskEdit(task)
         },
         {
           key: 'delete',
-          label: '删除',
+          label: 'Delete',
           icon: <DeleteOutlined />,
           danger: true,
           onClick: () => onTaskDelete(task.id)
@@ -159,7 +159,7 @@ const TaskList: React.FC<TaskListProps> = ({
 
   const columns: ColumnsType<Task> = [
     {
-      title: '任务标题',
+      title: 'Task Title',
       dataIndex: 'title',
       key: 'title',
       ellipsis: {
@@ -177,7 +177,7 @@ const TaskList: React.FC<TaskListProps> = ({
       ),
     },
     {
-      title: '状态',
+      title: 'Status',
       dataIndex: 'status',
       key: 'status',
       width: 100,
@@ -196,7 +196,7 @@ const TaskList: React.FC<TaskListProps> = ({
       onFilter: (value, record) => record.status === value,
     },
     {
-      title: '优先级',
+      title: 'Priority',
       dataIndex: 'priority',
       key: 'priority',
       width: 100,
@@ -216,7 +216,7 @@ const TaskList: React.FC<TaskListProps> = ({
       sorter: (a, b) => PRIORITY_CONFIG[a.priority].weight - PRIORITY_CONFIG[b.priority].weight,
     },
     {
-      title: '负责人',
+      title: 'Assignees',
       dataIndex: 'assignees',
       key: 'assignees',
       width: 150,
@@ -231,7 +231,7 @@ const TaskList: React.FC<TaskListProps> = ({
       ),
     },
     {
-      title: '截止日期',
+      title: 'Due Date',
       dataIndex: 'dueDate',
       key: 'dueDate',
       width: 120,
@@ -262,7 +262,7 @@ const TaskList: React.FC<TaskListProps> = ({
       },
     },
     {
-      title: '创建时间',
+      title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdAt',
       width: 120,
@@ -270,14 +270,14 @@ const TaskList: React.FC<TaskListProps> = ({
       sorter: (a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf(),
     },
     {
-      title: '操作',
+      title: 'Actions',
       key: 'action',
       width: 120,
       render: (_, record: Task) => (
         <Space size="middle">
           <Dropdown overlay={getStatusMenu(record)} trigger={['click']}>
             <Button size="small" type="link">
-              状态
+              Status
             </Button>
           </Dropdown>
           <Dropdown overlay={getActionMenu(record)} trigger={['click']}>
@@ -312,19 +312,19 @@ const TaskList: React.FC<TaskListProps> = ({
       {selectedTaskIds.length > 0 && (
         <div style={{ marginBottom: 16, padding: '8px 16px', background: '#f0f2f5', borderRadius: '6px' }}>
           <Space>
-            <span>已选择 {selectedTaskIds.length} 个任务</span>
+            <span>Selected {selectedTaskIds.length} task(s)</span>
             <Button 
               size="small" 
               onClick={() => onBatchOperation('updateStatus', selectedTaskIds)}
             >
-              批量更新状态
+              Batch Update Status
             </Button>
             <Button 
               size="small" 
               danger 
               onClick={() => onBatchOperation('delete', selectedTaskIds)}
             >
-              批量删除
+              Batch Delete
             </Button>
           </Space>
         </div>
@@ -340,7 +340,7 @@ const TaskList: React.FC<TaskListProps> = ({
           showSizeChanger: true,
           showQuickJumper: true,
           showTotal: (total, range) => 
-            `第 ${range[0]}-${range[1]} 条，共 ${total} 条记录`,
+            `Showing ${range[0]}-${range[1]} of ${total} record(s)`,
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
         scroll={{ x: 1000 }}

@@ -1,24 +1,24 @@
 /**
  * Tom cat
  * 
- * 任务管理系统 - 浮动操作按钮组件
+ * Task Management System - Floating Action Button Component
  * 
- * 功能说明：
- * - 提供快捷操作入口（新建任务、批量操作）
- * - 根据选中状态动态显示不同操作按钮
- * - 支持批量删除并提供确认对话框
- * - 支持批量更新任务状态
- * - 提供取消选择功能
+ * Features:
+ * - Provides quick action entry (create task, batch operations)
+ * - Dynamically displays different action buttons based on selection state
+ * - Supports batch deletion with confirmation dialog
+ * - Supports batch task status updates
+ * - Provides clear selection functionality
  * 
- * 依赖组件：
- * - FloatButton: Ant Design浮动按钮组件
- * - Modal: 用于确认对话框
- * - Select: 用于选择任务状态
+ * Dependencies:
+ * - FloatButton: Ant Design floating button component
+ * - Modal: Used for confirmation dialogs
+ * - Select: Used for selecting task status
  * 
- * 交互特点：
- * - 悬浮触发（hover）显示操作菜单
- * - 批量操作前显示确认对话框，防止误操作
- * - 显示当前选中任务数量
+ * Interaction Features:
+ * - Hover trigger to display action menu
+ * - Shows confirmation dialog before batch operations to prevent misoperations
+ * - Displays current selected task count
  * 
  * @module FloatingButton
  */
@@ -37,58 +37,58 @@ import { TaskStatus, STATUS_CONFIG } from '../types/task';
 const { Option } = Select;
 
 /**
- * 浮动操作按钮组件属性接口
+ * Floating action button component props interface
  */
 interface FloatingButtonProps {
-  /** 当前选中的任务ID列表，用于批量操作 */
+  /** List of currently selected task IDs for batch operations */
   selectedTaskIds: string[];
   
   /** 
-   * 新建任务回调函数
-   * 点击"新建任务"按钮时触发
+   * Create new task callback function
+   * Triggered when "Create Task" button is clicked
    */
   onNewTask: () => void;
   
   /** 
-   * 批量删除回调函数
-   * @param taskIds - 要删除的任务ID数组
+   * Batch delete callback function
+   * @param taskIds - Array of task IDs to delete
    */
   onBatchDelete: (taskIds: string[]) => void;
   
   /** 
-   * 批量状态更新回调函数
-   * @param taskIds - 要更新的任务ID数组
-   * @param status - 目标状态
+   * Batch status update callback function
+   * @param taskIds - Array of task IDs to update
+   * @param status - Target status
    */
   onBatchStatusUpdate: (taskIds: string[], status: TaskStatus) => void;
   
   /** 
-   * 清空选择回调函数
-   * 取消所有任务的选中状态
+   * Clear selection callback function
+   * Cancels selection state of all tasks
    */
   onClearSelection: () => void;
 }
 
 /**
- * 浮动操作按钮组件
+ * Floating Action Button Component
  * 
- * 主要功能：
- * - 提供快捷方式新建任务
- * - 根据选中状态动态显示批量操作按钮
- * - 支持批量删除和批量状态更新
- * - 显示当前选中任务数量
+ * Main Features:
+ * - Provides quick access to create new task
+ * - Dynamically displays batch operation buttons based on selection state
+ * - Supports batch deletion and batch status updates
+ * - Displays current selected task count
  * 
- * 状态管理：
- * - batchStatusModalVisible: 批量状态更新弹窗显示状态
- * - selectedStatus: 当前选中的目标状态
+ * State Management:
+ * - batchStatusModalVisible: Batch status update modal visibility state
+ * - selectedStatus: Currently selected target status
  * 
- * 交互特点：
- * - 悬浮触发显示操作菜单
- * - 批量操作前显示确认对话框
- * - 根据是否有选中任务动态调整菜单项
+ * Interaction Features:
+ * - Hover trigger to display action menu
+ * - Shows confirmation dialog before batch operations
+ * - Dynamically adjusts menu items based on whether tasks are selected
  * 
- * @param {FloatingButtonProps} props - 组件属性
- * @returns {JSX.Element} 浮动操作按钮组
+ * @param {FloatingButtonProps} props - Component props
+ * @returns {JSX.Element} Floating action button group
  */
 const FloatingButton: React.FC<FloatingButtonProps> = ({
   selectedTaskIds,
@@ -97,46 +97,46 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   onBatchStatusUpdate,
   onClearSelection
 }) => {
-  /** 批量状态更新弹窗的显示状态 */
+  /** Visibility state of batch status update modal */
   const [batchStatusModalVisible, setBatchStatusModalVisible] = useState(false);
   
-  /** 当前选中的目标状态，用于批量更新 */
+  /** Currently selected target status for batch update */
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | undefined>();
 
   /**
-   * 处理批量删除操作
+   * Handle batch delete operation
    * 
-   * 执行流程：
-   * 1. 显示确认对话框，显示待删除任务数量
-   * 2. 用户确认后调用onBatchDelete回调
-   * 3. 清空选中状态
-   * 4. 显示成功消息
+   * Execution flow:
+   * 1. Display confirmation dialog showing number of tasks to delete
+   * 2. Call onBatchDelete callback after user confirmation
+   * 3. Clear selection state
+   * 4. Show success message
    * 
-   * @returns {void} 无返回值，通过Modal组件处理用户交互
+   * @returns {void} No return value, user interaction handled by Modal component
    */
   const handleBatchDelete = () => {
     Modal.confirm({
-      title: '确认批量删除',
-      content: `确定要删除选中的 ${selectedTaskIds.length} 个任务吗？此操作无法撤销。`,
-      okText: '删除',
+      title: 'Confirm Batch Delete',
+      content: `Are you sure you want to delete the selected ${selectedTaskIds.length} task(s)? This operation cannot be undone.`,
+      okText: 'Delete',
       okType: 'danger',
-      cancelText: '取消',
+      cancelText: 'Cancel',
       onOk: () => {
         onBatchDelete(selectedTaskIds);
         onClearSelection();
-        message.success('任务删除成功');
+        message.success('Tasks deleted successfully');
       }
     });
   };
 
   /**
-   * 处理批量状态更新操作
+   * Handle batch status update operation
    * 
-   * 执行流程：
-   * 1. 打开状态选择弹窗
-   * 2. 重置已选状态
+   * Execution flow:
+   * 1. Open status selection modal
+   * 2. Reset selected status
    * 
-   * @returns {void} 无返回值
+   * @returns {void} No return value
    */
   const handleBatchStatusUpdate = () => {
     setBatchStatusModalVisible(true);
@@ -144,20 +144,20 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   };
 
   /**
-   * 确认批量状态更新
+   * Confirm batch status update
    * 
-   * 执行流程：
-   * 1. 验证是否已选择目标状态
-   * 2. 调用onBatchStatusUpdate回调更新任务状态
-   * 3. 清空选中状态
-   * 4. 关闭弹窗并重置状态
-   * 5. 显示成功消息
+   * Execution flow:
+   * 1. Validate whether target status is selected
+   * 2. Call onBatchStatusUpdate callback to update task status
+   * 3. Clear selection state
+   * 4. Close modal and reset status
+   * 5. Show success message
    * 
-   * @returns {void} 无返回值
+   * @returns {void} No return value
    */
   const confirmBatchStatusUpdate = () => {
     if (!selectedStatus) {
-      message.warning('请选择要更新的状态');
+      message.warning('Please select a status to update');
       return;
     }
     
@@ -165,49 +165,49 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
     onClearSelection();
     setBatchStatusModalVisible(false);
     setSelectedStatus(undefined);
-    message.success('任务状态更新成功');
+    message.success('Task status updated successfully');
   };
 
   /**
-   * 获取快捷操作按钮配置
+   * Get quick action button configuration
    * 
-   * 根据是否有选中任务动态返回不同的操作按钮：
-   * - 有选中任务：显示批量更新、批量删除、取消选择
-   * - 无选中任务：显示快捷提示按钮
+   * Returns different action buttons based on whether tasks are selected:
+   * - Tasks selected: Show batch update, batch delete, cancel selection
+   * - No tasks selected: Show quick tip button
    * 
-   * @returns {Array} 按钮配置数组，包含图标、提示、回调等信息
+   * @returns {Array} Button configuration array containing icon, tooltip, callback, etc.
    */
   const getQuickActions = () => {
     if (selectedTaskIds.length > 0) {
-      // 有选中任务时的批量操作
+      // Batch operations when tasks are selected
       return [
         {
           icon: <EditOutlined />,
-          tooltip: `批量更新状态 (${selectedTaskIds.length}个)`,
+          tooltip: `Batch Update Status (${selectedTaskIds.length})`,
           onClick: handleBatchStatusUpdate,
           type: 'primary' as const
         },
         {
           icon: <DeleteOutlined />,
-          tooltip: `批量删除 (${selectedTaskIds.length}个)`,
+          tooltip: `Batch Delete (${selectedTaskIds.length})`,
           onClick: handleBatchDelete,
           type: 'default' as const,
           danger: true
         },
         {
           icon: <SettingOutlined />,
-          tooltip: '取消选择',
+          tooltip: 'Cancel Selection',
           onClick: onClearSelection,
           type: 'default' as const
         }
       ];
     } else {
-      // 无选中任务时的常规操作
+      // Regular operations when no tasks are selected
       return [
         {
           icon: <BulbOutlined />,
-          tooltip: '快捷提示：选择任务后可进行批量操作',
-          onClick: () => message.info('选择一个或多个任务来进行批量操作'),
+          tooltip: 'Quick Tip: Select tasks for batch operations',
+          onClick: () => message.info('Select one or more tasks for batch operations'),
           type: 'default' as const
         }
       ];
@@ -221,17 +221,17 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         type="primary"
         style={{ right: 24 }}
         icon={<SettingOutlined />}
-        tooltip="操作菜单"
+        tooltip="Actions Menu"
       >
-        {/* 新建任务按钮 - 始终显示 */}
+        {/* Create Task Button - Always visible */}
         <FloatButton
           icon={<PlusOutlined />}
-          tooltip="新建任务"
+          tooltip="Create Task"
           onClick={onNewTask}
           type="primary"
         />
         
-        {/* 动态快捷操作按钮 */}
+        {/* Dynamic quick action buttons */
         {getQuickActions().map((action, index) => (
           <FloatButton
             key={index}
@@ -244,24 +244,24 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         ))}
       </FloatButton.Group>
 
-      {/* 批量状态更新弹窗 */}
+      {/* Batch status update modal */}
       <Modal
-        title="批量更新任务状态"
+        title="Batch Update Task Status"
         open={batchStatusModalVisible}
         onOk={confirmBatchStatusUpdate}
         onCancel={() => {
           setBatchStatusModalVisible(false);
           setSelectedStatus(undefined);
         }}
-        okText="更新"
-        cancelText="取消"
+        okText="Update"
+        cancelText="Cancel"
         width={400}
       >
         <Space direction="vertical" style={{ width: '100%' }}>
-          <p>将为选中的 <strong>{selectedTaskIds.length}</strong> 个任务更新状态：</p>
+          <p>Update status for <strong>{selectedTaskIds.length}</strong> selected task(s):</p>
           
           <Select
-            placeholder="请选择新状态"
+            placeholder="Please select new status"
             value={selectedStatus}
             onChange={setSelectedStatus}
             style={{ width: '100%' }}

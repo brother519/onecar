@@ -1,30 +1,30 @@
 /**
  * Tom cat
  * 
- * 任务管理系统 - 主页面组件
+ * Task Management System - Main Page Component
  * 
- * 核心功能：
- * - 任务列表展示和分页管理
- * - 任务的增删改查操作
- * - 多条件搜索和筛选
- * - 批量操作（删除、状态更新）
- * - 表单弹窗管理
- * - 状态管理和数据同步
+ * Core Features:
+ * - Task list display and pagination management
+ * - Task CRUD operations
+ * - Multi-condition search and filtering
+ * - Batch operations (delete, status update)
+ * - Form modal management
+ * - State management and data synchronization
  * 
- * 组件架构：
- * - SearchFilter: 搜索筛选组件
- * - TaskList: 任务列表组件  
- * - TaskForm: 任务表单弹窗
- * - FloatingButton: 浮动操作按钮
+ * Component Architecture:
+ * - SearchFilter: Search filter component
+ * - TaskList: Task list component  
+ * - TaskForm: Task form modal
+ * - FloatingButton: Floating action button
  * 
- * 状态管理策略：
- * - 使用React Hooks进行本地状态管理
- * - 包含任务数据、UI状态、筛选条件等15个状态
- * - 通过回调函数实现组件间通信
+ * State Management Strategy:
+ * - Use React Hooks for local state management
+ * - Contains 15 states including task data, UI state, filter conditions
+ * - Component communication via callback functions
  * 
- * 性能优化：
- * - 使用分页加载避免大量数据渲染
- * - 合理控制重新渲染范围
+ * Performance Optimization:
+ * - Use pagination loading to avoid rendering large amounts of data
+ * - Reasonably control re-rendering scope
  * 
  * @module TaskManager
  * @author System
@@ -50,53 +50,53 @@ const { Header, Content } = Layout;
 const { Title } = Typography;
 
 /**
- * TaskManager - 任务管理主组件
+ * TaskManager - Task Management Main Component
  * 
- * 主要功能:
- * - 任务列表展示和分页管理
- * - 任务的增删改查操作
- * - 多条件搜索和筛选
- * - 批量操作（删除、状态更新）
- * - 表单弹窗管理
- * - 状态管理和数据同步
+ * Main Features:
+ * - Task list display and pagination management
+ * - Task CRUD operations
+ * - Multi-condition search and filtering
+ * - Batch operations (delete, status update)
+ * - Form modal management
+ * - State management and data synchronization
  * 
- * 依赖组件: TaskList, TaskForm, SearchFilter, FloatingButton
- * 状态管理: 使用React Hooks进行本地状态管理，包含任务数据、UI状态、筛选条件等
- * 性能考量: 使用分页加载避免大量数据渲染，合理控制重新渲染范围
+ * Dependencies: TaskList, TaskForm, SearchFilter, FloatingButton
+ * State Management: Use React Hooks for local state management, including task data, UI state, filter conditions, etc.
+ * Performance Considerations: Use pagination loading to avoid rendering large amounts of data, reasonably control re-rendering scope
  * 
- * @returns {JSX.Element} 任务管理系统的主界面组件
+ * @returns {JSX.Element} Main interface component of task management system
  * @since 1.0.0
  */
 const TaskManager: React.FC = () => {
-  // ==================== 状态管理层 ====================
-  // 模块职责: 管理组件的所有状态数据，包括任务数据、UI状态、筛选条件等
-  // 数据流向: 从API加载 -> 本地状态 -> UI组件渲染
-  // 关键逻辑: 状态变更触发对应的副作用和UI更新
+  // ==================== State Management Layer ====================
+  // Module Responsibility: Manage all state data of the component, including task data, UI state, filter conditions, etc.
+  // Data Flow: Load from API -> Local state -> UI component rendering
+  // Key Logic: State changes trigger corresponding side effects and UI updates
   
   /** 
-   * 当前页面的任务列表数据
-   * 数据来源: taskService.getTaskList API
-   * 更新时机: 组件初始化、搜索筛选、CRUD操作后
+   * Task list data for current page
+   * Data Source: taskService.getTaskList API
+   * Update Timing: Component initialization, search filter, after CRUD operations
    */
   const [tasks, setTasks] = useState<Task[]>([]);
   
   /** 
-   * 全局加载状态，控制loading指示器显示
-   * 更新时机: API请求开始时设为true，结束时设为false
+   * Global loading state, controls loading indicator display
+   * Update Timing: Set to true when API request starts, false when it ends
    */
   const [loading, setLoading] = useState<boolean>(false);
   
   /** 
-   * 任务总数，用于分页组件计算
-   * 数据来源: API响应中的total字段
+   * Total number of tasks, used for pagination component calculation
+   * Data Source: total field in API response
    */
   const [total, setTotal] = useState<number>(0);
   
   /** 
-   * 分页控制信息
-   * current: 当前页号（从1开始）
-   * pageSize: 每页显示条数，默认20条
-   * total: 总记录数，与total状态保持同步
+   * Pagination control information
+   * current: Current page number (starts from 1)
+   * pageSize: Number of items per page, default 20
+   * total: Total number of records, synchronized with total state
    */
   const [pagination, setPagination] = useState<Pagination>({
     current: 1,
@@ -105,12 +105,12 @@ const TaskManager: React.FC = () => {
   });
 
   /** 
-   * 任务筛选条件集合
-   * keyword: 关键词搜索，支持标题和描述模糊匹配
-   * status: 状态筛选，支持多选
-   * priority: 优先级筛选，支持多选  
-   * assignee: 指定负责人筛选
-   * dateRange: 创建时间范围筛选
+   * Task filter conditions collection
+   * keyword: Keyword search, supports fuzzy matching of title and description
+   * status: Status filter, supports multiple selections
+   * priority: Priority filter, supports multiple selections  
+   * assignee: Specified assignee filter
+   * dateRange: Creation time range filter
    */
   const [filters, setFilters] = useState<TaskFilters>({
     keyword: '',
@@ -121,43 +121,43 @@ const TaskManager: React.FC = () => {
   });
 
   /** 
-   * 任务表单弹窗显示状态
-   * 控制TaskForm组件的显示/隐藏
+   * Task form modal visibility state
+   * Controls display/hide of TaskForm component
    */
   const [taskFormVisible, setTaskFormVisible] = useState<boolean>(false);
   
   /** 
-   * 当前编辑的任务对象
-   * null: 新建模式
-   * Task对象: 编辑模式，表单会预填充该任务的数据
+   * Currently editing task object
+   * null: Create mode
+   * Task object: Edit mode, form will be pre-filled with this task's data
    */
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   
   /** 
-   * 选中的任务ID列表，用于批量操作
-   * 支持多选，与TaskList组件的选择状态同步
+   * List of selected task IDs for batch operations
+   * Supports multiple selections, synchronized with TaskList component's selection state
    */
   const [selectedTaskIds, setSelectedTaskIds] = useState<string[]>([]);
 
-  // ==================== 数据加载层 ====================
-  // 模块职责: 负责与后端 API 的交互，处理异步数据加载和错误处理
-  // 数据流向: API请求 -> 响应数据解析 -> 状态更新 -> UI更新
-  // 关键逻辑: 分页加载、筛选参数传递、错误处理和用户反馈
+  // ==================== Data Loading Layer ====================
+  // Module Responsibility: Handle interaction with backend API, handle asynchronous data loading and error handling
+  // Data Flow: API request -> Response data parsing -> State update -> UI update
+  // Key Logic: Pagination loading, filter parameter passing, error handling and user feedback
   
   /**
-   * 加载任务列表数据
+   * Load task list data
    * 
-   * 执行流程:
-   * 1. 设置加载状态为true
-   * 2. 构建请求参数（分页信息 + 筛选条件）
-   * 3. 调用taskService.getTaskList API
-   * 4. 解析响应数据并更新相关状态
-   * 5. 处理成功/失败情况并统一关闭加载状态
+   * Execution flow:
+   * 1. Set loading state to true
+   * 2. Build request parameters (pagination info + filter conditions)
+   * 3. Call taskService.getTaskList API
+   * 4. Parse response data and update related states
+   * 5. Handle success/failure cases and uniformly close loading state
    * 
-   * @param {number} page - 目标页码，默认使用当前分页信息
-   * @param {number} size - 每页数据条数，默认使用当前分页设置
-   * @returns {Promise<void>} 异步操作，无返回值
-   * @throws {Error} 网络请求失败或数据解析错误时抛出异常
+   * @param {number} page - Target page number, defaults to current pagination info
+   * @param {number} size - Number of items per page, defaults to current pagination setting
+   * @returns {Promise<void>} Asynchronous operation, no return value
+   * @throws {Error} Throws exception when network request fails or data parsing error occurs
    */
   const loadTasks = async (page: number = pagination.current, size: number = pagination.pageSize) => {
     setLoading(true);
@@ -180,36 +180,36 @@ const TaskManager: React.FC = () => {
         message.error(response.message);
       }
     } catch (error) {
-      message.error('加载任务列表失败');
-      console.error('加载任务列表失败:', error);
+      message.error('Failed to load task list');
+      console.error('Failed to load task list:', error);
     } finally {
       setLoading(false);
     }
   };
 
   /**
-   * 组件初始化效果钩子
-   * 在组件首次渲染时自动加载任务列表数据
-   * 依赖数组为空，确保只执行一次
+   * Component initialization effect hook
+   * Automatically load task list data on component first render
+   * Empty dependency array ensures only executed once
    */
   useEffect(() => {
     loadTasks();
   }, []);
 
-  // ==================== 搜索和筛选层 ====================
-  // 模块职责: 处理用户的搜索和筛选操作，管理筛选条件状态
-  // 数据流向: 用户输入 -> 筛选条件更新 -> 重新加载数据 -> UI更新
-  // 关键逻辑: 筛选条件变更时重置分页到第一页，确保搜索结果的准确性
+  // ==================== Search and Filter Layer ====================
+  // Module Responsibility: Handle user search and filter operations, manage filter condition states
+  // Data Flow: User input -> Filter condition update -> Reload data -> UI update
+  // Key Logic: Reset pagination to first page when filter conditions change to ensure search result accuracy
   
   /**
-   * 执行搜索操作
-   * 当用户点击搜索按钮或触发搜索事件时调用
+   * Execute search operation
+   * Called when user clicks search button or triggers search event
    * 
-   * 执行流程:
-   * 1. 将分页重置到第一页（避免搜索结果分页错乱）
-   * 2. 使用当前的filters状态重新加载数据
+   * Execution flow:
+   * 1. Reset pagination to first page (avoid search result pagination confusion)
+   * 2. Reload data using current filters state
    * 
-   * @returns {void} 无返回值，通过状态更新触发UI重新渲染
+   * @returns {void} No return value, UI re-renders triggered by state update
    */
   const handleSearch = () => {
     setPagination(prev => ({ ...prev, current: 1 }));
@@ -217,30 +217,30 @@ const TaskManager: React.FC = () => {
   };
 
   /**
-   * 处理筛选条件变更
-   * 由SearchFilter组件调用，用于同步筛选条件状态
+   * Handle filter condition change
+   * Called by SearchFilter component to synchronize filter condition state
    * 
-   * @param {TaskFilters} newFilters - 新的筛选条件对象
-   * @returns {void} 无返回值，直接更新filters状态
+   * @param {TaskFilters} newFilters - New filter conditions object
+   * @returns {void} No return value, directly update filters state
    */
   const handleFiltersChange = (newFilters: TaskFilters) => {
     setFilters(newFilters);
   };
 
-  // ==================== 任务CRUD操作层 ====================
-  // 模块职责: 处理任务的增删改查操作，管理表单状态
-  // 数据流向: 用户操作 -> API请求 -> 状态更新 -> UI刷新
-  // 关键逻辑: 表单状态管理、错误处理、成功后数据同步
+  // ==================== Task CRUD Operations Layer ====================
+  // Module Responsibility: Handle task CRUD operations, manage form state
+  // Data Flow: User operation -> API request -> State update -> UI refresh
+  // Key Logic: Form state management, error handling, data synchronization after success
   
   /**
-   * 处理新建任务操作
-   * 由FloatingButton组件调用，打开新建任务表单
+   * Handle create new task operation
+   * Called by FloatingButton component to open create task form
    * 
-   * 执行流程:
-   * 1. 清空编辑状态（设置为新建模式）
-   * 2. 显示任务表单弹窗
+   * Execution flow:
+   * 1. Clear edit state (set to create mode)
+   * 2. Display task form modal
    * 
-   * @returns {void} 无返回值，通过状态更新控制UI
+   * @returns {void} No return value, control UI via state update
    */
   const handleNewTask = () => {
     setEditingTask(null);
@@ -248,15 +248,15 @@ const TaskManager: React.FC = () => {
   };
 
   /**
-   * 处理任务编辑操作
-   * 由TaskList组件调用，打开指定任务的编辑表单
+   * Handle task edit operation
+   * Called by TaskList component to open edit form for specified task
    * 
-   * 执行流程:
-   * 1. 设置当前编辑的任务对象
-   * 2. 显示任务表单弹窗（表单会自动预填充数据）
+   * Execution flow:
+   * 1. Set currently editing task object
+   * 2. Display task form modal (form will auto pre-fill data)
    * 
-   * @param {Task} task - 要编辑的任务对象
-   * @returns {void} 无返回值，通过状态更新控制UI
+   * @param {Task} task - Task object to edit
+   * @returns {void} No return value, control UI via state update
    */
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
@@ -264,19 +264,19 @@ const TaskManager: React.FC = () => {
   };
 
   /**
-   * 处理任务表单提交
-   * 由TaskForm组件调用，根据是否存在editingTask决定执行新建或更新操作
+   * Handle task form submit
+   * Called by TaskForm component, executes create or update operation based on whether editingTask exists
    * 
-   * 执行流程:
-   * 1. 判断当前操作类型（新建/编辑）
-   * 2. 调用对应的API接口
-   * 3. 处理API响应结果
-   * 4. 成功后关闭表单并刷新数据
-   * 5. 失败时显示错误信息
+   * Execution flow:
+   * 1. Determine current operation type (create/edit)
+   * 2. Call corresponding API interface
+   * 3. Handle API response result
+   * 4. Close form and refresh data after success
+   * 5. Display error message on failure
    * 
-   * @param {TaskFormData} formData - 表单提交的任务数据
-   * @returns {Promise<void>} 异步操作，无返回值
-   * @throws {Error} API请求失败或数据验证错误时抛出异常
+   * @param {TaskFormData} formData - Form submitted task data
+   * @returns {Promise<void>} Asynchronous operation, no return value
+   * @throws {Error} Throws exception when API request fails or data validation error occurs
    */
   const handleTaskFormSubmit = async (formData: TaskFormData) => {
     try {
@@ -284,12 +284,12 @@ const TaskManager: React.FC = () => {
       if (editingTask) {
         response = await taskService.updateTask(editingTask.id, formData);
         if (response.success) {
-          message.success('任务更新成功');
+          message.success('Task updated successfully');
         }
       } else {
         response = await taskService.createTask(formData);
         if (response.success) {
-          message.success('任务创建成功');
+          message.success('Task created successfully');
         }
       }
       
@@ -301,124 +301,124 @@ const TaskManager: React.FC = () => {
         message.error(response.message);
       }
     } catch (error) {
-      message.error(editingTask ? '任务更新失败' : '任务创建失败');
-      console.error('任务操作失败:', error);
+      message.error(editingTask ? 'Failed to update task' : 'Failed to create task');
+      console.error('Task operation failed:', error);
     }
   };
 
   /**
-   * 处理删除任务操作
-   * 由TaskList组件调用，显示确认对话框并处理删除操作
+   * Handle delete task operation
+   * Called by TaskList component, displays confirmation dialog and handles delete operation
    * 
-   * 执行流程:
-   * 1. 显示确认对话框，防止误操作
-   * 2. 用户确认后调用删除API
-   * 3. 处理API响应结果
-   * 4. 成功后刷新任务列表
-   * 5. 失败时显示错误信息
+   * Execution flow:
+   * 1. Display confirmation dialog to prevent misoperation
+   * 2. Call delete API after user confirmation
+   * 3. Handle API response result
+   * 4. Refresh task list after success
+   * 5. Display error message on failure
    * 
-   * @param {string} taskId - 要删除的任务ID
-   * @returns {void} 无返回值，通过Modal组件处理用户交互
+   * @param {string} taskId - Task ID to delete
+   * @returns {void} No return value, user interaction handled by Modal component
    */
   const handleDeleteTask = (taskId: string) => {
     Modal.confirm({
-      title: '确认删除',
-      content: '确定要删除这个任务吗？此操作无法撤销。',
-      okText: '删除',
+      title: 'Confirm Delete',
+      content: 'Are you sure you want to delete this task? This operation cannot be undone.',
+      okText: 'Delete',
       okType: 'danger',
-      cancelText: '取消',
+      cancelText: 'Cancel',
       onOk: async () => {
         try {
           const response = await taskService.deleteTask(taskId);
           if (response.success) {
-            message.success('任务删除成功');
+            message.success('Task deleted successfully');
             loadTasks();
           } else {
             message.error(response.message);
           }
         } catch (error) {
-          message.error('任务删除失败');
-          console.error('任务删除失败:', error);
+          message.error('Failed to delete task');
+          console.error('Failed to delete task:', error);
         }
       }
     });
   };
 
   /**
-   * 处理任务状态更新
-   * 由TaskList组件调用，快速更新任务状态
+   * Handle task status update
+   * Called by TaskList component to quickly update task status
    * 
-   * 执行流程:
-   * 1. 调用状态更新API
-   * 2. 处理API响应结果
-   * 3. 成功后刷新任务列表
-   * 4. 失败时显示错误信息
+   * Execution flow:
+   * 1. Call status update API
+   * 2. Handle API response result
+   * 3. Refresh task list after success
+   * 4. Display error message on failure
    * 
-   * @param {string} taskId - 要更新的任务ID
-   * @param {TaskStatus} status - 新的任务状态
-   * @returns {Promise<void>} 异步操作，无返回值
-   * @throws {Error} API请求失败或状态更新错误时抛出异常
+   * @param {string} taskId - Task ID to update
+   * @param {TaskStatus} status - New task status
+   * @returns {Promise<void>} Asynchronous operation, no return value
+   * @throws {Error} Throws exception when API request fails or status update error occurs
    */
   const handleTaskStatusChange = async (taskId: string, status: TaskStatus) => {
     try {
       const response = await taskService.updateTaskStatus(taskId, status);
       if (response.success) {
-        message.success('任务状态更新成功');
+        message.success('Task status updated successfully');
         loadTasks();
       } else {
         message.error(response.message);
       }
     } catch (error) {
-      message.error('任务状态更新失败');
-      console.error('任务状态更新失败:', error);
+      message.error('Failed to update task status');
+      console.error('Failed to update task status:', error);
     }
   };
 
-  // ==================== 批量操作层 ====================
-  // 模块职责: 处理多个任务的批量操作，管理选中状态
-  // 数据流向: 用户选择 -> 批量操作 -> API请求 -> 状态清空 -> 数据刷新
-  // 关键逻辑: 批量操作成功后清空选中状态，确保操作一致性
+  // ==================== Batch Operations Layer ====================
+  // Module Responsibility: Handle batch operations on multiple tasks, manage selection state
+  // Data Flow: User selection -> Batch operation -> API request -> State clear -> Data refresh
+  // Key Logic: Clear selection state after batch operation success to ensure operation consistency
   
   /**
-   * 处理任务选中状态变更
-   * 由TaskList组件调用，同步选中状态到父组件
+   * Handle task selection state change
+   * Called by TaskList component to synchronize selection state to parent component
    * 
-   * @param {string[]} taskIds - 当前选中的任务ID数组
-   * @returns {void} 无返回值，直接更新selectedTaskIds状态
+   * @param {string[]} taskIds - Array of currently selected task IDs
+   * @returns {void} No return value, directly update selectedTaskIds state
    */
   const handleTaskSelect = (taskIds: string[]) => {
     setSelectedTaskIds(taskIds);
   };
 
   /**
-   * 处理批量操作路由分发
-   * 由TaskList组件调用，根据操作类型分发到对应的处理方法
+   * Handle batch operation routing dispatch
+   * Called by TaskList component, dispatch to corresponding handler method based on operation type
    * 
-   * @param {string} operation - 操作类型（'delete' | 'updateStatus'）
-   * @param {string[]} taskIds - 要操作的任务ID数组
-   * @returns {void} 无返回值，根据操作类型分发给对应处理函数
+   * @param {string} operation - Operation type ('delete' | 'updateStatus')
+   * @param {string[]} taskIds - Array of task IDs to operate on
+   * @returns {void} No return value, dispatch to corresponding handler function based on operation type
    */
   const handleBatchOperation = (operation: string, taskIds: string[]) => {
     if (operation === 'delete') {
       handleBatchDelete(taskIds);
     } else if (operation === 'updateStatus') {
-      // 批量状态更新操作，由FloatingButton组件直接处理
+      // Batch status update operation handled directly by FloatingButton component
     }
   };
 
   /**
-   * 处理批量删除操作
-   * 由FloatingButton组件调用，批量删除选中的任务
+   * Handle batch delete operation
+   * Called by FloatingButton component to batch delete selected tasks
    * 
-   * 执行流程:
-   * 1. 调用批量删除API
-   * 2. 处理API响应结果
-   * 3. 成功后清空选中状态并刷新数据
-   * 4. 失败时显示错误信息
+   * Execution flow:
+   * 1. Call batch delete API
+   * 2. Handle API response result
+   * 3. Clear selection state and refresh data after success
+   * 4. Display error message on failure
    * 
-   * @param {string[]} taskIds - 要删除的任务ID数组
-   * @returns {Promise<void>} 异步操作，无返回值
-   * @throws {Error} API请求失败或批量删除错误时抛出异常
+   * @param {string[]} taskIds - Array of task IDs to delete
+   * @returns {Promise<void>} Asynchronous operation, no return value
+   * @throws {Error} Throws exception when API request fails or batch delete error occurs
    */
   const handleBatchDelete = async (taskIds: string[]) => {
     try {
@@ -431,25 +431,25 @@ const TaskManager: React.FC = () => {
         message.error(response.message);
       }
     } catch (error) {
-      message.error('批量删除失败');
-      console.error('批量删除失败:', error);
+      message.error('Failed to batch delete');
+      console.error('Failed to batch delete:', error);
     }
   };
 
   /**
-   * 处理批量状态更新操作
-   * 由FloatingButton组件调用，批量更新选中任务的状态
+   * Handle batch status update operation
+   * Called by FloatingButton component to batch update status of selected tasks
    * 
-   * 执行流程:
-   * 1. 调用批量状态更新API
-   * 2. 处理API响应结果
-   * 3. 成功后清空选中状态并刷新数据
-   * 4. 失败时显示错误信息
+   * Execution flow:
+   * 1. Call batch status update API
+   * 2. Handle API response result
+   * 3. Clear selection state and refresh data after success
+   * 4. Display error message on failure
    * 
-   * @param {string[]} taskIds - 要更新的任务ID数组
-   * @param {TaskStatus} status - 目标状态
-   * @returns {Promise<void>} 异步操作，无返回值
-   * @throws {Error} API请求失败或批量更新错误时抛出异常
+   * @param {string[]} taskIds - Array of task IDs to update
+   * @param {TaskStatus} status - Target status
+   * @returns {Promise<void>} Asynchronous operation, no return value
+   * @throws {Error} Throws exception when API request fails or batch update error occurs
    */
   const handleBatchStatusUpdate = async (taskIds: string[], status: TaskStatus) => {
     try {
@@ -462,48 +462,48 @@ const TaskManager: React.FC = () => {
         message.error(response.message);
       }
     } catch (error) {
-      message.error('批量状态更新失败');
-      console.error('批量状态更新失败:', error);
+      message.error('Failed to batch update status');
+      console.error('Failed to batch update status:', error);
     }
   };
 
   /**
-   * 清空选中状态
-   * 由FloatingButton组件调用，清空所有任务选中状态
+   * Clear selection state
+   * Called by FloatingButton component to clear all task selection state
    * 
-   * @returns {void} 无返回值，直接清空selectedTaskIds状态
+   * @returns {void} No return value, directly clear selectedTaskIds state
    */
   const handleClearSelection = () => {
     setSelectedTaskIds([]);
   };
 
-  // ==================== UI交互处理层 ====================
-  // 模块职责: 处理组件间的UI交互事件，管理弹窗状态
-  // 数据流向: 用户交互 -> 事件处理 -> 状态更新 -> UI响应
-  // 关键逻辑: 统一管理弹窗显示/隐藏和编辑状态重置
+  // ==================== UI Interaction Handling Layer ====================
+  // Module Responsibility: Handle UI interaction events between components, manage modal state
+  // Data Flow: User interaction -> Event handling -> State update -> UI response
+  // Key Logic: Uniformly manage modal show/hide and edit state reset
   
   /**
-   * 处理任务表单取消操作
-   * 由TaskForm组件调用，关闭表单弹窗并重置编辑状态
+   * Handle task form cancel operation
+   * Called by TaskForm component to close form modal and reset edit state
    * 
-   * 执行流程:
-   * 1. 关闭任务表单弹窗
-   * 2. 清空编辑任务状态（防止数据残留）
+   * Execution flow:
+   * 1. Close task form modal
+   * 2. Clear edit task state (prevent data residue)
    * 
-   * @returns {void} 无返回值，通过状态更新控制UI
+   * @returns {void} No return value, control UI via state update
    */
   const handleTaskFormCancel = () => {
     setTaskFormVisible(false);
     setEditingTask(null);
   };
 
-  // ==================== 组件渲染层 ====================
-  // 模块职责: 组织和渲染所有子组件，构建完整的用户界面
-  // 数据流向: 状态数据 -> 组件props -> 子组件渲染 -> 用户界面
-  // 关键逻辑: 布局管理、组件集成、样式应用和响应式设计
+  // ==================== Component Rendering Layer ====================
+  // Module Responsibility: Organize and render all child components, build complete user interface
+  // Data Flow: State data -> Component props -> Child component rendering -> User interface
+  // Key Logic: Layout management, component integration, style application and responsive design
   return (
     <Layout style={{ minHeight: '100vh', background: '#f0f2f5' }}>
-      {/* 页面头部区域 - 显示系统标题和统计信息 */}
+      {/* Page header area - Display system title and statistics */}
       <Header style={{ 
         background: '#fff',
         padding: '0 24px',
@@ -516,27 +516,27 @@ const TaskManager: React.FC = () => {
           justifyContent: 'space-between',
           height: '100%'
         }}>
-          {/* 系统标题 */}
+          {/* System title */}
           <Title level={3} style={{ margin: 0, color: '#1890ff' }}>
-            任务管理系统
+            Task Management System
           </Title>
           
-          {/* 统计信息显示区 */}
+          {/* Statistics display area */}
           <div style={{ color: '#666', fontSize: 14 }}>
-            共 {total} 个任务
+            Total {total} task(s)
             {selectedTaskIds.length > 0 && (
               <span style={{ marginLeft: 16, color: '#1890ff' }}>
-                已选择 {selectedTaskIds.length} 个
+                Selected {selectedTaskIds.length}
               </span>
             )}
           </div>
         </div>
       </Header>
       
-      {/* 主内容区域 */}
+      {/* Main content area */}
       <Content style={{ padding: '24px', overflow: 'auto' }}>
         <div style={{ maxWidth: 1400, margin: '0 auto' }}>
-          {/* 搜索筛选组件 - 提供多条件筛选功能 */}
+          {/* Search filter component - Provides multi-condition filter functionality */}
           <SearchFilter
             filters={filters}
             onFiltersChange={handleFiltersChange}
@@ -545,14 +545,14 @@ const TaskManager: React.FC = () => {
             loading={loading}
           />
 
-          {/* 任务列表容器 */}
+          {/* Task list container */}
           <div style={{ 
             background: '#fff',
             borderRadius: 8,
             padding: 24,
             boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
           }}>
-            {/* 任务列表组件 - 展示任务数据和单个操作 */}
+            {/* Task list component - Display task data and individual operations */}
             <TaskList
               tasks={tasks}
               loading={loading}
@@ -566,7 +566,7 @@ const TaskManager: React.FC = () => {
           </div>
         </div>
 
-        {/* 浮动操作按钮 - 提供快捷操作入口 */}
+        {/* Floating action button - Provides quick action entry */}
         <FloatingButton
           selectedTaskIds={selectedTaskIds}
           onNewTask={handleNewTask}
@@ -575,7 +575,7 @@ const TaskManager: React.FC = () => {
           onClearSelection={handleClearSelection}
         />
 
-        {/* 任务表单弹窗 - 用于新建和编辑任务 */}
+        {/* Task form modal - For creating and editing tasks */}
         <TaskForm
           visible={taskFormVisible}
           editingTask={editingTask}
