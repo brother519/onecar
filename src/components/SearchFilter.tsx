@@ -1,24 +1,24 @@
 /**
  * Tom cat
  * 
- * 任务管理系统 - 搜索筛选组件
+ * Task Management System - Search and Filter Component
  * 
- * 功能说明：
- * - 提供关键词搜索功能
- * - 支持多条件筛选（状态、优先级、负责人、日期范围）
- * - 高级筛选区域可折叠展开/收起
- * - 显示当前活动的筛选条件标签
- * - 支持一键清空所有筛选条件
+ * Features:
+ * - Provides keyword search functionality
+ * - Supports multi-condition filtering (status, priority, assignee, date range)
+ * - Advanced filter area can be collapsed/expanded
+ * - Displays currently active filter condition tags
+ * - Supports one-click clear all filter conditions
  * 
- * 依赖组件：
- * - Input.Search: 搜索输入框
- * - Select: 下拉选择器
- * - DatePicker.RangePicker: 日期范围选择器
- * - Collapse: 折叠面板
- * - Tag: 筛选条件标签
+ * Dependency Components:
+ * - Input.Search: Search input box
+ * - Select: Dropdown selector
+ * - DatePicker.RangePicker: Date range picker
+ * - Collapse: Collapse panel
+ * - Tag: Filter condition tag
  * 
- * 状态管理：
- * - expanded: 控制高级筛选区域的展开/收起状态
+ * State Management:
+ * - expanded: Controls the expand/collapse state of the advanced filter area
  * 
  * @module SearchFilter
  */
@@ -46,28 +46,28 @@ const { RangePicker } = DatePicker;
 const { Panel } = Collapse;
 
 /**
- * 搜索筛选组件属性接口
+ * Search filter component props interface
  */
 interface SearchFilterProps {
-  /** 当前的筛选条件对象 */
+  /** Current filter conditions object */
   filters: TaskFilters;
   
   /** 
-   * 筛选条件变更回调函数
-   * @param filters - 新的筛选条件对象
+   * Filter conditions change callback function
+   * @param filters - New filter conditions object
    */
   onFiltersChange: (filters: TaskFilters) => void;
   
-  /** 可选的负责人列表 */
+  /** Available assignees list */
   availableAssignees: string[];
   
   /** 
-   * 搜索按钮点击回调函数
-   * 触发实际的数据加载操作
+   * Search button click callback function
+   * Triggers actual data loading operation
    */
   onSearch: () => void;
   
-  /** 加载状态，控制搜索按钮的loading效果 */
+  /** Loading state, controls the loading effect of the search button */
   loading?: boolean;
 }
 
@@ -80,7 +80,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
 }) => {
   const [expanded, setExpanded] = useState<boolean>(false);
 
-  // 更新筛选条件
+  // Update filter conditions
   const updateFilter = (key: keyof TaskFilters, value: any) => {
     onFiltersChange({
       ...filters,
@@ -89,11 +89,11 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   };
 
   /**
-   * 清空所有筛选条件
+   * Clear all filter conditions
    * 
-   * 将所有筛选条件重置为初始值
+   * Resets all filter conditions to initial values
    * 
-   * @returns {void} 无返回值
+   * @returns {void} No return value
    */
   const clearAllFilters = () => {
     onFiltersChange({
@@ -106,11 +106,11 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   };
 
   /**
-   * 检查是否有活动的筛选条件
+   * Check if there are active filter conditions
    * 
-   * 检查任何筛选条件是否非空值
+   * Checks whether any filter condition has a non-empty value
    * 
-   * @returns {boolean} 有活动筛选条件返回true，否则返回false
+   * @returns {boolean} Returns true if there are active filter conditions, otherwise false
    */
   const hasActiveFilters = () => {
     return !!(
@@ -123,11 +123,11 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   };
 
   /**
-   * 获取活动筛选条件的数量
+   * Get the count of active filter conditions
    * 
-   * 统计非空的筛选条件数量，用于在按钮上显示
+   * Counts the number of non-empty filter conditions for display on the button
    * 
-   * @returns {number} 活动筛选条件的数量
+   * @returns {number} The count of active filter conditions
    */
   const getActiveFilterCount = () => {
     let count = 0;
@@ -142,7 +142,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   return (
     <Card style={{ marginBottom: 16 }}>
       <Row gutter={[16, 16]}>
-        {/* 主搜索框 */}
+        {/* Main search box */}
         <Col xs={24} sm={12} md={8}>
           <Search
             placeholder="搜索任务标题或描述"
@@ -154,7 +154,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
           />
         </Col>
 
-        {/* 快速筛选按钮 */}
+        {/* Quick filter buttons */}
         <Col xs={24} sm={12} md={16}>
           <Space wrap>
             <Button
@@ -191,7 +191,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         </Col>
       </Row>
 
-      {/* 高级筛选区域 */}
+      {/* Advanced filter area */}
       <Collapse 
         activeKey={expanded ? ['filters'] : []} 
         onChange={(keys) => setExpanded(keys.includes('filters'))}
@@ -199,7 +199,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
       >
         <Panel key="filters" header="" showArrow={false}>
           <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-            {/* 状态筛选 */}
+            {/* Status filter */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>任务状态:</label>
@@ -222,7 +222,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </Select>
             </Col>
 
-            {/* 优先级筛选 */}
+            {/* Priority filter */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>优先级:</label>
@@ -245,7 +245,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </Select>
             </Col>
 
-            {/* 负责人筛选 */}
+            {/* Assignee filter */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>负责人:</label>
@@ -271,7 +271,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
               </Select>
             </Col>
 
-            {/* 日期范围筛选 */}
+            {/* Date range filter */}
             <Col xs={24} sm={12} md={6}>
               <div style={{ marginBottom: 8 }}>
                 <label>创建时间:</label>
@@ -299,7 +299,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         </Panel>
       </Collapse>
 
-      {/* 活动筛选条件显示 */}
+      {/* Active filter conditions display */}
       {hasActiveFilters() && (
         <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
           <Space wrap>
