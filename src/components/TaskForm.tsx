@@ -1,25 +1,25 @@
 /**
  * Tom cat
  * 
- * 任务管理系统 - 任务表单组件
+ * Task Management System - Task Form Component
  * 
- * 功能说明：
- * - 支持新建和编辑任务两种模式
- * - 提供完整的表单验证机制
- * - 支持任务标题、描述、优先级、负责人、截止日期输入
- * - 编辑模式下自动预填充现有数据
- * - 实时字符数统计和限制
+ * Features:
+ * - Supports both create and edit task modes
+ * - Provides complete form validation mechanism
+ * - Supports task title, description, priority, assignee, due date inputs
+ * - Auto-fills existing data in edit mode
+ * - Real-time character count and limit
  * 
- * 依赖组件：
- * - Modal: 弹窗容器
- * - Form: Ant Design表单组件
- * - Input/TextArea: 输入框
- * - Select: 选择器
- * - DatePicker: 日期选择器
+ * Dependencies:
+ * - Modal: Dialog container
+ * - Form: Ant Design form component
+ * - Input/TextArea: Input fields
+ * - Select: Dropdown selector
+ * - DatePicker: Date picker
  * 
- * 表单模式：
- * - 新建模式：editingTask为null，表单为空白状态
- * - 编辑模式：editingTask非空，表单预填充任务数据
+ * Form Modes:
+ * - Create mode: editingTask is null, form is blank
+ * - Edit mode: editingTask is not null, form is pre-filled with task data
  * 
  * @module TaskForm
  */
@@ -33,31 +33,31 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 /**
- * 任务表单组件属性接口
+ * Task form component props interface
  */
 interface TaskFormProps {
-  /** 弹窗显示状态 */
+  /** Modal visibility state */
   visible: boolean;
   
   /** 
-   * 当前编辑的任务对象
-   * null时为新建模式，非空时为编辑模式
+   * Currently editing task object
+   * null: create mode, non-null: edit mode
    */
   editingTask: Task | null;
   
   /** 
-   * 取消按钮回调函数
-   * 关闭弹窗并重置表单
+   * Cancel button callback function
+   * Close modal and reset form
    */
   onCancel: () => void;
   
   /** 
-   * 表单提交回调函数
-   * @param formData - 表单数据对象
+   * Form submit callback function
+   * @param formData - Form data object
    */
   onSubmit: (formData: TaskFormData) => void;
   
-  /** 可选的负责人列表 */
+  /** List of available assignees */
   availableAssignees: string[];
 }
 
@@ -73,7 +73,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
   useEffect(() => {
     if (visible) {
       if (editingTask) {
-        /** 编辑模式：填充现有数据 */
+        /** Edit mode: Fill in existing data */
         form.setFieldsValue({
           title: editingTask.title,
           description: editingTask.description || '',
@@ -82,10 +82,10 @@ const TaskForm: React.FC<TaskFormProps> = ({
           dueDate: editingTask.dueDate ? dayjs(editingTask.dueDate) : null,
         });
       } else {
-        /** 新建模式：重置表单 */
+        /** Create mode: Reset form */
         form.resetFields();
         form.setFieldsValue({
-          priority: TaskPriority.MEDIUM, // 默认中优先级
+          priority: TaskPriority.MEDIUM, // Default medium priority
           assignees: [],
         });
       }
@@ -104,7 +104,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
       };
       onSubmit(formData);
     } catch (errorInfo) {
-      console.log('表单验证失败:', errorInfo);
+      console.log('Form validation failed:', errorInfo);
     }
   };
 
@@ -114,36 +114,36 @@ const TaskForm: React.FC<TaskFormProps> = ({
   };
 
   /**
-   * 表单验证规则配置
+   * Form validation rules configuration
    * 
-   * 包含所有表单字段的验证规则：
-   * - title: 必填，1-100字符
-   * - description: 可选，最多1000字符
-   * - priority: 必填
-   * - assignees: 必填，至少一人
-   * - dueDate: 可选，不能早于今天
+   * Contains validation rules for all form fields:
+   * - title: Required, 1-100 characters
+   * - description: Optional, max 1000 characters
+   * - priority: Required
+   * - assignees: Required, at least one person
+   * - dueDate: Optional, cannot be earlier than today
    */
   const validationRules = {
     title: [
-      { required: true, message: '任务标题不能为空' },
-      { max: 100, message: '任务标题不能超过100字符' },
-      { min: 1, message: '任务标题不能为空' }
+      { required: true, message: 'Task title cannot be empty' },
+      { max: 100, message: 'Task title cannot exceed 100 characters' },
+      { min: 1, message: 'Task title cannot be empty' }
     ],
     description: [
-      { max: 1000, message: '任务描述不能超过1000字符' }
+      { max: 1000, message: 'Task description cannot exceed 1000 characters' }
     ],
     priority: [
-      { required: true, message: '请选择任务优先级' }
+      { required: true, message: 'Please select task priority' }
     ],
     assignees: [
-      { required: true, message: '请至少选择一名负责人' },
-      { type: 'array' as const, min: 1, message: '请至少选择一名负责人' }
+      { required: true, message: 'Please select at least one assignee' },
+      { type: 'array' as const, min: 1, message: 'Please select at least one assignee' }
     ],
     dueDate: [
       {
         validator: (_: any, value: any) => {
           if (value && value.isBefore(dayjs(), 'day')) {
-            return Promise.reject(new Error('截止日期不能早于今天'));
+            return Promise.reject(new Error('Due date cannot be earlier than today'));
           }
           return Promise.resolve();
         }
@@ -153,16 +153,16 @@ const TaskForm: React.FC<TaskFormProps> = ({
 
   return (
     <Modal
-      title={editingTask ? '编辑任务' : '新建任务'}
+      title={editingTask ? 'Edit Task' : 'Create Task'}
       open={visible}
       onCancel={handleCancel}
       width={600}
       footer={[
         <Button key="cancel" onClick={handleCancel}>
-          取消
+          Cancel
         </Button>,
         <Button key="submit" type="primary" onClick={handleSubmit}>
-          {editingTask ? '更新' : '创建'}
+          {editingTask ? 'Update' : 'Create'}
         </Button>,
       ]}
       destroyOnClose
@@ -174,11 +174,11 @@ const TaskForm: React.FC<TaskFormProps> = ({
       >
         <Form.Item
           name="title"
-          label="任务标题"
+          label="Task Title"
           rules={validationRules.title}
         >
           <Input 
-            placeholder="请输入任务标题"
+            placeholder="Please enter task title"
             maxLength={100}
             showCount
           />
@@ -186,11 +186,11 @@ const TaskForm: React.FC<TaskFormProps> = ({
 
         <Form.Item
           name="description"
-          label="任务描述"
+          label="Task Description"
           rules={validationRules.description}
         >
           <TextArea
-            placeholder="请输入任务描述（可选）"
+            placeholder="Please enter task description (optional)"
             rows={4}
             maxLength={1000}
             showCount
@@ -200,11 +200,11 @@ const TaskForm: React.FC<TaskFormProps> = ({
         <Space style={{ width: '100%' }} size="large">
           <Form.Item
             name="priority"
-            label="优先级"
+            label="Priority"
             rules={validationRules.priority}
             style={{ flex: 1 }}
           >
-            <Select placeholder="请选择优先级">
+            <Select placeholder="Please select priority">
               {Object.values(TaskPriority).map(priority => (
                 <Option key={priority} value={priority}>
                   <Space>
@@ -220,13 +220,13 @@ const TaskForm: React.FC<TaskFormProps> = ({
 
           <Form.Item
             name="dueDate"
-            label="截止日期"
+            label="Due Date"
             rules={validationRules.dueDate}
             style={{ flex: 1 }}
           >
             <DatePicker
               style={{ width: '100%' }}
-              placeholder="请选择截止日期（可选）"
+              placeholder="Please select due date (optional)"
               disabledDate={(current) => current && current < dayjs().startOf('day')}
             />
           </Form.Item>
@@ -234,12 +234,12 @@ const TaskForm: React.FC<TaskFormProps> = ({
 
         <Form.Item
           name="assignees"
-          label="负责人"
+          label="Assignees"
           rules={validationRules.assignees}
         >
           <Select
             mode="multiple"
-            placeholder="请选择负责人"
+            placeholder="Please select assignees"
             showSearch
             filterOption={(input, option) =>
               (option?.children as unknown as string)

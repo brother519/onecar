@@ -1,18 +1,18 @@
 /**
  * Tom cat
  * 
- * 任务管理系统 - 应用入口文件
+ * Task Management System - Application Entry File
  * 
- * 功能说明：
- * - 初始化React应用实例
- * - 配置严格模式以检测潜在问题
- * - 将根组件挂载到DOM节点
- * - 引入全局样式文件
+ * Features:
+ * - Initialize React application instance
+ * - Configure strict mode to detect potential issues
+ * - Mount root component to DOM node
+ * - Import global styles
  * 
- * 技术栈：
+ * Tech Stack:
  * - React 18
  * - TypeScript
- * - Vite构建工具
+ * - Vite build tool
  * 
  * @module main
  */
@@ -23,18 +23,18 @@ import App from './App';
 import './styles/index.css';
 
 /**
- * 创建React根实例并渲染应用
+ * Create React root instance and render application
  * 
- * 执行流程：
- * 1. 获取id为'root'的DOM元素
- * 2. 使用createRoot创建React 18的根实例
- * 3. 在StrictMode下渲染App组件
+ * Execution flow:
+ * 1. Get DOM element with id 'root'
+ * 2. Create React 18 root instance using createRoot
+ * 3. Render App component under StrictMode
  * 
- * StrictMode作用：
- * - 识别不安全的生命周期
- * - 检测过时的API使用
- * - 检测意外的副作用
- * - 确保可重用的state
+ * StrictMode functions:
+ * - Identify unsafe lifecycles
+ * - Detect usage of deprecated APIs
+ * - Detect unexpected side effects
+ * - Ensure reusable state
  */
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

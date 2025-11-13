@@ -1,14 +1,14 @@
 /**
- * 任务管理系统 - 任务服务模块（Mock 实现）
+ * Task Management System - Task Service Module (Mock Implementation)
  *
- * 功能说明：
- * - 提供任务的增删改查 API（前端本地模拟）
- * - 支持分页、筛选、批量删除与批量状态更新
- * - 内置模拟网络延时与随机数据生成
+ * Features:
+ * - Provides CRUD API for tasks (frontend local simulation)
+ * - Supports pagination, filtering, batch delete and batch status update
+ * - Built-in simulated network delay and random data generation
  *
- * 注意事项：
- * - 当前实现为前端本地 Mock，不与后端交互
- * - 生产环境请替换为真实 HTTP 请求
+ * Notes:
+ * - Current implementation is frontend local Mock, does not interact with backend
+ * - Please replace with real HTTP requests in production environment
  *
  * @module taskService
  */
@@ -159,7 +159,7 @@ export const taskService = {
         page,
         size
       },
-      message: '获取任务列表成功'
+      message: 'Retrieve task list successfully'
     };
   },
 
@@ -185,7 +185,7 @@ export const taskService = {
     return {
       success: true,
       data: newTask,
-      message: '任务创建成功'
+      message: 'Task created successfully'
     };
   },
 
@@ -197,7 +197,7 @@ export const taskService = {
       return {
         success: false,
         data: {} as Task,
-        message: '任务不存在'
+        message: 'Task does not exist'
       };
     }
 
@@ -216,7 +216,7 @@ export const taskService = {
     return {
       success: true,
       data: updatedTask,
-      message: '任务更新成功'
+      message: 'Task updated successfully'
     };
   },
 
@@ -228,7 +228,7 @@ export const taskService = {
       return {
         success: false,
         data: undefined,
-        message: '任务不存在'
+        message: 'Task does not exist'
       };
     }
 
@@ -237,7 +237,7 @@ export const taskService = {
     return {
       success: true,
       data: undefined,
-      message: '任务删除成功'
+      message: 'Task deleted successfully'
     };
   },
 
@@ -249,7 +249,7 @@ export const taskService = {
       return {
         success: false,
         data: {} as Task,
-        message: '任务不存在'
+        message: 'Task does not exist'
       };
     }
 
@@ -264,7 +264,7 @@ export const taskService = {
     return {
       success: true,
       data: updatedTask,
-      message: '任务状态更新成功'
+      message: 'Task status updated successfully'
     };
   },
 
@@ -276,7 +276,7 @@ export const taskService = {
     return {
       success: true,
       data: undefined,
-      message: `成功删除 ${taskIds.length} 个任务`
+      message: `Successfully deleted ${taskIds.length} task(s)`
     };
   },
 
@@ -302,7 +302,7 @@ export const taskService = {
     return {
       success: true,
       data: updatedTasks,
-      message: `成功更新 ${taskIds.length} 个任务状态`
+      message: `Successfully updated status of ${taskIds.length} task(s)`
     };
   }
 };

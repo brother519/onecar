@@ -1,15 +1,15 @@
 /**
- * 任务管理系统 - 类型定义与显示配置
+ * Task Management System - Type Definitions and Display Configuration
  *
- * 包含内容：
- * - 枚举：任务状态、优先级
- * - 模型：任务实体、筛选条件、分页、API响应
- * - 批量操作类型及请求结构
- * - 映射配置：状态与优先级的显示标签、颜色与权重
+ * Contents:
+ * - Enums: Task status, priority
+ * - Models: Task entity, filter conditions, pagination, API response
+ * - Batch operation types and request structure
+ * - Mapping configuration: Display labels, colors and weights for status and priority
  *
  * @module types/task
  */
-// 任务状态枚举
+// Task status enum
 export enum TaskStatus {
   PENDING = 'pending',
   IN_PROGRESS = 'in_progress', 
@@ -17,7 +17,7 @@ export enum TaskStatus {
   CANCELLED = 'cancelled'
 }
 
-// 优先级枚举
+// Priority enum
 export enum TaskPriority {
   LOW = 'low',
   MEDIUM = 'medium',
@@ -25,7 +25,7 @@ export enum TaskPriority {
   URGENT = 'urgent'
 }
 
-// 任务实体模型
+// Task entity model
 export interface Task {
   id: string;
   title: string;
@@ -39,7 +39,7 @@ export interface Task {
   createdBy: string;
 }
 
-// 任务筛选条件
+// Task filter conditions
 export interface TaskFilters {
   keyword: string;
   status: TaskStatus[];
@@ -48,21 +48,21 @@ export interface TaskFilters {
   dateRange: [string, string] | null;
 }
 
-// 分页信息
+// Pagination information
 export interface Pagination {
   current: number;
   pageSize: number;
   total: number;
 }
 
-// API响应格式
+// API response format
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
   message: string;
 }
 
-// 任务列表响应
+// Task list response
 export interface TaskListResponse {
   tasks: Task[];
   total: number;
@@ -70,7 +70,7 @@ export interface TaskListResponse {
   size: number;
 }
 
-// 任务表单数据
+// Task form data
 export interface TaskFormData {
   title: string;
   description: string;
@@ -79,75 +79,75 @@ export interface TaskFormData {
   dueDate?: string;
 }
 
-// 批量操作类型
+// Batch operation type
 export enum BatchOperation {
   UPDATE_STATUS = 'updateStatus',
   DELETE = 'delete'
 }
 
-// 批量操作请求
+// Batch operation request
 export interface BatchOperationRequest {
   taskIds: string[];
   operation: BatchOperation;
   status?: TaskStatus;
 }
 
-// 状态显示配置
+// Status display configuration
 export interface StatusConfig {
   label: string;
   color: string;
   description: string;
 }
 
-// 优先级显示配置
+// Priority display configuration
 export interface PriorityConfig {
   label: string;
   color: string;
   weight: number;
 }
 
-// 状态和优先级配置映射
+// Status and priority configuration mapping
 export const STATUS_CONFIG: Record<TaskStatus, StatusConfig> = {
   [TaskStatus.PENDING]: {
-    label: '待开始',
+    label: 'Pending',
     color: 'default',
-    description: '任务已创建但未开始执行'
+    description: 'Task created but not started'
   },
   [TaskStatus.IN_PROGRESS]: {
-    label: '进行中',
+    label: 'In Progress',
     color: 'processing',
-    description: '任务正在执行中'
+    description: 'Task is in progress'
   },
   [TaskStatus.COMPLETED]: {
-    label: '已完成',
+    label: 'Completed',
     color: 'success',
-    description: '任务已成功完成'
+    description: 'Task completed successfully'
   },
   [TaskStatus.CANCELLED]: {
-    label: '已取消',
+    label: 'Cancelled',
     color: 'error',
-    description: '任务被取消不再执行'
+    description: 'Task cancelled and will not be executed'
   }
 };
 
 export const PRIORITY_CONFIG: Record<TaskPriority, PriorityConfig> = {
   [TaskPriority.LOW]: {
-    label: '低优先级',
+    label: 'Low Priority',
     color: 'green',
     weight: 1
   },
   [TaskPriority.MEDIUM]: {
-    label: '中优先级',
+    label: 'Medium Priority',
     color: 'gold',
     weight: 2
   },
   [TaskPriority.HIGH]: {
-    label: '高优先级',
+    label: 'High Priority',
     color: 'orange',
     weight: 3
   },
   [TaskPriority.URGENT]: {
-    label: '紧急',
+    label: 'Urgent',
     color: 'red',
     weight: 4
   }

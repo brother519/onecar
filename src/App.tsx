@@ -1,10 +1,10 @@
 /**
- * 任务管理系统 - 应用根组件
+ * Task Management System - Application Root Component
  *
- * 功能说明：
- * - 设置 Ant Design 国际化为中文
- * - 配置 dayjs 中文本地化
- * - 渲染根页面组件 TaskManager
+ * Features:
+ * - Set Ant Design internationalization to Chinese
+ * - Configure dayjs Chinese localization
+ * - Render root page component TaskManager
  *
  * @module App
  */
