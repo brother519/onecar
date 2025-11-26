@@ -1,0 +1,40 @@
+.product-list {
+  margin-bottom: 20px;
+}
+
+.product-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card .ant-card-cover img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-card .ant-card-body {
+  flex-grow: 1;
+}
+
+.product-card .ant-card-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-detail {
+  padding: 20px 0;
+}
+
+.product-detail-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

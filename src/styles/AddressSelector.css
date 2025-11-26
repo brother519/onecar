@@ -1,0 +1,62 @@
+.address-selector {
+  margin: 20px 0;
+}
+
+.address-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.address-radio-group {
+  display: block;
+  width: 100%;
+}
+
+.address-card {
+  margin: 8px 0;
+  width: 100%;
+}
+
+.default-address {
+  border: 1px solid #1890ff;
+}
+
+.address-info {
+  position: relative;
+}
+
+.address-recipient {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.address-detail {
+  color: #666;
+}
+
+.default-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #1890ff;
+  color: white;
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 0 0 0 8px;
+}
+
+.address-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.address-not-logged {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  gap: 20px;
+}
