@@ -1,5 +1,13 @@
 
 
+/**
+ * Author: onecar Maintainers
+ * Email: maintainers@example.com
+ * Since: 2025-12-04
+ * File: FloatingButton.tsx
+ * Purpose: Provide task actions (creation, batch status update, batch delete, clear selection) with user feedback.
+ * Notes: English comments are used as per design doc exception for this file.
+ */
 import React, { useState } from 'react';
 import { FloatButton, Modal, Select, Space, message } from 'antd';
 import { 
@@ -14,24 +22,31 @@ import { TaskStatus, STATUS_CONFIG } from '../types/task';
 const { Option } = Select;
 
 
+// Props contract for FloatingButton: controlled by parent; callbacks perform side effects in parent scope
 interface FloatingButtonProps {
 
+  // IDs of tasks currently selected; when empty, quick actions become guidance only
   selectedTaskIds: string[];
   
 
+  // Trigger creating a new task; should not assume any selection
   onNewTask: () => void;
   
 
+  // Execute batch deletion for given task IDs; confirmation handled here before invoking
   onBatchDelete: (taskIds: string[]) => void;
   
 
+  // Execute batch status update to the selected status; requires a chosen status value
   onBatchStatusUpdate: (taskIds: string[], status: TaskStatus) => void;
   
 
+  // Clear current selection to keep UI consistent after batch operations
   onClearSelection: () => void;
 }
 
 
+// Component: provides task quick actions and batch operations via floating buttons and modal dialogs
 const FloatingButton: React.FC<FloatingButtonProps> = ({
   selectedTaskIds,
   onNewTask,
@@ -40,12 +55,15 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   onClearSelection
 }) => {
 
+  // Local UI state: controls visibility of the batch status update modal
   const [batchStatusModalVisible, setBatchStatusModalVisible] = useState(false);
   
 
+  // Local UI state: the target status chosen for batch update; reset on open/close
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | undefined>();
 
 
+  // Handler: confirm prompt before performing batch deletion; ensures selection is cleared after success
   const handleBatchDelete = () => {
     Modal.confirm({
       title: '确认批量删除',
@@ -62,12 +80,14 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   };
 
 
+  // Handler: open the batch status modal and reset any previous selection to avoid stale values
   const handleBatchStatusUpdate = () => {
     setBatchStatusModalVisible(true);
     setSelectedStatus(undefined);
   };
 
 
+  // Handler: validate a status is chosen, then perform update, clear selection, close modal, and notify
   const confirmBatchStatusUpdate = () => {
     if (!selectedStatus) {
       message.warning('请选择要更新的状态');
@@ -82,6 +102,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
   };
 
 
+  // Derive quick actions depending on whether there are selected tasks
   const getQuickActions = () => {
     if (selectedTaskIds.length > 0) {
 
@@ -121,6 +142,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
 
   return (
     <>
+      {/* Action menu group: hover-triggered entry to task operations (new, batch, clear) */}
       <FloatButton.Group
         trigger="hover"
         type="primary"
@@ -129,6 +151,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         tooltip="操作菜单"
       >
 
+        {/* Primary action: always available to create a new task */}
         <FloatButton
           icon={<PlusOutlined />}
           tooltip="新建任务"
@@ -137,6 +160,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
         />
         
 
+        {/* Render action buttons based on current selection */}
         {getQuickActions().map((action, index) => (
           <FloatButton
             key={index}
@@ -150,6 +174,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
       </FloatButton.Group>
 
 
+      {/* Modal for batch status update: requires choosing a target status */}
       <Modal
         title="批量更新任务状态"
         open={batchStatusModalVisible}
@@ -172,6 +197,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({
             style={{ width: '100%' }}
             size="large"
           >
+            {/* Render status options with color indicators per STATUS_CONFIG */}
             {Object.values(TaskStatus).map(status => (
               <Option key={status} value={status}>
                 <Space>
