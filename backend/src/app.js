@@ -2,26 +2,40 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { config } from './config/index.js';
-import { errorHandler } from './middleware/errorHandler.js';
+import config from './config/config_simple.js';
+import { errorHandler, notFoundHandler, setupGlobalErrorHandlers } from './middleware/errorHandler.js';
 import { authMiddleware } from './middleware/auth.js';
+import { systemMonitor } from './middleware/monitor.js';
+import { requestLogger, securityLogger } from './middleware/requestLogger.js';
+import { logger } from './utils/logger.js';
 
 // 路由导入
-import productRoutes from './routes/products.js';
-import captchaRoutes from './routes/captcha.js';
-import uploadRoutes from './routes/upload.js';
-import watermarkRoutes from './routes/watermark.js';
-import qrcodeRoutes from './routes/qrcode.js';
+import productRoutes from '../routes/products.js';
+import captchaRoutes from '../routes/captcha.js';
+import healthRoutes from '../routes/health.js';
 
 const app = express();
 
 // 安全中间件
 app.use(helmet());
 
+// 请求日志中间件
+app.use(requestLogger({
+  skipPaths: ['/api/health', '/api/metrics'],
+  logRequestBody: config.isDevelopment(),
+  maxBodyLength: 500,
+}));
+
+// 安全日志中间件
+app.use(securityLogger);
+
+// 系统监控中间件
+app.use(systemMonitor.requestMonitor());
+
 // CORS 配置
 app.use(cors({
-  origin: config.cors.origins,
-  credentials: true,
+  origin: config.get('corsOrigins'),
+  credentials: config.get('corsCredentials'),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -54,18 +68,22 @@ app.use('/uploads', express.static('uploads'));
 // API 路由
 app.use('/api/products', productRoutes);
 app.use('/api/captcha', captchaRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/watermark', watermarkRoutes);
-app.use('/api/qrcode', qrcodeRoutes);
+app.use('/api', healthRoutes);
 
-// 健康检查
+// 健康检查 - 保留兼容性
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: config.env,
+    environment: config.get('nodeEnv'),
+    version: process.env.npm_package_version || '1.0.0',
   });
+});
+
+// 系统统计信息
+app.get('/api/stats', (req, res) => {
+  res.json(systemMonitor.getStats());
 });
 
 // API 文档根路径
@@ -86,23 +104,52 @@ app.get('/api', (req, res) => {
 });
 
 // 404 处理
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'API endpoint not found',
-    path: req.path,
-  });
-});
+app.use(notFoundHandler);
 
 // 错误处理中间件
 app.use(errorHandler);
 
+// 设置全局错误处理
+setupGlobalErrorHandlers();
+
 // 启动服务器
-const PORT = config.port || 3001;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📝 Environment: ${config.env}`);
-  console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
+const PORT = config.get('port') || 3001;
+const HOST = config.get('host') || 'localhost';
+
+const server = app.listen(PORT, HOST, async () => {
+  await logger.info(`Server started on http://${HOST}:${PORT}`, {
+    environment: config.get('nodeEnv'),
+    port: PORT,
+    host: HOST,
+    pid: process.pid,
+  });
+  
+  console.log(`🚀 Server running on http://${HOST}:${PORT}`);
+  console.log(`📝 Environment: ${config.get('nodeEnv')}`);
+  console.log(`🔗 API Base URL: http://${HOST}:${PORT}/api`);
+  console.log(`❤️ Health Check: http://${HOST}:${PORT}/api/health`);
+  
+  // 输出配置信息
+  config.logConfig();
 });
+
+// 优雅关闭
+const gracefulShutdown = async (signal) => {
+  await logger.info(`${signal} received, shutting down gracefully...`);
+  
+  server.close(async () => {
+    await logger.info('Server closed successfully');
+    process.exit(0);
+  });
+  
+  // 强制关闭超时
+  setTimeout(() => {
+    console.error('Forced shutdown after timeout');
+    process.exit(1);
+  }, 10000);
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 export default app;
